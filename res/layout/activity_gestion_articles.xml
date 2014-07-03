@@ -1,0 +1,126 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".GestionArticles" >
+
+    <TextView
+        android:id="@+id/stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/reduction"
+        android:layout_centerVertical="true"
+        android:text="Stock : " />
+
+    <EditText
+        android:id="@+id/editstock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/reduction"
+        android:ems="10"
+        android:inputType="numberSigned" />
+
+    <EditText
+        android:id="@+id/editreduction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/reduction"
+        android:layout_alignBottom="@+id/reduction"
+        android:layout_alignLeft="@+id/editstock"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/reduction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editstock"
+        android:layout_marginTop="38dp"
+        android:text="Reduction :" />
+
+    <EditText
+        android:id="@+id/editprix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/prix"
+        android:layout_alignBottom="@+id/prix"
+        android:layout_alignRight="@+id/editnom"
+        android:ems="10"
+        android:inputType="number" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/prix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editstock"
+        android:layout_alignLeft="@+id/stock"
+        android:layout_marginBottom="41dp"
+        android:text="Prix : " />
+
+    <EditText
+        android:id="@+id/editnom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editprix"
+        android:layout_alignRight="@+id/editstock"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/nom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editnom"
+        android:layout_alignBottom="@+id/editnom"
+        android:layout_alignLeft="@+id/prix"
+        android:text="Nom :" />
+
+    <Button
+        android:id="@+id/retour"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/supprimer"
+        android:layout_alignBottom="@+id/supprimer"
+        android:layout_toRightOf="@+id/recalculer"
+        android:text="Retour" />
+
+    <Button
+        android:id="@+id/recalculer"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/retour"
+        android:layout_alignBottom="@+id/retour"
+        android:layout_alignLeft="@+id/editprix"
+        android:text="Recalculer" />
+
+    <Button
+        android:id="@+id/valider"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/recalculer"
+        android:layout_alignBottom="@+id/recalculer"
+        android:layout_toLeftOf="@+id/recalculer"
+        android:text="Valider" />
+
+    <Button
+        android:id="@+id/supprimer"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="53dp"
+        android:layout_toRightOf="@+id/retour"
+        android:text="Supprimer" />
+
+</RelativeLayout>
