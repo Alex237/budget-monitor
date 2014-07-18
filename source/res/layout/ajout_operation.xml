@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="1"
+    android:orientation="horizontal" >
+
+    <Spinner
+        android:id="@+id/choixUtilisateur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/montantText"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_margin="20dp"
+        android:layout_marginTop="70dp"
+        android:layout_row="1"
+        android:text="Montant : " />
+    
+    <EditText
+        android:id="@+id/montant"
+        android:layout_width="155dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_marginTop="60dp"
+        android:layout_row="1"
+        android:ems="10"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/libelleText"
+        android:layout_width="176dp"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_margin="20dp"
+        android:layout_marginTop="190dp"
+        android:layout_row="1"
+        android:text="Description : " />
+
+    <EditText
+        android:id="@+id/libelle"
+        android:layout_width="148dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_margin="20dp"
+        android:layout_marginRight="05dp"
+        android:layout_marginTop="170dp"
+        android:layout_row="1"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <Spinner
+        android:id="@+id/repeter"
+        android:layout_width="match_parent"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="1" 
+        android:layout_marginTop="280dp" />
+
+</GridLayout>
