@@ -1,5 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">MonitorBudget</string>
+    <string name="dummy_section_text">Section %1d is just a dummy section.</string>
+    <string name="demo_external_activity">Demo External Activity</string>
+    <string name="demo_collection">Demo Collection</string>
 
-    <string name="app_name">Budget Monitor</string>
+    
+    <string name="drawer_open">Ouvrir le menu gauche</string>
+    <string name="drawer_close">Fermer Le menu gauche</string>
+
+    <string-array name="tab_navigation">
+        <item >RESUME</item>
+        <item >OPERATION(S)</item>
+        <item >BUDGET(S)</item>
+    </string-array>
+    
+    <string-array name="drawer_menu_array">
+	    <item>GERER</item>
+	    <item>EXPORTER</item>
+	    <item>PARAMETRES</item>
+	    <item>A PROPOS</item>
+	    <item>MENTIONS LEGALES</item>
+	    <item>AIDE</item>
+	</string-array>
+
+    <string-array name="drawer_menu_header">
+	    <item>VOTRE BUDGET</item>
+	    <item>BUDGET MONITOR</item>
+	</string-array>
 
 </resources>
