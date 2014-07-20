@@ -11,6 +11,10 @@ public final class R {
     public static final class array {
         public static final int drawer_menu_array=0x7f070001;
         public static final int drawer_menu_header=0x7f070002;
+        /**  Opération 
+ Budget 
+ Navdrawer 
+         */
         public static final int tab_navigation=0x7f070000;
     }
     public static final class attr {
@@ -159,118 +163,145 @@ containing a value of this type.
         public static final int angledoubleup=0x7f020007;
         public static final int archive=0x7f020008;
         public static final int btc=0x7f020009;
-        public static final int calendar=0x7f02000a;
-        public static final int cloud=0x7f02000b;
-        public static final int clouddownload=0x7f02000c;
-        public static final int cloudupload=0x7f02000d;
-        public static final int cog=0x7f02000e;
-        public static final int download=0x7f02000f;
-        public static final int drawer_shadow=0x7f020010;
-        public static final int dropbox=0x7f020011;
-        public static final int eraser=0x7f020012;
-        public static final int eur=0x7f020013;
-        public static final int exchange=0x7f020014;
-        public static final int floppy=0x7f020015;
-        public static final int gbp=0x7f020016;
-        public static final int home=0x7f020017;
-        public static final int ic_drawer=0x7f020018;
-        public static final int ic_launcher=0x7f020019;
-        public static final int info=0x7f02001a;
-        public static final int infocircle=0x7f02001b;
-        public static final int inr=0x7f02001c;
-        public static final int jpy=0x7f02001d;
-        public static final int krw=0x7f02001e;
-        public static final int list=0x7f02001f;
-        public static final int minus=0x7f020020;
-        public static final int minuscircle=0x7f020021;
-        public static final int money=0x7f020022;
-        public static final int paperclip0=0x7f020023;
-        public static final int pause=0x7f020024;
-        public static final int pencil=0x7f020025;
-        public static final int pencilsquare=0x7f020026;
-        public static final int plus=0x7f020027;
-        public static final int pluscircle=0x7f020028;
-        public static final int popup_black=0x7f020029;
-        public static final int questioncircle=0x7f02002a;
-        public static final int refresh=0x7f02002b;
-        public static final int rub=0x7f02002c;
-        public static final int shield=0x7f02002d;
-        public static final int shoppingcart=0x7f02002e;
-        public static final int signal=0x7f02002f;
-        public static final int star=0x7f020030;
-        public static final int tachometer=0x7f020031;
-        public static final int tag=0x7f020032;
-        public static final int ticket=0x7f020033;
-        public static final int times=0x7f020034;
-        public static final int trash=0x7f020035;
-        public static final int undo=0x7f020036;
-        public static final int unlock=0x7f020037;
-        public static final int upload=0x7f020038;
-        public static final int usd=0x7f020039;
-        public static final int user=0x7f02003a;
-        public static final int volumeoff=0x7f02003b;
-        public static final int volumeup=0x7f02003c;
-        public static final int wheelchair=0x7f02003d;
-        public static final int windows=0x7f02003e;
-        public static final int wrench=0x7f02003f;
+        public static final int btn_black=0x7f02000a;
+        public static final int btn_blue=0x7f02000b;
+        public static final int btn_green=0x7f02000c;
+        public static final int btn_purple=0x7f02000d;
+        public static final int btn_red=0x7f02000e;
+        public static final int btn_yellow=0x7f02000f;
+        public static final int calendar=0x7f020010;
+        public static final int cloud=0x7f020011;
+        public static final int clouddownload=0x7f020012;
+        public static final int cloudupload=0x7f020013;
+        public static final int cog=0x7f020014;
+        public static final int download=0x7f020015;
+        public static final int drawer_shadow=0x7f020016;
+        public static final int dropbox=0x7f020017;
+        public static final int eraser=0x7f020018;
+        public static final int eur=0x7f020019;
+        public static final int exchange=0x7f02001a;
+        public static final int floppy=0x7f02001b;
+        public static final int gbp=0x7f02001c;
+        public static final int home=0x7f02001d;
+        public static final int ic_drawer=0x7f02001e;
+        public static final int ic_launcher=0x7f02001f;
+        public static final int info=0x7f020020;
+        public static final int infocircle=0x7f020021;
+        public static final int inr=0x7f020022;
+        public static final int jpy=0x7f020023;
+        public static final int krw=0x7f020024;
+        public static final int list=0x7f020025;
+        public static final int minus=0x7f020026;
+        public static final int minuscircle=0x7f020027;
+        public static final int money=0x7f020028;
+        public static final int paperclip0=0x7f020029;
+        public static final int pause=0x7f02002a;
+        public static final int pencil=0x7f02002b;
+        public static final int pencilsquare=0x7f02002c;
+        public static final int plus=0x7f02002d;
+        public static final int pluscircle=0x7f02002e;
+        public static final int popup_black=0x7f02002f;
+        public static final int questioncircle=0x7f020030;
+        public static final int refresh=0x7f020031;
+        public static final int rub=0x7f020032;
+        public static final int shield=0x7f020033;
+        public static final int shoppingcart=0x7f020034;
+        public static final int signal=0x7f020035;
+        public static final int star=0x7f020036;
+        public static final int tachometer=0x7f020037;
+        public static final int tag=0x7f020038;
+        public static final int ticket=0x7f020039;
+        public static final int times=0x7f02003a;
+        public static final int trash=0x7f02003b;
+        public static final int undo=0x7f02003c;
+        public static final int unlock=0x7f02003d;
+        public static final int upload=0x7f02003e;
+        public static final int usd=0x7f02003f;
+        public static final int user=0x7f020040;
+        public static final int volumeoff=0x7f020041;
+        public static final int volumeup=0x7f020042;
+        public static final int wheelchair=0x7f020043;
+        public static final int windows=0x7f020044;
+        public static final int wrench=0x7f020045;
     }
     public static final class id {
-        public static final int aPropos=0x7f04001e;
-        public static final int ajouter=0x7f04001a;
-        public static final int canbtn=0x7f040011;
-        public static final int choixUtilisateur=0x7f040008;
-        public static final int content_frame=0x7f040006;
-        public static final int dialog=0x7f04001b;
-        public static final int drawer_layout=0x7f040004;
-        public static final int fname=0x7f04000e;
-        public static final int graph=0x7f040015;
+        public static final int Legende=0x7f040024;
+        public static final int LinearLayout1=0x7f040006;
+        public static final int aPropos=0x7f04002d;
+        public static final int addBudgetBtn=0x7f04001b;
+        public static final int addOperation=0x7f04001f;
+        public static final int addbtn=0x7f04002a;
+        public static final int ajoutCateg=0x7f040029;
+        public static final int ajouterBudget=0x7f04000e;
+        public static final int ajouterOperation=0x7f040013;
+        public static final int annuler=0x7f04000f;
+        public static final int budgetRestantText=0x7f04001a;
+        public static final int canbtn=0x7f040017;
+        public static final int changeBudgetBtn=0x7f04001c;
+        public static final int changeOperation=0x7f040020;
+        public static final int choixCategorie=0x7f040012;
+        public static final int choixUtilisateur=0x7f040010;
+        public static final int content_frame=0x7f040004;
+        public static final int drawer_layout=0x7f040002;
+        public static final int fname=0x7f040014;
+        public static final int graph=0x7f040023;
         public static final int horizontal=0x7f040000;
-        public static final int img=0x7f040012;
-        public static final int left_drawer=0x7f040007;
+        public static final int img=0x7f040018;
+        public static final int left_drawer=0x7f040005;
         public static final int libelle=0x7f04000c;
         public static final int libelleText=0x7f04000b;
-        public static final int listViewBudget=0x7f040017;
-        public static final int lname=0x7f04000f;
-        public static final int mainView=0x7f040014;
-        public static final int mentionsLegales=0x7f04001d;
+        public static final int listViewBudget=0x7f04001d;
+        public static final int listViewOperation=0x7f040021;
+        public static final int lname=0x7f040015;
+        public static final int mainView=0x7f040022;
+        public static final int mentionsLegales=0x7f04002c;
         public static final int montant=0x7f04000a;
+        public static final int montantRestantText=0x7f04001e;
         public static final int montantText=0x7f040009;
-        public static final int montantText2=0x7f040016;
-        public static final int navigation_drawer=0x7f040018;
-        public static final int operation=0x7f040019;
-        public static final int pagePrincipale=0x7f040005;
-        public static final int pager=0x7f040002;
-        public static final int pager_title_strip=0x7f040003;
-        public static final int parametres=0x7f04001c;
+        public static final int montantText2=0x7f040025;
+        public static final int navigation_drawer=0x7f040026;
+        public static final int pagePrincipale=0x7f040003;
+        public static final int pager=0x7f040027;
+        public static final int pager_title_strip=0x7f040028;
+        public static final int parametres=0x7f04002b;
         public static final int repeter=0x7f04000d;
-        public static final int savebtn=0x7f040010;
-        public static final int txt=0x7f040013;
+        public static final int savebtn=0x7f040016;
+        public static final int scrollViemmmw1=0x7f040008;
+        public static final int scrollView1=0x7f040007;
+        public static final int show_popup=0x7f040011;
+        public static final int txt=0x7f040019;
         public static final int vertical=0x7f040001;
     }
     public static final class layout {
-        public static final int activity_collection_demo=0x7f030000;
-        public static final int activity_home=0x7f030001;
+        public static final int activity_home=0x7f030000;
+        public static final int ajout_budget=0x7f030001;
         public static final int ajout_operation=0x7f030002;
         public static final int dialog=0x7f030003;
         public static final int drawer_list_icon=0x7f030004;
         public static final int drawer_list_item=0x7f030005;
-        public static final int fragment_collection_object=0x7f030006;
-        public static final int fragment_navigation_drawer=0x7f030007;
+        public static final int fragment_navigation_drawer=0x7f030006;
+        public static final int fragment_section_budget=0x7f030007;
         public static final int fragment_section_dummy=0x7f030008;
-        public static final int fragment_section_resume=0x7f030009;
-        public static final int nav_drawer=0x7f03000a;
-        public static final int operation=0x7f03000b;
-        public static final int resume=0x7f03000c;
+        public static final int fragment_section_operations=0x7f030009;
+        public static final int fragment_section_resume=0x7f03000a;
+        public static final int nav_drawer=0x7f03000b;
+        public static final int operation=0x7f03000c;
+        public static final int popup_ajout_categorie=0x7f03000d;
+        public static final int resume=0x7f03000e;
     }
     public static final class menu {
         public static final int activity_menu=0x7f090000;
     }
     public static final class string {
+        /**  Les boutons 
+         */
+        public static final int add_btn_txt=0x7f060004;
         public static final int app_name=0x7f060000;
+        public static final int change_btn_txt=0x7f060005;
         public static final int demo_collection=0x7f060003;
         public static final int demo_external_activity=0x7f060002;
-        public static final int drawer_close=0x7f060005;
-        public static final int drawer_open=0x7f060004;
+        public static final int drawer_close=0x7f060007;
+        public static final int drawer_open=0x7f060006;
         public static final int dummy_section_text=0x7f060001;
     }
     public static final class style {
@@ -295,11 +326,12 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f080000;
+        public static final int AppBaseTheme=0x7f080001;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f080001;
+        public static final int AppTheme=0x7f080002;
+        public static final int ButtonText=0x7f080000;
     }
     public static final class styleable {
         /** Attributes that can be used with a BarGraph.

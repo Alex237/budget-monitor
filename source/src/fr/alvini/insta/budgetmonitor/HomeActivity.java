@@ -1,5 +1,8 @@
 package fr.alvini.insta.budgetmonitor;
 
+import fr.alvini.insta.budgetmonitor.activities.AjoutBudget;
+import fr.alvini.insta.budgetmonitor.activities.AjoutOperation;
+import fr.alvini.insta.budgetmonitor.adaptater.CustomList;
 import fr.alvini.insta.holographlib.PieGraph;
 import fr.alvini.insta.holographlib.PieSlice;
 import android.os.Bundle;
@@ -23,21 +26,24 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class HomeActivity extends FragmentActivity implements
-ActionBar.TabListener {
+public class HomeActivity extends FragmentActivity implements ActionBar.TabListener {
 
 	private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
 	private Resources stringRessource;
+	private static Button addbudgetBtn;
+	private static Button changBudgetBtn;
 
 	// Drawer NAV
 	private DrawerLayout mDrawerLayout;
@@ -77,7 +83,7 @@ ActionBar.TabListener {
 		// opens
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
-		
+
 
 		CustomList adapterIcon = new
 				CustomList(HomeActivity.this, mMenuTitles1, mImageTitles);
@@ -171,9 +177,9 @@ ActionBar.TabListener {
 
 		// Création d'un MenuInflater qui va permettre d'instancier un Menu XML
 		// en un objet Menu
-		MenuInflater inflater = getMenuInflater();
+		//MenuInflater inflater = getMenuInflater();
 		// Instanciation du menu XML spécifier en un objet Menu
-		inflater.inflate(R.menu.activity_menu, menu);
+		//inflater.inflate(R.menu.activity_menu, menu);
 
 		// Il n'est pas possible de modifier l'icône d'entête du sous-menu via
 		// le fichier XML on le fait donc en JAVA
@@ -191,7 +197,7 @@ ActionBar.TabListener {
 			return true;
 		}
 		// On regarde quel item a été cliqué grâce à son id et on déclenche une
-		// action
+		/* action
 		switch (item.getItemId()) {
 		case R.id.parametres:
 			Toast.makeText(HomeActivity.this, "Paramètres ", Toast.LENGTH_SHORT)
@@ -206,8 +212,8 @@ ActionBar.TabListener {
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
-		}
-		// return false;
+		}*/
+		return false;
 	}
 
 	/* The click listner for ListView in the navigation drawer */
@@ -265,7 +271,7 @@ ActionBar.TabListener {
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the primary sections of the app.
 	 */
-	public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+	public static class AppSectionsPagerAdapter extends FragmentPagerAdapter{
 		String[] myTabList;
 
 		public AppSectionsPagerAdapter(FragmentManager fm, String[] tabList) {
@@ -277,7 +283,7 @@ ActionBar.TabListener {
 		public Fragment getItem(int i) {
 			switch (i) {
 			case 0:
-				
+
 				return new ResumeSectionFragment();
 			case 1:
 				return new OperationSectionFragment();
@@ -316,14 +322,14 @@ ActionBar.TabListener {
 
 		String[] budgetText = {
 				"Budget de Janvier",
-				"Budget de Février",
-				"Budget de Mars",
-				"Budget de Avril",
+				"Some one is dead x_X",
+				"Buddah kill him",
+				"I don't know why...",
 				"Budget de Mais",
 				"Budget de Juin",
 				"Budget de Juillet",
 		} ;
-		
+
 		Double[] prix = {
 				1200.00,
 				1100.50,
@@ -341,70 +347,20 @@ ActionBar.TabListener {
 				R.drawable.money,
 				R.drawable.money,
 				R.drawable.money,
+				R.drawable.money,
 		};
-		
+
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 
 			View rootView = inflater.inflate(R.layout.fragment_section_resume,
 					container, false);
-			/*this.mListBudget = (ListView) rootView.findViewById(R.id.listViewBudget);
-			BudgetList adapterBudget = new
-					BudgetList(getActivity(), budgetText, iconBudget);
+			this.mListBudget = (ListView) rootView.findViewById(R.id.listViewBudget);
+			CustomList adapterBudget = new
+					CustomList(getActivity(), budgetText, iconBudget);
 			this.mListBudget.setAdapter(adapterBudget);
-			*/
-			
-            // Get ListView object from xml
-			final ListView listView = (ListView) rootView.findViewById(R.id.listViewBudget);
-           
-           // Defined Array values to show in ListView
-           String[] values = new String[] { "Android List View", 
-                                            "Adapter implementation",
-                                            "Simple List View In Android",
-                                            "Create List View Android", 
-                                            "Android Example", 
-                                            "List View Source Code", 
-                                            "List View Array Adapter", 
-                                            "Android Example List View" 
-                                           };
-   
-           // Define a new Adapter
-           // First parameter - Context
-           // Second parameter - Layout for the row
-           // Third parameter - ID of the TextView to which the data is written
-           // Forth - the Array of data
-           //ArrayAdapter<String> adaptater = new ArrayAdapter<String>(getActivity(), android.R.id.text1, values);
-           ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-             android.R.layout.simple_list_item_1, android.R.id.text1, values);
-   
-   
-           // Assign adapter to ListView
-           listView.setAdapter(adapter); 
-           
-           // ListView Item Click Listener
-           listView.setOnItemClickListener(new OnItemClickListener() {
 
-                 @Override
-                 public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                   
-                  // ListView Clicked item index
-                  int itemPosition     = position;
-                  
-                  // ListView Clicked item value
-                  String  itemValue    = (String) listView.getItemAtPosition(position);
-                     
-                   // Show Alert 
-                   Toast.makeText(getActivity(),
-                     "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
-                     .show();
-                
-                 }
-   
-            });
-			
-			
 			PieGraph pg = (PieGraph) rootView.findViewById(R.id.graph);
 
 			PieSlice slice = new PieSlice();
@@ -481,7 +437,7 @@ ActionBar.TabListener {
 							startActivity(externalActivityIntent);
 						}
 					});
-*/
+			 */
 			return rootView;
 		}
 	}
@@ -492,12 +448,84 @@ ActionBar.TabListener {
 	 */
 	public static class OperationSectionFragment extends Fragment {
 
+		private Button 	addOperationBtn;
+		private Button changOperationBtn;
+
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.activity_collection_demo,
+			View rootView = inflater.inflate(R.layout.fragment_section_operations,
 					container, false);
 			Bundle args = getArguments();
+
+			// Get ListView object from xml
+			final ListView listView = (ListView) rootView.findViewById(R.id.listViewOperation);
+
+			// Defined Array values to show in ListView
+			String[] values = new String[] { "Menace de Black Buddah", 
+					"Rancon de Rasta Buddah",
+					"Recidive de Buddah",
+					"Corruption des moines tibetins", 
+					"Fake Example", 
+					"Fake fake fake", 
+					"Rasta Buddah Destiny", 
+					"Black Buddah Power !" 
+			};
+
+			// Define a new Adapter
+			// First parameter - Context
+			// Second parameter - Layout for the row
+			// Third parameter - ID of the TextView to which the data is written
+			// Forth - the Array of data
+			//ArrayAdapter<String> adaptater = new ArrayAdapter<String>(getActivity(), android.R.id.text1, values);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+					android.R.layout.simple_list_item_1, android.R.id.text1, values);
+
+
+			// Assign adapter to ListView
+			listView.setAdapter(adapter); 
+
+			// ListView Item Click Listener
+			listView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+
+					// ListView Clicked item index
+					int itemPosition     = position;
+
+					// ListView Clicked item value
+					String  itemValue    = (String) listView.getItemAtPosition(position);
+
+					// Show Alert 
+					Toast.makeText(getActivity(),
+							"Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
+							.show();
+
+				}
+
+			});
+
+			this.addOperationBtn = (Button) rootView.findViewById(R.id.addOperation);
+			this.addOperationBtn.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View view) {
+					Toast.makeText(getActivity().getApplicationContext(),
+							"Hey !!  you touch me :D Add something" , Toast.LENGTH_LONG)
+							.show();
+					Intent unIntent = new Intent(getActivity(), AjoutOperation.class);
+					startActivity(unIntent);
+				}
+			});
+
+			this.changOperationBtn = (Button) rootView.findViewById(R.id.changeOperation);
+			this.changOperationBtn.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View view) {
+					Toast.makeText(getActivity().getApplicationContext(),
+							"Buddah was a black dude" , Toast.LENGTH_LONG)
+							.show();
+				}
+			});
 			return rootView;
 		}
 	}
@@ -508,11 +536,72 @@ ActionBar.TabListener {
 	 */
 	public static class BudgetSectionFragment extends Fragment {
 
+		private Button 	addBudgetBtn;
+		private Button changeBudgetBtn;
+
+
+		private ListView mListBudget;
+
+		String[] budgetText = {
+				"Budget de Janvier",
+				"Some one is dead x_X",
+				"Buddah kill him",
+				"I don't know why...",
+				"Budget de Mais",
+				"Budget de Juin",
+				"Budget de Juillet",
+		} ;
+
+		Double[] prix = {
+				1200.00,
+				1100.50,
+				1500.08,
+				2000.44,
+				800.34,
+				2230.50,
+				1321.46
+		};
+
+		private Integer[] iconBudget = {
+				R.drawable.money,
+				R.drawable.ambulance,
+				R.drawable.money,
+				R.drawable.money,
+				R.drawable.money,
+				R.drawable.money,
+				R.drawable.money,
+		};
+
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.dialog, container, false);
+			View rootView = inflater.inflate(R.layout.fragment_section_budget, container, false);
 			Bundle args = getArguments();
+
+			this.mListBudget = (ListView) rootView.findViewById(R.id.listViewBudget);
+			CustomList adapterBudget = new
+					CustomList(getActivity(), budgetText, iconBudget);
+			this.mListBudget.setAdapter(adapterBudget);
+
+			this.addBudgetBtn = (Button) rootView.findViewById(R.id.addBudgetBtn);
+			this.addBudgetBtn.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View view) {
+					Toast.makeText(getActivity().getApplicationContext(),
+							"Hey !!  you touch me :D Add something" , Toast.LENGTH_LONG)
+							.show();
+					Intent unIntent = new Intent(getActivity(), AjoutBudget.class);
+					startActivity(unIntent);
+				}
+			});
+
+			this.changeBudgetBtn = (Button) rootView.findViewById(R.id.changeBudgetBtn);
+			this.changeBudgetBtn.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View view) {
+					Toast.makeText(getActivity().getApplicationContext(),
+							"Buddah was a black dude" , Toast.LENGTH_LONG)
+							.show();
+				}
+			});
 			return rootView;
 		}
 	}
