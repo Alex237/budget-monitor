@@ -1,9 +1,7 @@
 package fr.alvini.insta.budgetmonitor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import fr.alvini.insta.holographlib.PieGraph;
+import fr.alvini.insta.holographlib.PieSlice;
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Dialog;
@@ -28,373 +26,515 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class HomeActivity extends FragmentActivity implements ActionBar.TabListener {
+public class HomeActivity extends FragmentActivity implements
+ActionBar.TabListener {
 
-    private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
-    private ViewPager mViewPager;
-    private Resources stringRessource;
-    
-    //Drawer NAV
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList, mDrawerList2;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    private String[] mMenuTitles1;
-    private String[] mMenuTitles2;
-    private String[] mMenuTitlesHead;
+	private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+	private ViewPager mViewPager;
+	private Resources stringRessource;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+	// Drawer NAV
+	private DrawerLayout mDrawerLayout;
+	private ListView mDrawerList;
+	private ActionBarDrawerToggle mDrawerToggle;
+	private CharSequence mDrawerTitle;
+	private CharSequence mTitle;
+	private String[] mMenuTitles1;
+	private String[] mMenuTitlesHead;
+	private Integer[] mImageTitles = {
+			R.drawable.list,
+			R.drawable.cloudupload,
+			R.drawable.cog,
+			R.drawable.infocircle,
+			R.drawable.shield,
+			R.drawable.questioncircle,
+	};
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_home);
 
-        this.stringRessource = getResources();
-        String[] listOfTab = this.stringRessource.getStringArray(R.array.tab_navigation);
-        
-        this.mTitle = mDrawerTitle = getTitle();
-        this.mMenuTitles1 = getResources().getStringArray(R.array.drawer_menu_array);
-        this.mMenuTitlesHead = getResources().getStringArray(R.array.drawer_menu_header);
-        this.mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		this.stringRessource = getResources();
+		String[] listOfTab = this.stringRessource
+				.getStringArray(R.array.tab_navigation);
 
-        this.mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		this.mTitle = mDrawerTitle = getTitle();
+		this.mMenuTitles1 = getResources().getStringArray(
+				R.array.drawer_menu_array);
+		this.mMenuTitlesHead = getResources().getStringArray(
+				R.array.drawer_menu_header);
+		this.mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mMenuTitles1));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		this.mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		// set a custom shadow that overlays the main content when the drawer
+		// opens
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+				GravityCompat.START);
+		
 
-        // enable ActionBar app icon to behave as action to toggle nav drawer
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+		CustomList adapterIcon = new
+				CustomList(HomeActivity.this, mMenuTitles1, mImageTitles);
+		mDrawerList.setAdapter(adapterIcon);
+		// set up the drawer's list view with items and click listener
+		//mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+		//		R.layout.drawer_list_item, mMenuTitles1));
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 
-        // ActionBarDrawerToggle ties together the the proper interactions
-        // between the sliding drawer and the action bar app icon
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-                ) {
-            public void onDrawerClosed(View view) {
-                //getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
+		// ActionBarDrawerToggle ties together the the proper interactions
+		// between the sliding drawer and the action bar app icon
+		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+				mDrawerLayout, /* DrawerLayout object */
+				R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+				R.string.drawer_open, /* "open drawer" description for accessibility */
+				R.string.drawer_close /* "close drawer" description for accessibility */
+				) {
+			public void onDrawerClosed(View view) {
+				// getActionBar().setTitle(mTitle);
+				invalidateOptionsMenu(); // creates call to
+				// onPrepareOptionsMenu()
+			}
 
-            public void onDrawerOpened(View drawerView) {
-                //getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+			public void onDrawerOpened(View drawerView) {
+				// getActionBar().setTitle(mDrawerTitle);
+				invalidateOptionsMenu(); // creates call to
+				// onPrepareOptionsMenu()
+			}
+		};
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        if (savedInstanceState == null) {
-            //selectItem(0);
-        }
-        
-        // Create the adapter that will return a fragment for each of the three primary sections
-        // of the app.
-        this.mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager(), listOfTab);
+		if (savedInstanceState == null) {
+			// selectItem(0);
+		}
 
-        // Set up the action bar.
-        final ActionBar actionBar = getActionBar();
+		// Create the adapter that will return a fragment for each of the three
+		// primary sections
+		// of the app.
+		this.mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(
+				getSupportFragmentManager(), listOfTab);
 
-        // Specify that the Home/Up button should not be enabled, since there is no hierarchical
-        // parent.
-        //actionBar.setHomeButtonEnabled(false);
+		// Set up the action bar.
+		final ActionBar actionBar = getActionBar();
 
-        // Specify that we will be displaying tabs in the action bar.
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		// Specify that the Home/Up button should not be enabled, since there is
+		// no hierarchical
+		// parent.
+		// actionBar.setHomeButtonEnabled(false);
 
-        // Set up the ViewPager, attaching the adapter and setting up a listener for when the
-        // user swipes between sections.
-        this.mViewPager = (ViewPager) findViewById(R.id.pagePrincipale);
-        this.mViewPager.setAdapter(this.mAppSectionsPagerAdapter);
-        this.mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                // When swiping between different app sections, select the corresponding tab.
-                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                // Tab.
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
-        
-        // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < this.mAppSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by the adapter.
-            // Also specify this Activity object, which implements the TabListener interface, as the
-            // listener for when this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(this.mAppSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
-        }
-    }
-	
-	
-	//Méthode qui se déclenchera lorsque vous appuierez sur le bouton menu du téléphone
-    @Override
+		// Specify that we will be displaying tabs in the action bar.
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		// Set up the ViewPager, attaching the adapter and setting up a listener
+		// for when the
+		// user swipes between sections.
+		this.mViewPager = (ViewPager) findViewById(R.id.pagePrincipale);
+		this.mViewPager.setAdapter(this.mAppSectionsPagerAdapter);
+		this.mViewPager
+		.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				// When swiping between different app sections, select
+				// the corresponding tab.
+				// We can also use ActionBar.Tab#select() to do this if
+				// we have a reference to the
+				// Tab.
+				actionBar.setSelectedNavigationItem(position);
+			}
+		});
+
+		// For each of the sections in the app, add a tab to the action bar.
+		for (int i = 0; i < this.mAppSectionsPagerAdapter.getCount(); i++) {
+			// Create a tab with text corresponding to the page title defined by
+			// the adapter.
+			// Also specify this Activity object, which implements the
+			// TabListener interface, as the
+			// listener for when this tab is selected.
+			actionBar.addTab(actionBar.newTab()
+					.setText(this.mAppSectionsPagerAdapter.getPageTitle(i))
+					.setTabListener(this));
+		}
+	}
+
+	// Méthode qui se déclenchera lorsque vous appuierez sur le bouton menu du
+	// téléphone
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
- 
-        //Création d'un MenuInflater qui va permettre d'instancier un Menu XML en un objet Menu
-        MenuInflater inflater = getMenuInflater();
-        //Instanciation du menu XML spécifier en un objet Menu
-        inflater.inflate(R.menu.activity_menu, menu);
- 
-        //Il n'est pas possible de modifier l'icône d'entête du sous-menu via le fichier XML on le fait donc en JAVA
-    	//menu.getItem(0).getSubMenu().setHeaderIcon(R.drawable.option_white);
- 
-        return true;
-     }
-    //Méthode qui se déclenchera au clic sur un item
-    @Override
+
+		// Création d'un MenuInflater qui va permettre d'instancier un Menu XML
+		// en un objet Menu
+		MenuInflater inflater = getMenuInflater();
+		// Instanciation du menu XML spécifier en un objet Menu
+		inflater.inflate(R.menu.activity_menu, menu);
+
+		// Il n'est pas possible de modifier l'icône d'entête du sous-menu via
+		// le fichier XML on le fait donc en JAVA
+		// menu.getItem(0).getSubMenu().setHeaderIcon(R.drawable.option_white);
+
+		return true;
+	}
+
+	// Méthode qui se déclenchera au clic sur un item
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        // ActionBarDrawerToggle will take care of this.
-       if (mDrawerToggle.onOptionsItemSelected(item)) {
-           return true;
-       }
-       //On regarde quel item a été cliqué grâce à son id et on déclenche une action
-	       switch (item.getItemId()) {
-	          case R.id.parametres:
-	              Toast.makeText(HomeActivity.this, "Paramètres ", Toast.LENGTH_SHORT).show();
-	          case R.id.mentionsLegales:
-	              Toast.makeText(HomeActivity.this, "Mentions Légales", Toast.LENGTH_SHORT).show();
-	              return true;
-	         case R.id.aPropos:
-	        	 Toast.makeText(HomeActivity.this, "à Propos", Toast.LENGTH_SHORT).show();
-	             return true;
-             default:
-            	 return super.onOptionsItemSelected(item);
-	       }
-       //return false;
-   }
-    
-    /* The click listner for ListView in the navigation drawer */
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //selectItem(position);
-        	Toast.makeText(HomeActivity.this, "Drawer item : "+position+" | ID : "+ id, Toast.LENGTH_SHORT).show();
-        }
-    }
-    
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
+		// The action bar home/up action should open or close the drawer.
+		// ActionBarDrawerToggle will take care of this.
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		// On regarde quel item a été cliqué grâce à son id et on déclenche une
+		// action
+		switch (item.getItemId()) {
+		case R.id.parametres:
+			Toast.makeText(HomeActivity.this, "Paramètres ", Toast.LENGTH_SHORT)
+			.show();
+		case R.id.mentionsLegales:
+			Toast.makeText(HomeActivity.this, "Mentions Légales",
+					Toast.LENGTH_SHORT).show();
+			return true;
+		case R.id.aPropos:
+			Toast.makeText(HomeActivity.this, "à Propos", Toast.LENGTH_SHORT)
+			.show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+		// return false;
+	}
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
+	/* The click listner for ListView in the navigation drawer */
+	private class DrawerItemClickListener implements
+	ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			mDrawerLayout.closeDrawer(mDrawerList);
+			// selectItem(position);
+			Toast.makeText(HomeActivity.this,
+					"Drawer item : " + position + " | ID : " + id + "\n " + mMenuTitles1[position],
+					Toast.LENGTH_SHORT).show();
+		}
+	}
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-    
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
+	/**
+	 * When using the ActionBarDrawerToggle, you must call it during
+	 * onPostCreate() and onConfigurationChanged()...
+	 */
 
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in the ViewPager.
-        this.mViewPager.setCurrentItem(tab.getPosition());
-    }
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
 
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggls
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
-     * sections of the app.
-     */
-    public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
-    	String[] myTabList;
+	@Override
+	public void onTabUnselected(ActionBar.Tab tab,
+			FragmentTransaction fragmentTransaction) {
+	}
 
-        public AppSectionsPagerAdapter(FragmentManager fm, String[] tabList) {
-            super(fm);
-            this.myTabList = tabList;
-        }
+	@Override
+	public void onTabSelected(ActionBar.Tab tab,
+			FragmentTransaction fragmentTransaction) {
+		// When the given tab is selected, switch to the corresponding page in
+		// the ViewPager.
+		this.mViewPager.setCurrentItem(tab.getPosition());
+	}
 
-        @Override
-        public Fragment getItem(int i) {
-            switch (i) {
-                case 0:
-                    // The first section of the app is the most interesting -- it offers
-                    // a launchpad into the other demonstrations in this example application.s
-                    return new LaunchpadSectionFragment();
+	@Override
+	public void onTabReselected(ActionBar.Tab tab,
+			FragmentTransaction fragmentTransaction) {
+	}
 
-                default:
-                    // The other sections of the app are dummy placeholders.
-                    Fragment fragment = new DummySectionFragment();
-                    Bundle args = new Bundle();
-                    args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, i + 1);
-                    fragment.setArguments(args);
-                    return fragment;
-            }
-        }
+	/**
+	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+	 * one of the primary sections of the app.
+	 */
+	public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+		String[] myTabList;
 
-        @Override
-        public int getCount() {
-        	int total = this.myTabList.length;
-            return total;
-        }
+		public AppSectionsPagerAdapter(FragmentManager fm, String[] tabList) {
+			super(fm);
+			this.myTabList = tabList;
+		}
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-        	String myTitle = this.myTabList[(position)];
-        	return myTitle;
-        }
-    }
+		@Override
+		public Fragment getItem(int i) {
+			switch (i) {
+			case 0:
+				
+				return new ResumeSectionFragment();
+			case 1:
+				return new OperationSectionFragment();
+			case 2:
+				return new BudgetSectionFragment();
 
-    /**
-     * A fragment that launches other parts of the demo application.
-     */
-    public static class LaunchpadSectionFragment extends Fragment {
+			default:
+				// The other sections of the app are dummy placeholders.
+				Fragment fragment = new DummySectionFragment();
+				Bundle args = new Bundle();
+				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, i + 1);
+				fragment.setArguments(args);
+				return fragment;
+			}
+		}
 
-      /*  
-        public void drawPieGraph(ilementId) {
-        	PieGraph pg = (PieGraph)ilementId;//findViewById(R.id.graph);
-        	System.out.println("Initializing PieGraph | value of: pg = " + pg);
-        	PieSlice slice = new PieSlice();
-        	slice.setColor(Color.parseColor("#99CC00"));
-        	slice.setValue(2);
-        	pg.addSlice(slice);
-        	slice = new PieSlice();
-        	slice.setColor(Color.parseColor("#FFBB33"));
-        	slice.setValue(3);
-        	pg.addSlice(slice);
-        	slice = new PieSlice();
-        	slice.setColor(Color.parseColor("#AA66CC"));
-        	slice.setValue(8);
-        	pg.addSlice(slice);
-    	}
+		@Override
+		public int getCount() {
+			int total = this.myTabList.length;
+			return total;
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			String myTitle = this.myTabList[(position)];
+			return myTitle;
+		}
+	}
+
+	/**
+	 * A fragment that launches other parts of the demo application.
+	 */
+	public static class ResumeSectionFragment extends Fragment {
+
+		private ListView mListBudget;
+
+		String[] budgetText = {
+				"Budget de Janvier",
+				"Budget de Février",
+				"Budget de Mars",
+				"Budget de Avril",
+				"Budget de Mais",
+				"Budget de Juin",
+				"Budget de Juillet",
+		} ;
+		
+		Double[] prix = {
+				1200.00,
+				1100.50,
+				1500.08,
+				2000.44,
+				800.34,
+				2230.50,
+				1321.46
+		};
+
+		private Integer[] iconBudget = {
+				R.drawable.money,
+				R.drawable.ambulance,
+				R.drawable.money,
+				R.drawable.money,
+				R.drawable.money,
+				R.drawable.money,
+		};
+		
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+
+			View rootView = inflater.inflate(R.layout.fragment_section_resume,
+					container, false);
+			/*this.mListBudget = (ListView) rootView.findViewById(R.id.listViewBudget);
+			BudgetList adapterBudget = new
+					BudgetList(getActivity(), budgetText, iconBudget);
+			this.mListBudget.setAdapter(adapterBudget);
+			*/
+			
+            // Get ListView object from xml
+			final ListView listView = (ListView) rootView.findViewById(R.id.listViewBudget);
+           
+           // Defined Array values to show in ListView
+           String[] values = new String[] { "Android List View", 
+                                            "Adapter implementation",
+                                            "Simple List View In Android",
+                                            "Create List View Android", 
+                                            "Android Example", 
+                                            "List View Source Code", 
+                                            "List View Array Adapter", 
+                                            "Android Example List View" 
+                                           };
+   
+           // Define a new Adapter
+           // First parameter - Context
+           // Second parameter - Layout for the row
+           // Third parameter - ID of the TextView to which the data is written
+           // Forth - the Array of data
+           //ArrayAdapter<String> adaptater = new ArrayAdapter<String>(getActivity(), android.R.id.text1, values);
+           ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+             android.R.layout.simple_list_item_1, android.R.id.text1, values);
+   
+   
+           // Assign adapter to ListView
+           listView.setAdapter(adapter); 
+           
+           // ListView Item Click Listener
+           listView.setOnItemClickListener(new OnItemClickListener() {
+
+                 @Override
+                 public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                   
+                  // ListView Clicked item index
+                  int itemPosition     = position;
+                  
+                  // ListView Clicked item value
+                  String  itemValue    = (String) listView.getItemAtPosition(position);
+                     
+                   // Show Alert 
+                   Toast.makeText(getActivity(),
+                     "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
+                     .show();
+                
+                 }
+   
+            });
+			
+			
+			PieGraph pg = (PieGraph) rootView.findViewById(R.id.graph);
+
+			PieSlice slice = new PieSlice();
+			slice.setColor(Color.parseColor("#5A90BE"));
+			slice.setValue(2);
+			slice.setGoalValue((float) 50);
+			pg.addSlice(slice);
+
+			slice = new PieSlice();
+			slice.setColor(Color.parseColor("#B58EAD"));
+			slice.setValue(2);
+			slice.setGoalValue((float) 10);
+			pg.addSlice(slice);
+
+			slice = new PieSlice();
+			slice.setColor(Color.parseColor("#D1866F"));
+			slice.setValue(2);
+			slice.setGoalValue((float) 10);
+			pg.addSlice(slice);
+
+			slice = new PieSlice();
+			slice.setColor(Color.parseColor("#AA7968"));
+			slice.setValue(2);
+			slice.setGoalValue((float) 10);
+			pg.addSlice(slice);
+
+			slice = new PieSlice();
+			slice.setColor(Color.parseColor("#A2BE8D"));
+			slice.setValue(2);
+			slice.setGoalValue((float) 10);
+			pg.addSlice(slice);
+
+			slice = new PieSlice();
+			slice.setColor(Color.parseColor("#96B6B3"));
+			slice.setValue(2);
+			slice.setGoalValue((float) 10);
+			pg.addSlice(slice);
+
+			pg.setInnerCircleRatio(150);
+			pg.setPadding(2);
+
+			pg.setDuration(2000);// default if unspecified is 300 ms
+			pg.setInterpolator(new AccelerateDecelerateInterpolator());
+			pg.animateToGoalValues();
+
+			/* Demonstration of a collection-browsing activity.
+			rootView.findViewById(R.id.resume).setOnClickListener(
+					new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							// Intent intent = new Intent(private,
+							// OperationActivity.class);
+							// startActivity(intent);
+						}
+					});
+
+			// Demonstration of navigating to external activities.
+			rootView.findViewById(R.id.operation).setOnClickListener(
+					new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							// Create an intent that asks the user to pick a
+							// photo, but using
+							// FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET, ensures that
+							// relaunching
+							// the application from the device home screen does
+							// not return
+							// to the external activity.
+							Intent externalActivityIntent = new Intent(
+									Intent.ACTION_PICK);
+							externalActivityIntent.setType("image/*");
+							externalActivityIntent
+							.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+							startActivity(externalActivityIntent);
+						}
+					});
 */
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            
-        	View rootView = inflater.inflate(R.layout.fragment_section_launchpad, container, false);
-            
-        	
-        	PieGraph pg = (PieGraph)rootView.findViewById(R.id.graph);
-        	
-            PieSlice slice = new PieSlice();
-        	slice.setColor(Color.parseColor("#5A90BE"));
-        	slice.setValue(2);
-        	slice.setGoalValue((float) 50);
-        	pg.addSlice(slice);
-        	
-            slice = new PieSlice();
-        	slice.setColor(Color.parseColor("#B58EAD"));
-        	slice.setValue(2);
-        	slice.setGoalValue((float) 10);
-        	pg.addSlice(slice);
-        	
-        	slice = new PieSlice();
-        	slice.setColor(Color.parseColor("#D1866F"));
-        	slice.setValue(2);
-        	slice.setGoalValue((float) 10);
-        	pg.addSlice(slice);
-        	
-        	slice = new PieSlice();
-        	slice.setColor(Color.parseColor("#AA7968"));
-        	slice.setValue(2);
-        	slice.setGoalValue((float) 10);
-        	pg.addSlice(slice);
-        	
-        	slice = new PieSlice();
-        	slice.setColor(Color.parseColor("#A2BE8D"));
-        	slice.setValue(2);
-        	slice.setGoalValue((float) 10);
-        	pg.addSlice(slice);
-        	
-        	slice = new PieSlice();
-        	slice.setColor(Color.parseColor("#96B6B3"));
-        	slice.setValue(2);
-        	slice.setGoalValue((float) 10);
-        	pg.addSlice(slice);
+			return rootView;
+		}
+	}
 
-        	pg.setInnerCircleRatio(150);
-        	pg.setPadding(2);
+	/**
+	 * A dummy fragment representing a section of the app, but that simply
+	 * displays dummy text.
+	 */
+	public static class OperationSectionFragment extends Fragment {
 
-            pg.setDuration(2000);//default if unspecified is 300 ms
-            pg.setInterpolator(new AccelerateDecelerateInterpolator());
-            pg.animateToGoalValues();
-            
-/*
-        	TextView text1;
-            text1 = (TextView) rootView.findViewById(R.id.montantText);
-            int m = //getWindowManager().getDefaultDisplay().getWidth();
-            text1.setWidth( (m/2));*/
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.activity_collection_demo,
+					container, false);
+			Bundle args = getArguments();
+			return rootView;
+		}
+	}
 
-            //Demonstration of a collection-browsing activity.
-            rootView.findViewById(R.id.resume)
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //Intent intent = new Intent(getActivity(), OperationActivity.class);
-                            //startActivity(intent);
-                        }
-                    });
+	/**
+	 * A dummy fragment representing a section of the app, but that simply
+	 * displays dummy text.
+	 */
+	public static class BudgetSectionFragment extends Fragment {
 
-            // Demonstration of navigating to external activities.
-            rootView.findViewById(R.id.operation)
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            // Create an intent that asks the user to pick a photo, but using
-                            // FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET, ensures that relaunching
-                            // the application from the device home screen does not return
-                            // to the external activity.
-                            Intent externalActivityIntent = new Intent(Intent.ACTION_PICK);
-                            externalActivityIntent.setType("image/*");
-                            externalActivityIntent.addFlags(
-                                    Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                            startActivity(externalActivityIntent);
-                        }
-                    });
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.dialog, container, false);
+			Bundle args = getArguments();
+			return rootView;
+		}
+	}
 
-            return rootView;
-        }
-    }
+	/**
+	 * A dummy fragment representing a section of the app, but that simply
+	 * displays dummy text.
+	 */
+	public static class DummySectionFragment extends Fragment {
 
-    /**
-     * A dummy fragment representing a section of the app, but that simply displays dummy text.
-     */
-    public static class DummySectionFragment extends Fragment {
+		public static final String ARG_SECTION_NUMBER = "section_number";
 
-        public static final String ARG_SECTION_NUMBER = "section_number";
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_section_dummy, container, false);
-            Bundle args = getArguments();
-            ((TextView) rootView.findViewById(android.R.id.text1)).setText(
-                    getString(R.string.dummy_section_text, args.getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_section_dummy,
+					container, false);
+			Bundle args = getArguments();
+			((TextView) rootView.findViewById(android.R.id.text1))
+			.setText(getString(R.string.dummy_section_text,
+					args.getInt(ARG_SECTION_NUMBER)));
+			return rootView;
+		}
+	}
 }
-

@@ -29,16 +29,7 @@
          with the content view. -->
     <ListView
         android:id="@+id/left_drawer"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:divider="#ccc"
-        android:dividerHeight="1dp"
-        android:background="#fff"/>
-    <ListView
-        android:id="@+id/left_drawer2"
-        android:layout_width="240dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
