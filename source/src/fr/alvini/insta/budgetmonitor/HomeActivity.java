@@ -7,12 +7,12 @@ import fr.alvini.insta.holographlib.PieGraph;
 import fr.alvini.insta.holographlib.PieSlice;
 import android.os.Bundle;
 import android.app.ActionBar;
-import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -36,6 +36,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import fr.alvini.insta.budgetmonitor.tests.*;
+import fr.alvini.insta.holographlib.PieGraph;
+import fr.alvini.insta.holographlib.PieSlice;
 
 public class HomeActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -177,13 +180,13 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 
 		// Création d'un MenuInflater qui va permettre d'instancier un Menu XML
 		// en un objet Menu
-		//MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 		// Instanciation du menu XML spécifier en un objet Menu
-		//inflater.inflate(R.menu.activity_menu, menu);
+		inflater.inflate(R.menu.activity_menu, menu);
 
 		// Il n'est pas possible de modifier l'icône d'entête du sous-menu via
 		// le fichier XML on le fait donc en JAVA
-		// menu.getItem(0).getSubMenu().setHeaderIcon(R.drawable.option_white);
+//		 menu.getItem(0).getSubMenu().setHeaderIcon(R.drawable.option_white);
 
 		return true;
 	}
@@ -196,8 +199,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		// On regarde quel item a été cliqué grâce à son id et on déclenche une
-		/* action
+		// On regarde quel item a été cliqué grâce à son id et on déclenche une action
 		switch (item.getItemId()) {
 		case R.id.parametres:
 			Toast.makeText(HomeActivity.this, "Paramètres ", Toast.LENGTH_SHORT)
@@ -209,11 +211,15 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		case R.id.aPropos:
 			Toast.makeText(HomeActivity.this, "à Propos", Toast.LENGTH_SHORT)
 			.show();
+			// For testing
+			Intent testIntent = new Intent(HomeActivity.this,TestChooseActivity.class);
+			startActivity(testIntent);
+			// End for testing
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
-		}*/
-		return false;
+		}
+//		return true;
 	}
 
 	/* The click listner for ListView in the navigation drawer */
