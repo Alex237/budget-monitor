@@ -24,7 +24,7 @@ public class AjoutBudget extends Activity implements OnClickListener{
 	private String recurrence;
 	//liste déroulante concernant la récurrence 
 	static final String[] recurrent = new String[]{
-			"Quotidiennement", "Hebdomadairement", "Mensuel(le)", "Annuelle"};
+			"Aucune" , "Quotidiennement", "Hebdomadairement", "Mensuel(le)", "Annuelle"};
 	private Button ajouterBudget;
 	private Button annuler;
 	

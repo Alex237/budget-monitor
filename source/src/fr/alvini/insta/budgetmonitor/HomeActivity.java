@@ -1,7 +1,13 @@
 package fr.alvini.insta.budgetmonitor;
 
+import fr.alvini.insta.budgetmonitor.activities.A_propos;
+import fr.alvini.insta.budgetmonitor.activities.Aide;
 import fr.alvini.insta.budgetmonitor.activities.AjoutBudget;
 import fr.alvini.insta.budgetmonitor.activities.AjoutOperation;
+import fr.alvini.insta.budgetmonitor.activities.Exporter;
+import fr.alvini.insta.budgetmonitor.activities.Gerer;
+import fr.alvini.insta.budgetmonitor.activities.MentionsLegales;
+import fr.alvini.insta.budgetmonitor.activities.Parametres;
 import fr.alvini.insta.budgetmonitor.adaptater.CustomList;
 import fr.alvini.insta.holographlib.PieGraph;
 import fr.alvini.insta.holographlib.PieSlice;
@@ -173,25 +179,25 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 	}
 
-	// Méthode qui se déclenchera lorsque vous appuierez sur le bouton menu du
-	// téléphone
+	// Mï¿½thode qui se dï¿½clenchera lorsque vous appuierez sur le bouton menu du
+	// tï¿½lï¿½phone
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		// Création d'un MenuInflater qui va permettre d'instancier un Menu XML
+		// Crï¿½ation d'un MenuInflater qui va permettre d'instancier un Menu XML
 		// en un objet Menu
 		MenuInflater inflater = getMenuInflater();
-		// Instanciation du menu XML spécifier en un objet Menu
+		// Instanciation du menu XML spï¿½cifier en un objet Menu
 		inflater.inflate(R.menu.activity_menu, menu);
 
-		// Il n'est pas possible de modifier l'icône d'entête du sous-menu via
+		// Il n'est pas possible de modifier l'icï¿½ne d'entï¿½te du sous-menu via
 		// le fichier XML on le fait donc en JAVA
 //		 menu.getItem(0).getSubMenu().setHeaderIcon(R.drawable.option_white);
 
 		return true;
 	}
 
-	// Méthode qui se déclenchera au clic sur un item
+	// Mï¿½thode qui se dï¿½clenchera au clic sur un item
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// The action bar home/up action should open or close the drawer.
@@ -199,22 +205,28 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		// On regarde quel item a été cliqué grâce à son id et on déclenche une action
+		// On regarde quel item a ï¿½tï¿½ cliquï¿½ grï¿½ce ï¿½ son id et on dï¿½clenche une action
 		switch (item.getItemId()) {
 		case R.id.parametres:
-			Toast.makeText(HomeActivity.this, "Paramètres ", Toast.LENGTH_SHORT)
-			.show();
+//			Toast.makeText(HomeActivity.this, "Paramatres ", Toast.LENGTH_SHORT)
+//			.show();
+			
 		case R.id.mentionsLegales:
-			Toast.makeText(HomeActivity.this, "Mentions Légales",
+			Toast.makeText(HomeActivity.this, "Mentions LÃ©gales",
 					Toast.LENGTH_SHORT).show();
 			return true;
 		case R.id.aPropos:
-			Toast.makeText(HomeActivity.this, "à Propos", Toast.LENGTH_SHORT)
-			.show();
-			// For testing
-			Intent testIntent = new Intent(HomeActivity.this,TestChooseActivity.class);
-			startActivity(testIntent);
-			// End for testing
+//			Toast.makeText(HomeActivity.this, "Ã  Propos", Toast.LENGTH_SHORT)
+//			.show();
+			//Intent  unIntent = new Intent(this, A_propos.class);
+			//unIntent.putExtra("choixUtilisateur",this.choixOperation);
+//			unIntent.putExtra("montant",this.montant.getText().toString());
+//			unIntent.putExtra("libelle",this.libelle.getText().toString());
+//			unIntent.putExtra("repeter", this.recurrence);
+			
+			//this.startActivity(unIntent);
+			
+			
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -230,9 +242,37 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				long id) {
 			mDrawerLayout.closeDrawer(mDrawerList);
 			// selectItem(position);
-			Toast.makeText(HomeActivity.this,
-					"Drawer item : " + position + " | ID : " + id + "\n " + mMenuTitles1[position],
-					Toast.LENGTH_SHORT).show();
+//			Toast.makeText(HomeActivity.this,
+//					"Drawer item : " + position + " | ID : " + id + "\n " + mMenuTitles1[position],
+//					Toast.LENGTH_SHORT).show();
+			int Id = (int) id;
+			switch(Id){
+				case 0:
+					Intent intentGerer = new Intent(HomeActivity.this, Gerer.class);
+					startActivity(intentGerer);
+					break;
+				case 1:
+					Intent intentExporter = new Intent(HomeActivity.this, Exporter.class);
+					startActivity(intentExporter);
+					break;
+				case 2:
+					Intent intentParametres = new Intent(HomeActivity.this, Parametres.class);
+					startActivity(intentParametres);
+					break;
+				case 3:
+					Intent intentApropos = new Intent(HomeActivity.this, A_propos.class);
+					startActivity(intentApropos);
+					break;
+				case 4:
+					Intent intentMention = new Intent(HomeActivity.this, MentionsLegales.class);
+					startActivity(intentMention);
+					break;
+				case 5:
+					Intent intentAide = new Intent(HomeActivity.this, Aide.class);
+					startActivity(intentAide);
+					break;
+					
+			}
 		}
 	}
 

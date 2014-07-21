@@ -32,19 +32,19 @@ public class AjoutOperation extends Activity implements OnClickListener{
 	private String choixOperation;
 	//liste déroulante concernant l'opération 
 	static final String[] operation = new String[]{
-		"D�pense", "Revenu"};
+		"Dépense", "Revenu"};
 
 	private String choixCategorieUt;
 	//liste déroulante concernant l'opération 
 	static final String[] categorie = new String[]{
-		"Par d�faut","Alimentation", "Bar", "Courses", "Divers", "Epargne",  "Impots", "Logement/Charges", "Salaire", "Transport"};
+		"Par défaut","Alimentation", "Bar", "Courses", "Divers", "Epargne",  "Impots", "Logement/Charges", "Salaire", "Transport"};
 
 	private EditText montant;
 	private EditText libelle;
 	private String recurrence;
 	//liste déroulante concernant la récurrence 
 	static final String[] recurrent = new String[]{
-		"Quotidiennement", "Hebdomadairement", "Mensuel(le)", "Annuelle"};
+		"Aucune", "Quotidiennement", "Hebdomadairement", "Mensuel(le)", "Annuelle"};
 	private Button ajouterOperation;
 	private Button show_popup;
 	private GridLayout container;
@@ -69,7 +69,7 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		this.libelle = (EditText)findViewById(R.id.libelle);
 		this.ajouterOperation = (Button)findViewById(R.id.ajouterOperation);
 		this.show_popup = (Button)findViewById(R.id.show_popup);
-		this.annuler = (Button)findViewById(R.id.annuler);
+		this.annuler = (Button)findViewById(R.id.annulerOperation);
 
 
 		//rendre le bouton écoutable

@@ -1,63 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        
-
-<LinearLayout android:id="@+id/scrollViemmmw1"
-    android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-     
 
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="89dp"
+        android:layout_height="118dp"
         android:columnCount="1" >
 
         <TextView
-            android:id="@+id/montantText"
+            android:id="@+id/couleur"
             android:layout_column="0"
             android:layout_gravity="left|center_vertical"
             android:layout_row="0"
-            android:text="   Montant : " />
+            android:text="  Couleur : " />
 
-        <EditText
-            android:id="@+id/montant"
+        <Spinner
+            android:id="@+id/choixCouleur"
+            android:layout_width="216dp"
             android:layout_column="0"
             android:layout_gravity="right|center_vertical"
-            android:layout_row="0"
-            android:ems="10"
-            android:inputType="numberDecimal" >
+            android:layout_row="0" />
 
-            <requestFocus />
-        </EditText>
     </GridLayout>
 
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="101dp"
+        android:layout_height="96dp"
         android:columnCount="1" >
 
         <TextView
-            android:id="@+id/libelleText"
+            android:id="@+id/police"
             android:layout_column="0"
             android:layout_gravity="left|center_vertical"
             android:layout_row="0"
-            android:text="   Description : " />
+            android:text="  Police : " />
 
-        <EditText
-            android:id="@+id/libelle"
+        <Spinner
+            android:id="@+id/choixPolice"
+            android:layout_width="212dp"
             android:layout_column="0"
             android:layout_gravity="right|center_vertical"
+            android:layout_row="0" />
+
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="116dp"
+        android:columnCount="1" >
+
+        <TextView
+            android:id="@+id/style"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
             android:layout_row="0"
-            android:ems="10" />
+            android:text="  Style : " />
+
+        <Spinner
+            android:id="@+id/choixStyle"
+            android:layout_width="202dp"
+            android:layout_column="0"
+            android:layout_gravity="right|center_vertical"
+            android:layout_row="0" />
 
     </GridLayout>
 
@@ -66,22 +72,7 @@
         android:layout_height="104dp"
         android:columnCount="1" >
 
-        <Spinner
-            android:id="@+id/repeter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_gravity="left|center_vertical"
-            android:layout_row="0" />
-    </GridLayout>
-
-
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="1" >
-
-        <Button
+       <Button
             android:id="@+id/annuler"
             style="@style/ButtonText"
             android:layout_width="156dp"
@@ -92,17 +83,15 @@
             android:text="Annuler" />
 
         <Button
-            android:id="@+id/ajouterBudget"
+            android:id="@+id/enregistrer"
             style="@style/ButtonText"
             android:layout_width="189dp"
             android:layout_column="0"
-            android:layout_gravity="right|center_vertical"
+            android:layout_gravity="right|top"
             android:layout_row="0"
             android:background="@drawable/btn_green"
             android:text="Enregistrer" />
 
     </GridLayout>
-        </LinearLayout>
-    </ScrollView>
 
 </LinearLayout>

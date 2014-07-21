@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:columnCount="1" >
+
+        <TextView
+            android:id="@+id/travaux"
+            android:layout_column="0"
+            android:layout_gravity="center"
+            android:layout_row="0"
+            android:text="En travaux !" />
+
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1" >
+
+        <Button
+            android:id="@+id/retour"
+            style="@style/ButtonText"
+            android:layout_width="156dp"
+            android:layout_column="0"
+            android:layout_gravity="center"
+            android:layout_row="0"
+            android:background="@drawable/btn_blue"
+            android:text="Retour" />
+
+    </GridLayout>
+
+</LinearLayout>

@@ -31,6 +31,73 @@
             android:label="@string/app_name"
             android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
         </activity>
+         <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.AjoutBudget"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.Gerer"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.Exporter"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.Parametres"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.A_propos"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.MentionsLegales"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.Aide"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestChooseActivity"
+            android:label="Tests">
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestBudget"
+            android:label="Tests">
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestBudgetAdd"
+            android:label="Tests">
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestBudgetList"
+            android:label="Tests">
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestCategory"
+            android:label="Tests">
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestOperation"
+            android:label="Tests">
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestParameter"
+            android:label="Tests">
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestRecurrence"
+            android:label="Tests">
+        </activity>
     </application>
 
 </manifest>

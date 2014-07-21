@@ -34,6 +34,41 @@
             android:label="@string/app_name"
             android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
         </activity>
+         <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.AjoutBudget"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.Gerer"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.Exporter"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.Parametres"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.A_propos"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.MentionsLegales"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.Aide"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
         <activity 
             android:name="fr.alvini.insta.budgetmonitor.tests.TestChooseActivity"
             android:label="Tests">
