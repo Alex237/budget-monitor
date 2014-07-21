@@ -411,7 +411,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 
-			
+			/*
 			budDAO = new BudgetDAO(container.getContext());
 			listBudgetsDesc = new ArrayList<String>();
 			try {
@@ -427,14 +427,14 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				for(String test : budgetText) {
 					listBudgetsDesc.add(test);
 				}
-			}
+			}*/
 			
 			
 			View rootView = inflater.inflate(R.layout.fragment_section_resume,
 					container, false);
 			this.mListBudget = (ListView) rootView.findViewById(R.id.listViewBudget);
-//			CustomList adapterBudget = new CustomList(getActivity(), budgetText, iconBudget);
-			CustomListBis adapterBudget = new CustomListBis(getActivity(), listBudgetsDesc, iconBudget);
+			CustomList adapterBudget = new CustomList(getActivity(), budgetText, iconBudget);
+			//CustomListBis adapterBudget = new CustomListBis(getActivity(), listBudgetsDesc, iconBudget);
 			this.mListBudget.setAdapter(adapterBudget);
 
 			PieGraph pg = (PieGraph) rootView.findViewById(R.id.graph);

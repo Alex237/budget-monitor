@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="118dp"
+        android:columnCount="1" >
+
+        <TextView
+            android:id="@+id/couleur"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
+            android:layout_row="0"
+            android:text="  Couleur : " />
+
+        <Spinner
+            android:id="@+id/choixCouleur"
+            android:layout_width="216dp"
+            android:layout_column="0"
+            android:layout_gravity="right|center_vertical"
+            android:layout_row="0" />
+
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:columnCount="1" >
+
+        <TextView
+            android:id="@+id/police"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
+            android:layout_row="0"
+            android:text="  Police : " />
+
+        <Spinner
+            android:id="@+id/choixPolice"
+            android:layout_width="212dp"
+            android:layout_column="0"
+            android:layout_gravity="right|center_vertical"
+            android:layout_row="0" />
+
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="116dp"
+        android:columnCount="1" >
+
+        <TextView
+            android:id="@+id/style"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
+            android:layout_row="0"
+            android:text="  Style : " />
+
+        <Spinner
+            android:id="@+id/choixStyle"
+            android:layout_width="202dp"
+            android:layout_column="0"
+            android:layout_gravity="right|center_vertical"
+            android:layout_row="0" />
+
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="104dp"
+        android:columnCount="1" >
+
+       <Button
+            android:id="@+id/annuler"
+            style="@style/ButtonText"
+            android:layout_width="156dp"
+            android:layout_column="0"
+            android:layout_gravity="left|top"
+            android:layout_row="0"
+            android:background="@drawable/btn_blue"
+            android:text="Annuler" />
+
+        <Button
+            android:id="@+id/enregistrer"
+            style="@style/ButtonText"
+            android:layout_width="189dp"
+            android:layout_column="0"
+            android:layout_gravity="right|top"
+            android:layout_row="0"
+            android:background="@drawable/btn_green"
+            android:text="Enregistrer" />
+
+    </GridLayout>
+
+</LinearLayout>

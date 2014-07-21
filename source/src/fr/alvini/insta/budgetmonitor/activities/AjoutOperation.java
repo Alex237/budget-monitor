@@ -200,7 +200,7 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			Budget testBudget = new Budget();
 			//m'occuper de l'ajout de la date;
 			
-			Operation operation = new Operation(testBudget, choixCategorie, montant, libelle, choixOperation, pDate_added, recurrence);
+			//Operation operation = new Operation(testBudget, choixCategorie, montant, libelle, choixOperation, pDate_added, recurrence);
 			
 			
 			this.startActivity(unIntent);
