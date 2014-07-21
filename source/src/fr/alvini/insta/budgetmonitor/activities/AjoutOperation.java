@@ -4,6 +4,9 @@ import fr.alvini.insta.budgetmonitor.HomeActivity;
 import fr.alvini.insta.budgetmonitor.R;
 import fr.alvini.insta.budgetmonitor.R.id;
 import fr.alvini.insta.budgetmonitor.R.layout;
+import fr.alvini.insta.budgetmonitor.model.*;
+import fr.alvini.insta.budgetmonitor.dao.*;
+import fr.alvini.insta.budgetmonitor.bdd.*;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -187,6 +190,14 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			unIntent.putExtra("libelle",this.libelle.getText().toString());
 			unIntent.putExtra("choixCategorie",this.choixCategorieUt);
 			unIntent.putExtra("repeter", this.recurrence);
+			
+			
+			//Traitement de l'ajout avec la BDD etc
+			//Database data = new Database(this, name, factory, version);
+			Category choixCategorie = new Category(this.choixCategorieUt);
+			CategoryDAO test = new CategoryDAO(this);
+			test.ajouter(choixCategorie);
+			
 			this.startActivity(unIntent);
 		}
 
