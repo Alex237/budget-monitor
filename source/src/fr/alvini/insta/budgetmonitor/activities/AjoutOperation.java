@@ -197,6 +197,11 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			Category choixCategorie = new Category(this.choixCategorieUt);
 			CategoryDAO test = new CategoryDAO(this);
 			test.ajouter(choixCategorie);
+			Budget testBudget = new Budget();
+			//m'occuper de l'ajout de la date;
+			
+			Operation operation = new Operation(testBudget, choixCategorie, montant, libelle, choixOperation, pDate_added, recurrence);
+			
 			
 			this.startActivity(unIntent);
 		}
