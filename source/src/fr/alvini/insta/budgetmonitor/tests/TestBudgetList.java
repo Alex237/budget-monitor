@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import fr.alvini.insta.budgetmonitor.R;
 import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
 import fr.alvini.insta.budgetmonitor.model.Budget;
@@ -43,23 +44,23 @@ public class TestBudgetList extends Activity {
 			HashMap<String, String> element;
 			for (Budget budgetSingle : listBudgets) {
 				element = new HashMap<String, String>();
-				element.put("Id_budget", "Id du budget "+String.valueOf(budgetSingle.getId_budget()));
-				element.put(
-						"datas",
-						"Montant : "
-								+ String.valueOf(budgetSingle.getAmount()));
+				element.put("IdBudget", "Budget : "+String.valueOf(budgetSingle.getDescription()));
+				element.put("Datas","Montant : "+ String.valueOf(budgetSingle.getAmount()));
+				Toast.makeText(TestBudgetList.this, String.valueOf(budgetSingle.getAmount()), Toast.LENGTH_LONG).show();
 				listeBudgets.add(element);
 			}
 		}
 
 		if (listeBudgets.size() > 0) {
-			ListAdapter adapter = new SimpleAdapter(this, listeBudgets,
-					android.R.layout.simple_list_item_2, new String[] {
-							"Id_budget", "datas	" }, new int[] {
-							android.R.id.text1, android.R.id.text2 });
+			ListAdapter adapter = new SimpleAdapter(this,
+					listeBudgets,
+					android.R.layout.simple_list_item_2, 
+					new String[] {"IdBudget", "Datas"},
+					new int[] {android.R.id.text1, android.R.id.text2 });
 			listeBudget.setAdapter(adapter);
 		} else {
 
 		}
+		
 	}
 }

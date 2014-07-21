@@ -16,6 +16,7 @@ import fr.alvini.insta.budgetmonitor.dao.DAOBase;
 import fr.alvini.insta.budgetmonitor.model.Budget;
 
 public class TestBudgetAdd extends Activity {
+	private EditText description = null;
 	private EditText amount = null;
 	private EditText dateBegin = null;
 	private EditText dateEnd = null;
@@ -26,6 +27,7 @@ public class TestBudgetAdd extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.test_add_budget);
 		
+		description = (EditText) findViewById(R.id.budget_add_desc_edit);
 		amount = (EditText) findViewById(R.id.budget_add_amount_edit);
 		dateBegin = (EditText) findViewById(R.id.budget_add_datebegin_edit);
 		dateEnd = (EditText) findViewById(R.id.budget_add_dateend_edit);
@@ -39,6 +41,7 @@ public class TestBudgetAdd extends Activity {
 		@Override
 		public void onClick(View v) {
 			Budget budget = new Budget();
+			budget.setDescription(description.getText().toString());
 			budget.setAmount(Double.valueOf(amount.getText().toString()));
 			Date date_begin = null;
 			try {

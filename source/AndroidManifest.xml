@@ -4,6 +4,9 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission 
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="19" />
@@ -49,6 +52,18 @@
         </activity>
         <activity 
             android:name="fr.alvini.insta.budgetmonitor.tests.TestCategory"
+            android:label="Tests">
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestCategoryAdd"
+            android:label="Tests">
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestCategoryList"
+            android:label="Tests">
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.tests.TestCategoryDetails"
             android:label="Tests">
         </activity>
         <activity 

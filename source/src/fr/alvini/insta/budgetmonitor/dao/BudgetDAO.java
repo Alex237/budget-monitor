@@ -45,6 +45,7 @@ public class BudgetDAO extends DAOBase {
 		String dateEnd = sdf.format(budget.getDateEnd());
 
 		ContentValues values = new ContentValues();
+		values.put(Database.BUDGET_DESCRIPTION, budget.getDescription());
 		values.put(Database.BUDGET_AMOUNT, budget.getAmount());
 		values.put(Database.BUDGET_BEGIN_DATE, dateBegin);
 		values.put(Database.BUDGET_ENDING_DATE, dateEnd);
@@ -96,6 +97,7 @@ public class BudgetDAO extends DAOBase {
 						+Database.BUDGET_AMOUNT+ ", "
 						+Database.BUDGET_BEGIN_DATE+", "
 						+Database.BUDGET_ENDING_DATE+ ", "
+						+Database.BUDGET_DESCRIPTION+ ", "
 						+Database.BUDGET_RECURRENCE+
 					 " FROM "+Database.BUDGET_TABLE_NAME+
 					 " WHERE "+Database.BUDGET_KEY+ " = ?";
@@ -112,14 +114,16 @@ public class BudgetDAO extends DAOBase {
 			
 			String date_end_str = cursor.getString(3);
 			Date date_end = sdf.parse(date_begin_str);
+			
+			String description = cursor.getString(4);
 
 			Recurrence recurrence = null;
-			if (cursor.getInt(4) != 0) {
+			if (cursor.getInt(5) != 0) {
 				RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
-				recurrence = recDAO.selectionner(cursor.getInt(4));
+				recurrence = recDAO.selectionner(cursor.getInt(5));
 			}
 			//System.out.println("Results are : "+cursor.getLong(0)+" / "+cursor.getString(1)+" / "+cursor.getFloat(2)+".");
-			budget = new Budget(id_budget, amount, date_begin, date_end, recurrence);
+			budget = new Budget(id_budget, description, amount, date_begin, date_end, recurrence);
 			//System.out.println("Results are : "+metier.getId()+" / "+metier.getIntitule()+" / "+metier.getSalaire()+".");
 		}
 		super.close();
@@ -138,6 +142,7 @@ public class BudgetDAO extends DAOBase {
 							+Database.BUDGET_AMOUNT+ ", "
 							+Database.BUDGET_BEGIN_DATE+", "
 							+Database.BUDGET_ENDING_DATE+ ", "
+							+Database.BUDGET_DESCRIPTION+ ", "
 							+Database.BUDGET_RECURRENCE+
 					 " FROM "+Database.BUDGET_TABLE_NAME+"";
 		Cursor cursor = mDb.rawQuery(sql, new String[] {});
@@ -154,14 +159,17 @@ public class BudgetDAO extends DAOBase {
 				
 				String date_end_str = cursor.getString(3);
 				Date date_end = sdf.parse(date_begin_str);
+				String description = cursor.getString(4);
 
 				Recurrence recurrence = null;
-				if (cursor.getInt(4) != 0) {
+/*				
+				if (cursor.getInt(5) != 0) {
 					RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
-					recurrence = recDAO.selectionner(cursor.getInt(4));
+					recurrence = recDAO.selectionner(cursor.getInt(5));
 				}
+*/
 				//System.out.println("Results are : "+cursor.getLong(0)+" / "+cursor.getString(1)+" / "+cursor.getFloat(2)+".");
-				budget = new Budget(id_budget, amount, date_begin, date_end, recurrence);
+				budget = new Budget(id_budget, description, amount, date_begin, date_end, recurrence);
 				list.add(budget);
 			}
 		}

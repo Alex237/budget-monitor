@@ -8,11 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Database extends SQLiteOpenHelper{
 	protected static Database instance;
 	
-	
 	/* ########## PARAMETER TABLE BEGIN ########## */
 	public static final String PARAMETER_TABLE_NAME = "parameter";
 
-	public static final String PARAMETER_KEY = "id_budget";
+	public static final String PARAMETER_KEY = "id_parameter";
 	public static final String PARAMETER_COLOR = "color";
 	public static final String PARAMETER_FONT = "font";
 	public static final String PARAMETER_STYLE = "style";
@@ -23,15 +22,16 @@ public class Database extends SQLiteOpenHelper{
 	
 	
 	/* ########## BUDGET TABLE BEGIN ########## */
-	public static final String BUDGET_TABLE_NAME = "Budget";
+	public static final String BUDGET_TABLE_NAME = "budget";
 
 	public static final String BUDGET_KEY = "id_budget";
+	public static final String BUDGET_DESCRIPTION = "description";
 	public static final String BUDGET_AMOUNT = "amount";
 	public static final String BUDGET_BEGIN_DATE = "begin_date";
 	public static final String BUDGET_ENDING_DATE = "ending_date";
 	public static final String BUDGET_RECURRENCE = "id_recurrence";
 	
-	public static final String BUDGET_CREATION = "CREATE TABLE "+BUDGET_TABLE_NAME+" ("+BUDGET_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT, "+BUDGET_AMOUNT+" REAL, "+BUDGET_BEGIN_DATE+" INTEGER, "+BUDGET_ENDING_DATE+" INTEGER "+BUDGET_RECURRENCE+" INTEGER); ";
+	public static final String BUDGET_CREATION = "CREATE TABLE "+BUDGET_TABLE_NAME+" ("+BUDGET_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT, "+BUDGET_DESCRIPTION+" TEXT, "+BUDGET_AMOUNT+" REAL, "+BUDGET_BEGIN_DATE+" INTEGER, "+BUDGET_ENDING_DATE+" INTEGER "+BUDGET_RECURRENCE+" INTEGER); ";
 	public static final String BUDGET_DROP = "DROP TABLE IF EXISTS " + BUDGET_TABLE_NAME + ";";
 	/* ########## BUDGET TABLE END ########## */
 	
@@ -93,16 +93,18 @@ public class Database extends SQLiteOpenHelper{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		System.out.println(CREATE_TABLES);
+		System.out.println(BUDGET_CREATION);
 //		db.execSQL(CREATE_TABLES);
 		db.execSQL(BUDGET_CREATION);
+		db.execSQL(CATEGORY_CREATION);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		System.out.println(DROP_TABLES);
+		System.out.println(BUDGET_DROP);
 //		db.execSQL(DROP_TABLES);
 		db.execSQL(BUDGET_DROP);
+		db.execSQL(CATEGORY_DROP);
 		onCreate(db);
 	}
 }

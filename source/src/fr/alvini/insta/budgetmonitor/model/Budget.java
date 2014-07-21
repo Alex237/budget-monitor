@@ -8,6 +8,7 @@ import fr.alvini.insta.budgetmonitor.model.Recurrence;
 
 public class Budget extends ObjectModel {
 	protected long id_budget;
+	protected String description = null;
 	protected Category category = null;
 	protected Recurrence recurrence = null;
 	protected double amount;
@@ -15,37 +16,39 @@ public class Budget extends ObjectModel {
 	protected Date dateEnd = null;
 	
 	public Budget() {
-		
+		super();
 	}
 	
-	public Budget(double pAmount, Date pDateBegin, Date pDateEnd) {
+	public Budget(String pDescription, double pAmount, Date pDateBegin, Date pDateEnd) {
+		this();
+		this.setDescription(pDescription);
 		this.setAmount(pAmount);
 		this.setDateBegin(pDateBegin);
 		this.setDateEnd(pDateEnd);
 	}
 	
-	public Budget(double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence) {
-		this(pAmount,pDateBegin,pDateEnd);
+	public Budget(String pDescription, double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence) {
+		this(pDescription, pAmount,pDateBegin,pDateEnd);
 		this.setRecurrence(pRecurrence);
 	}
 	
-	public Budget(double pAmount, Date pDateBegin, Date pDateEnd, Category pCategory) {
-		this(pAmount,pDateBegin,pDateEnd);
+	public Budget(String pDescription, double pAmount, Date pDateBegin, Date pDateEnd, Category pCategory) {
+		this(pDescription, pAmount,pDateBegin,pDateEnd);
 		this.setCategory(pCategory);
 	}
 
-	public Budget(double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence, Category pCategory) {
-		this(pAmount,pDateBegin,pDateEnd,pRecurrence);
+	public Budget(String pDescription, double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence, Category pCategory) {
+		this(pDescription, pAmount,pDateBegin,pDateEnd,pRecurrence);
 		this.setCategory(pCategory);
 	}
 
-	public Budget(long pId_budget, double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence, Category pCategory) {
-		this(pAmount,pDateBegin,pDateEnd,pRecurrence, pCategory);
+	public Budget(long pId_budget, String pDescription, double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence, Category pCategory) {
+		this(pDescription, pAmount,pDateBegin,pDateEnd,pRecurrence, pCategory);
 		this.setId_budget(pId_budget);
 	}
 	
-	public Budget(long pId_budget, double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence) {
-		this(pAmount,pDateBegin,pDateEnd,pRecurrence);
+	public Budget(long pId_budget, String pDescription, double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence) {
+		this(pDescription, pAmount,pDateBegin,pDateEnd,pRecurrence);
 		this.setId_budget(pId_budget);
 	}
 	
@@ -57,6 +60,20 @@ public class Budget extends ObjectModel {
 		this.id_budget = id_budget;
 	}
 	
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public Category getCategory() {
 		return category;
 	}

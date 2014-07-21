@@ -50,6 +50,7 @@ public class CategoryDAO extends DAOBase {
 	public void supprimer(long id) {
 		super.open();
 		mDb.delete(Database.CATEGORY_TABLE_NAME, Database.CATEGORY_KEY + " = ? ", new String[] {String.valueOf(id)});
+		System.out.println("Je souhaite supprimer dans "+Database.CATEGORY_TABLE_NAME+" avec le champ : "+Database.CATEGORY_KEY+" et l'id : "+id+".");
 		super.close();
 	}
 

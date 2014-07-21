@@ -53,6 +53,7 @@ public class OperationDAO extends DAOBase {
 		if (operation.getRecurrence() != null)
 			values.put(Database.OPERATION_RECURRENCE, operation.getRecurrence().getId_recurrence());
 		mDb.insert(Database.OPERATION_TABLE_NAME, null, values);
+		// AJOUTER STATUT DE LA RECURRENCE
 		super.close();
 	}
 
