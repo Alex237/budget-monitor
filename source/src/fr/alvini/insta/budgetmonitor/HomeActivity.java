@@ -1,5 +1,9 @@
 package fr.alvini.insta.budgetmonitor;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -29,10 +33,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import fr.alvini.insta.budgetmonitor.activities.A_propos;
+import fr.alvini.insta.budgetmonitor.activities.Aide;
 import fr.alvini.insta.budgetmonitor.activities.AjoutBudget;
 import fr.alvini.insta.budgetmonitor.activities.AjoutOperation;
 import fr.alvini.insta.budgetmonitor.activities.CategoryList;
+import fr.alvini.insta.budgetmonitor.activities.Exporter;
+import fr.alvini.insta.budgetmonitor.activities.Gerer;
+import fr.alvini.insta.budgetmonitor.activities.MentionsLegales;
+import fr.alvini.insta.budgetmonitor.activities.Parametres;
 import fr.alvini.insta.budgetmonitor.adaptater.CustomList;
+import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
+import fr.alvini.insta.budgetmonitor.model.Budget;
 import fr.alvini.insta.holographlib.PieGraph;
 import fr.alvini.insta.holographlib.PieSlice;
 
@@ -359,6 +371,9 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 	public static class ResumeSectionFragment extends Fragment {
 
 		private ListView mListBudget;
+		private BudgetDAO budDAO = null;
+		private List<String> listBudgetsDesc = null;
+		private List<Budget> listBudgets = null;
 
 		String[] budgetText = {
 				"Budget de Janvier",
@@ -375,6 +390,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				1100.50,
 				1500.08,
 				2000.44,
+				2000.44,
 				800.34,
 				2230.50,
 				1321.46
@@ -388,17 +404,37 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				R.drawable.money,
 				R.drawable.money,
 				R.drawable.money,
+				R.drawable.money,
 		};
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 
+			
+			budDAO = new BudgetDAO(container.getContext());
+			listBudgetsDesc = new ArrayList<String>();
+			try {
+				listBudgets = budDAO.selectionnerAll();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (listBudgets.size() > 0) {
+				for(Budget budget : listBudgets) {
+					listBudgetsDesc.add(budget.getDescription());
+				}
+				for(String test : budgetText) {
+					listBudgetsDesc.add(test);
+				}
+			}
+			
+			
 			View rootView = inflater.inflate(R.layout.fragment_section_resume,
 					container, false);
 			this.mListBudget = (ListView) rootView.findViewById(R.id.listViewBudget);
-			CustomList adapterBudget = new
-					CustomList(getActivity(), budgetText, iconBudget);
+//			CustomList adapterBudget = new CustomList(getActivity(), budgetText, iconBudget);
+			CustomListBis adapterBudget = new CustomListBis(getActivity(), listBudgetsDesc, iconBudget);
 			this.mListBudget.setAdapter(adapterBudget);
 
 			PieGraph pg = (PieGraph) rootView.findViewById(R.id.graph);

@@ -8,6 +8,7 @@
 	 
 	  <item android:id="@+id/aPropos"
 	       android:title="à Propos"  />
-	  <item android:id="@+id/categoriesMgt" android:title="Gérer Catégories"></item>
+	  <item android:id="@+id/categoriesMgt" 
+	      	android:title="Gérer Catégories"></item>
 
 </menu>

@@ -3,7 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+	
+    <ListView 
+        android:id="@+id/managementList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        
+    </ListView>
+    <!-- 
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="225dp"
@@ -34,5 +41,6 @@
             android:text="Retour" />
 
     </GridLayout>
+     -->
 
 </LinearLayout>

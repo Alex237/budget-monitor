@@ -29,7 +29,7 @@ public class CategoryDetails extends Activity {
 		long idPassed = intentPassed.getLongExtra("ID_object", -1);
 		if (idPassed != -1)
 			categ = catDAO.selectionner(idPassed);
-		Toast.makeText(CategoryDetails.this, categ.getDescription(), Toast.LENGTH_LONG).show();
+//		Toast.makeText(CategoryDetails.this, categ.getDescription(), Toast.LENGTH_LONG).show();
 		
 		description = (EditText) findViewById(R.id.categoryDetails_desc_edit);
 		if (categ.getDescription() != null)

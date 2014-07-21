@@ -47,8 +47,8 @@ public class CategoryList extends Activity {
 			HashMap<String, String> element;
 			for (Category categorySingle : listCategorys) {
 				element = new HashMap<String, String>();
-				element.put("IdCategory", "Id du category "+String.valueOf(categorySingle.getId_category()));
-				element.put("Datas","Montant : "+ String.valueOf(categorySingle.getDescription()));
+				element.put("Description", String.valueOf(categorySingle.getDescription()));
+//				element.put("Datas","Montant : "+ String.valueOf(categorySingle.getDescription()));
 				listeCategorys.add(element);
 				listeCategoryIds.add(categorySingle.getId_category());
 			}
@@ -57,9 +57,11 @@ public class CategoryList extends Activity {
 		if (listeCategorys.size() > 0) {
 			ListAdapter adapter = new SimpleAdapter(this,
 					listeCategorys,
-					android.R.layout.simple_list_item_2, 
-					new String[] {"IdCategory", "Datas"},
-					new int[] {android.R.id.text1, android.R.id.text2 });
+					android.R.layout.simple_list_item_1, 
+//					new String[] {"IdCategory", "Datas"},
+					new String[] {"Description"},
+//					new int[] {android.R.id.text1, android.R.id.text2 });
+					new int[] {android.R.id.text1});
 			listeCategory.setAdapter(adapter);
 		} else {
 

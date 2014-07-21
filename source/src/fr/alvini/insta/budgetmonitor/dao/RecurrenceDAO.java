@@ -116,4 +116,26 @@ public class RecurrenceDAO extends DAOBase {
 	}
 
 
+	/**
+	 * @param id
+	 * Get datas for a specific id from Recurrence table
+	 */
+	public Recurrence selectionnerParDescription(String pDescription) {
+		super.open();
+		String sql = "SELECT "+Database.RECURRENCE_KEY+" as _id, "
+						+Database.RECURRENCE_DESCRIPTION+
+					 " FROM "+Database.RECURRENCE_TABLE_NAME+
+					 " WHERE "+Database.RECURRENCE_DESCRIPTION+ " = ?";
+		Cursor cursor = mDb.rawQuery(sql, new String[] {pDescription});
+		Recurrence recurrence = null;
+		if (cursor.getCount() > 0) {
+			cursor.moveToNext();
+			long id_recurrence = cursor.getLong(0);
+			
+			String description = cursor.getString(1);
+			recurrence = new Recurrence(id_recurrence, description);
+		}
+		super.close();
+		return recurrence;
+	}
 }

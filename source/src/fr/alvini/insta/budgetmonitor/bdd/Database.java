@@ -34,7 +34,7 @@ public class Database extends SQLiteOpenHelper{
 	public static final String BUDGET_ENDING_DATE = "ending_date";
 	public static final String BUDGET_RECURRENCE = "id_recurrence";
 	
-	public static final String BUDGET_CREATION = "CREATE TABLE "+BUDGET_TABLE_NAME+" ("+BUDGET_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT, "+BUDGET_DESCRIPTION+" TEXT, "+BUDGET_AMOUNT+" REAL, "+BUDGET_BEGIN_DATE+" INTEGER, "+BUDGET_ENDING_DATE+" INTEGER "+BUDGET_RECURRENCE+" INTEGER); ";
+	public static final String BUDGET_CREATION = "CREATE TABLE "+BUDGET_TABLE_NAME+" ("+BUDGET_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT, "+BUDGET_DESCRIPTION+" TEXT, "+BUDGET_AMOUNT+" REAL, "+BUDGET_BEGIN_DATE+" INTEGER, "+BUDGET_ENDING_DATE+" INTEGER, "+BUDGET_RECURRENCE+" INTEGER); ";
 	public static final String BUDGET_DROP = "DROP TABLE IF EXISTS " + BUDGET_TABLE_NAME + ";";
 	/* ########## BUDGET TABLE END ########## */
 	
@@ -73,7 +73,7 @@ public class Database extends SQLiteOpenHelper{
 	public static final String RECURRENCE_KEY = "id_recurrence";
 	public static final String RECURRENCE_DESCRIPTION = "description";
 	
-	public static final String[] RECURRENCES = new String[] {"day","week","month","year"};
+	public static final String[] RECURRENCES = new String[] {"Aucun","Quotidienne","Hebdomadaire","Mensuelle","Annuelle"};
 	
 	public static final String RECURRENCE_CREATION = "CREATE TABLE "+RECURRENCE_TABLE_NAME+" ("+RECURRENCE_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT, "+RECURRENCE_DESCRIPTION+" TEXT); ";
 	public static final String RECURRENCE_DROP = "DROP TABLE IF EXISTS " + RECURRENCE_TABLE_NAME + ";";

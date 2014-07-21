@@ -15,49 +15,89 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
      
-
-    <GridLayout
+<GridLayout
         android:layout_width="match_parent"
-        android:layout_height="89dp"
+        android:layout_height="wrap_content"
         android:columnCount="1" >
 
         <TextView
-            android:id="@+id/montantText"
+            android:id="@+id/budget_add_description"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
+            android:layout_row="0"
+            android:text="@string/description" />
+
+        <EditText
+            android:id="@+id/budget_add_description_edit"
+            android:layout_column="0"
+            android:layout_gravity="right|center_vertical"
+            android:layout_row="0"
+            android:ems="10" />
+        <requestFocus />
+
+    </GridLayout>
+    
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1" >
+
+        <TextView
+            android:id="@+id/budget_add_amount"
             android:layout_column="0"
             android:layout_gravity="left|center_vertical"
             android:layout_row="0"
             android:text="   Montant : " />
 
         <EditText
-            android:id="@+id/montant"
+            android:id="@+id/budget_add_amount_edit"
             android:layout_column="0"
             android:layout_gravity="right|center_vertical"
             android:layout_row="0"
             android:ems="10"
             android:inputType="numberDecimal" >
 
-            <requestFocus />
+            
         </EditText>
     </GridLayout>
 
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="101dp"
+        android:layout_height="wrap_content"
         android:columnCount="1" >
 
-        <TextView
-            android:id="@+id/libelleText"
+        <TextView 
+            android:id="@+id/budget_add_date_begin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date de début"/>
+        
+        <DatePicker
+            android:id="@+id/budget_add_date_begin_datePicker"
             android:layout_column="0"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="top|right"
             android:layout_row="0"
-            android:text="   Description : " />
+            android:calendarViewShown="false" />
 
-        <EditText
-            android:id="@+id/libelle"
+    </GridLayout>
+    
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1" >
+
+        <TextView 
+            android:id="@+id/budget_add_date_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date de fin"/>
+        
+        <DatePicker
+            android:id="@+id/budget_add_date_end_datePicker"
             android:layout_column="0"
-            android:layout_gravity="right|center_vertical"
+            android:layout_gravity="top|right"
             android:layout_row="0"
-            android:ems="10" />
+            android:calendarViewShown="false" />
 
     </GridLayout>
 
@@ -67,7 +107,7 @@
         android:columnCount="1" >
 
         <Spinner
-            android:id="@+id/repeter"
+            android:id="@+id/budget_add_recurrencesSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
@@ -92,7 +132,7 @@
             android:text="Annuler" />
 
         <Button
-            android:id="@+id/ajouterBudget"
+            android:id="@+id/btn_budget_add"
             style="@style/ButtonText"
             android:layout_width="189dp"
             android:layout_column="0"
