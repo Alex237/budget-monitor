@@ -1,12 +1,15 @@
 package fr.alvini.insta.budgetmonitor.bdd;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database extends SQLiteOpenHelper{
 	protected static Database instance;
+	protected static boolean boo;
 	
 	/* ########## PARAMETER TABLE BEGIN ########## */
 	public static final String PARAMETER_TABLE_NAME = "parameter";
@@ -46,8 +49,9 @@ public class Database extends SQLiteOpenHelper{
 	public static final String OPERATION_BUDGET = "id_budget";
 	public static final String OPERATION_CATEGORY = "id_category";
 	public static final String OPERATION_RECURRENCE = "id_recurrence";
+	public static final String OPERATION_RECURRENCE_STATUS = "recurrence_status";
 	
-	public static final String OPERATION_CREATION = "CREATE TABLE "+OPERATION_TABLE_NAME+" ("+OPERATION_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT ,"+OPERATION_DESCRIPTION+" TEXT ,"+OPERATION_TYPE+" TEXT ,"+OPERATION_AMOUNT+" REAL ,"+OPERATION_ADD_DATE+" INTEGER ,"+OPERATION_BUDGET+" INTEGER ,"+OPERATION_CATEGORY+" INTEGER ,"+OPERATION_RECURRENCE+" INTEGER); ";
+	public static final String OPERATION_CREATION = "CREATE TABLE "+OPERATION_TABLE_NAME+" ("+OPERATION_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT, "+OPERATION_DESCRIPTION+" TEXT, "+OPERATION_TYPE+" TEXT, "+OPERATION_AMOUNT+" REAL, "+OPERATION_ADD_DATE+" INTEGER, "+OPERATION_BUDGET+" INTEGER, "+OPERATION_CATEGORY+" INTEGER, "+OPERATION_RECURRENCE+" INTEGER, "+OPERATION_RECURRENCE_STATUS+" INTEGER); ";
 	public static final String OPERATION_DROP = "DROP TABLE IF EXISTS " + OPERATION_TABLE_NAME + ";";
 	/* ########## OPERATION TABLE END ########## */
 	
@@ -57,7 +61,9 @@ public class Database extends SQLiteOpenHelper{
 	public static final String CATEGORY_KEY = "id_category";
 	public static final String CATEGORY_DESCRIPTION = "description";
 	
-	public static final String CATEGORY_CREATION = "CREATE TABLE "+CATEGORY_TABLE_NAME+" ("+CATEGORY_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT ,"+CATEGORY_DESCRIPTION+" TEXT); ";
+	public static final String[] CATEGORIES = new String[]{"Par défaut","Alimentation", "Bar", "Courses", "Divers", "Epargne",  "Impots", "Logement/Charges", "Salaire", "Transport"};
+	
+	public static final String CATEGORY_CREATION = "CREATE TABLE "+CATEGORY_TABLE_NAME+" ("+CATEGORY_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CATEGORY_DESCRIPTION+" TEXT); ";
 	public static final String CATEGORY_DROP = "DROP TABLE IF EXISTS " + CATEGORY_TABLE_NAME + ";";
 	/* ########## CATEGORY TABLE END ########## */
 	
@@ -65,12 +71,11 @@ public class Database extends SQLiteOpenHelper{
 	public static final String RECURRENCE_TABLE_NAME = "recurrence";
 
 	public static final String RECURRENCE_KEY = "id_recurrence";
-	public static final String RECURRENCE_DAY = "day";
-	public static final String RECURRENCE_WEEK = "week";
-	public static final String RECURRENCE_MONTH = "month";
-	public static final String RECURRENCE_YEAR = "year";
+	public static final String RECURRENCE_DESCRIPTION = "description";
 	
-	public static final String RECURRENCE_CREATION = "CREATE TABLE "+RECURRENCE_TABLE_NAME+" ("+RECURRENCE_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT ,"+RECURRENCE_DAY+" INTEGER ,"+RECURRENCE_WEEK+" INTEGER ,"+RECURRENCE_MONTH+" INTEGER ,"+RECURRENCE_YEAR+" INTEGER); ";
+	public static final String[] RECURRENCES = new String[] {"day","week","month","year"};
+	
+	public static final String RECURRENCE_CREATION = "CREATE TABLE "+RECURRENCE_TABLE_NAME+" ("+RECURRENCE_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT, "+RECURRENCE_DESCRIPTION+" TEXT); ";
 	public static final String RECURRENCE_DROP = "DROP TABLE IF EXISTS " + RECURRENCE_TABLE_NAME + ";";
 	/* ########## RECURRENCE TABLE END ########## */
 	
@@ -93,18 +98,52 @@ public class Database extends SQLiteOpenHelper{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		System.out.println(BUDGET_CREATION);
-//		db.execSQL(CREATE_TABLES);
+		db.execSQL(RECURRENCE_CREATION);
+		db.execSQL(PARAMETER_CREATION);
 		db.execSQL(BUDGET_CREATION);
 		db.execSQL(CATEGORY_CREATION);
+		db.execSQL(OPERATION_CREATION);
+		
+		insertDatas(db);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		System.out.println(BUDGET_DROP);
-//		db.execSQL(DROP_TABLES);
+		db.execSQL(RECURRENCE_DROP);
+		db.execSQL(PARAMETER_DROP);
 		db.execSQL(BUDGET_DROP);
 		db.execSQL(CATEGORY_DROP);
+		db.execSQL(OPERATION_DROP);
 		onCreate(db);
+	}
+	
+	private void insertDatas(SQLiteDatabase db) {
+		// Begin add Categories
+		String sqlCateg = "SELECT "+CATEGORY_KEY+" as _id, "
+							  +CATEGORY_DESCRIPTION+
+					 " FROM "+CATEGORY_TABLE_NAME+"";
+		Cursor cursorCateg = db.rawQuery(sqlCateg, new String[] {});
+		if (cursorCateg.getCount() == 0) {
+			for(String category : CATEGORIES) {
+				ContentValues values = new ContentValues();
+				values.put(CATEGORY_DESCRIPTION, category);
+				db.insert(CATEGORY_TABLE_NAME, null, values);
+			}
+		}
+		// End add Categories
+		
+		//Begin add Recurrences
+		String sqlRecur = "SELECT "+Database.RECURRENCE_KEY+" as _id, "
+				+Database.RECURRENCE_DESCRIPTION+
+			 " FROM "+Database.RECURRENCE_TABLE_NAME+"";
+		Cursor cursorRecur = db.rawQuery(sqlRecur, new String[] {});
+		if (cursorRecur.getCount() == 0) {
+			for(String recurrence : RECURRENCES) {
+				ContentValues values = new ContentValues();
+				values.put(RECURRENCE_DESCRIPTION, recurrence);
+				db.insert(RECURRENCE_TABLE_NAME, null, values);
+			}
+		}
+		//End add Recurrences
 	}
 }

@@ -70,6 +70,19 @@
             android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
         </activity>
         <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.CategoryList"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.CategoryDetails"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
+        
+        
+        <!-- DEBUT ACTIVITES TEST -->
+        <activity 
             android:name="fr.alvini.insta.budgetmonitor.tests.TestChooseActivity"
             android:label="Tests">
         </activity>
@@ -113,6 +126,7 @@
             android:name="fr.alvini.insta.budgetmonitor.tests.TestRecurrence"
             android:label="Tests">
         </activity>
+        <!-- FIN ACTIVITES TEST -->
     </application>
 
 </manifest>

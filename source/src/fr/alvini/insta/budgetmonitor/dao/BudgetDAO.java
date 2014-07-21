@@ -51,6 +51,8 @@ public class BudgetDAO extends DAOBase {
 		values.put(Database.BUDGET_ENDING_DATE, dateEnd);
 		if (budget.getRecurrence() != null)
 			values.put(Database.BUDGET_RECURRENCE, String.valueOf(budget.getRecurrence().getId_recurrence()));
+		else
+			values.put(Database.BUDGET_RECURRENCE, 0);
 		//System.out.println(values.toString());
 		mDb.insert(Database.BUDGET_TABLE_NAME, null, values);
 		super.close();
@@ -79,9 +81,10 @@ public class BudgetDAO extends DAOBase {
 		values.put(Database.BUDGET_AMOUNT, budget.getAmount());
 		values.put(Database.BUDGET_BEGIN_DATE, dateBegin);
 		values.put(Database.BUDGET_ENDING_DATE, dateEnd);
-		if (budget.getRecurrence() != null) {
+		if (budget.getRecurrence() != null)
 			values.put(Database.BUDGET_RECURRENCE, String.valueOf(budget.getRecurrence().getId_recurrence()));
-		}
+		else
+			values.put(Database.BUDGET_RECURRENCE, 0);
 		mDb.update(Database.BUDGET_TABLE_NAME, values, Database.BUDGET_KEY + " = ? ", new String[] {String.valueOf(budget.getId_budget())});
 		super.close();
 	}

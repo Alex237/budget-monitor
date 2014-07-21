@@ -9,6 +9,10 @@
     <!-- Les boutons -->
     <string name="add_btn_txt">Ajouter</string>
     <string name="change_btn_txt">Modifier</string>
+    <string name="delete_btn_txt">Supprimer</string>
+    
+    <!-- Les TextView (formulaire) -->
+    <string name="description">Désignation</string>
 
     <!-- Opération -->
 

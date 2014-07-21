@@ -1,17 +1,5 @@
 package fr.alvini.insta.budgetmonitor;
 
-import fr.alvini.insta.budgetmonitor.activities.A_propos;
-import fr.alvini.insta.budgetmonitor.activities.Aide;
-import fr.alvini.insta.budgetmonitor.activities.AjoutBudget;
-import fr.alvini.insta.budgetmonitor.activities.AjoutOperation;
-import fr.alvini.insta.budgetmonitor.activities.Exporter;
-import fr.alvini.insta.budgetmonitor.activities.Gerer;
-import fr.alvini.insta.budgetmonitor.activities.MentionsLegales;
-import fr.alvini.insta.budgetmonitor.activities.Parametres;
-import fr.alvini.insta.budgetmonitor.adaptater.CustomList;
-import fr.alvini.insta.holographlib.PieGraph;
-import fr.alvini.insta.holographlib.PieSlice;
-import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -32,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
@@ -42,7 +29,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import fr.alvini.insta.budgetmonitor.tests.*;
+import fr.alvini.insta.budgetmonitor.activities.AjoutBudget;
+import fr.alvini.insta.budgetmonitor.activities.AjoutOperation;
+import fr.alvini.insta.budgetmonitor.activities.CategoryList;
+import fr.alvini.insta.budgetmonitor.adaptater.CustomList;
 import fr.alvini.insta.holographlib.PieGraph;
 import fr.alvini.insta.holographlib.PieSlice;
 
@@ -225,8 +215,12 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 //			unIntent.putExtra("repeter", this.recurrence);
 			
 			//this.startActivity(unIntent);
+
 			
-			
+			return true;
+		case R.id.categoriesMgt:
+			Intent IntentCategMgt = new Intent(HomeActivity.this,CategoryList.class);
+			startActivity(IntentCategMgt);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import fr.alvini.insta.budgetmonitor.R;
+import fr.alvini.insta.budgetmonitor.activities.CategoryList;
 
 public class TestChooseActivity extends Activity{
 	private ListView listChoose = null;
@@ -42,7 +43,7 @@ public class TestChooseActivity extends Activity{
 				getActivity = new Intent(TestChooseActivity.this,TestBudget.class);
 				break;
 			case 1:
-				getActivity = new Intent(TestChooseActivity.this,TestCategory.class);
+				getActivity = new Intent(TestChooseActivity.this,fr.alvini.insta.budgetmonitor.activities.CategoryList.class);
 				break;
 			case 2:
 				getActivity = new Intent(TestChooseActivity.this,TestOperation.class);

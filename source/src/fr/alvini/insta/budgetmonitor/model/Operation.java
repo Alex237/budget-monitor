@@ -11,12 +11,13 @@ public class Operation extends ObjectModel {
 	protected Budget budget = null;
 	protected Category category = null;
 	protected Recurrence recurrence = null;
+	protected int recurrence_status = 0;
 
 	public Operation() {
 		super();
 	}
 	
-	public Operation(Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, Date pDate_added, Recurrence pRecurrence) {
+	public Operation(Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, Date pDate_added, Recurrence pRecurrence, int pRec_status) {
 		this();
 		this.setBudget(pBudget);
 		this.setCategory(pCategory);
@@ -25,10 +26,11 @@ public class Operation extends ObjectModel {
 		this.setType(pType);
 		this.setDate_added(pDate_added);
 		this.setRecurrence(pRecurrence);
+		this.setRecurrence_status(pRec_status);
 	}
 	
-	public Operation(long pId_operation, Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, Date pDate_added, Recurrence pRecurrence) {
-		this(pBudget, pCategory, pAmount, pDescription, pType, pDate_added, pRecurrence);
+	public Operation(long pId_operation, Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, Date pDate_added, Recurrence pRecurrence, int pRec_status) {
+		this(pBudget, pCategory, pAmount, pDescription, pType, pDate_added, pRecurrence, pRec_status);
 		this.setId_operation(pId_operation);
 	}
 
@@ -85,7 +87,7 @@ public class Operation extends ObjectModel {
 	 * @param amount the amount to set
 	 */
 	public void setAmount(double amount) {
-		this.amount = amount;
+		this.amount = Math.abs(amount);
 	}
 
 	/**
@@ -144,4 +146,21 @@ public class Operation extends ObjectModel {
 		this.recurrence = recurrence;
 	}
 
+	
+	/**
+	 * @return the recurrence_status
+	 */
+	public int getRecurrence_status() {
+		return recurrence_status;
+	}
+
+	
+	/**
+	 * @param recurrence_status the recurrence_status to set
+	 */
+	public void setRecurrence_status(int recurrence_status) {
+		this.recurrence_status = recurrence_status;
+	}
+
+	
 }

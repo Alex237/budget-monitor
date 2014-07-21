@@ -33,23 +33,20 @@ public class RecurrenceDAO extends DAOBase {
 	}
 	
 	/**
-	 * @param m
-	 *            le métier à ajouter à la base
+	 * @param recurrence
+	 * Add an entry in recurrence table
 	 */
 	public void ajouter(Recurrence recurrence) {
 		super.open();
 		ContentValues values = new ContentValues();
-		values.put(Database.RECURRENCE_DAY, recurrence.getDay());
-		values.put(Database.RECURRENCE_WEEK, recurrence.getWeek());
-		values.put(Database.RECURRENCE_MONTH, recurrence.getMonth());
-		values.put(Database.RECURRENCE_YEAR, recurrence.getYear());
+		values.put(Database.RECURRENCE_DESCRIPTION, recurrence.getDescription());
 		mDb.insert(Database.RECURRENCE_TABLE_NAME, null, values);
 		super.close();
 	}
 
 	/**
 	 * @param id
-	 *            l'identifiant du métier à supprimer
+	 * Delete entry for the id passed in parameter
 	 */
 	public void supprimer(long id) {
 		super.open();
@@ -58,31 +55,25 @@ public class RecurrenceDAO extends DAOBase {
 	}
 
 	/**
-	 * @param m
-	 *            le métier modifié
+	 * @param recurrence
+	 * Update data for the object recurrence in parameter
 	 */
 	public void modifier(Recurrence recurrence) {
 		super.open();
 		ContentValues values = new ContentValues();
-		values.put(Database.RECURRENCE_DAY, recurrence.getDay());
-		values.put(Database.RECURRENCE_WEEK, recurrence.getWeek());
-		values.put(Database.RECURRENCE_MONTH, recurrence.getMonth());
-		values.put(Database.RECURRENCE_YEAR, recurrence.getYear());
+		values.put(Database.RECURRENCE_DESCRIPTION, recurrence.getDescription());
 		mDb.update(Database.RECURRENCE_TABLE_NAME, values, Database.RECURRENCE_KEY + " = ? ", new String[] {String.valueOf(recurrence.getId_recurrence())});
 		super.close();
 	}
 
 	/**
 	 * @param id
-	 *            l'identifiant du métier à récupérer
+	 * Get datas for a specific id from Recurrence table
 	 */
 	public Recurrence selectionner(long id) {
 		super.open();
 		String sql = "SELECT "+Database.RECURRENCE_KEY+" as _id, "
-						+Database.RECURRENCE_DAY+ ", "
-						+Database.RECURRENCE_WEEK+", "
-						+Database.RECURRENCE_MONTH+ ", "
-						+Database.RECURRENCE_YEAR+
+						+Database.RECURRENCE_DESCRIPTION+
 					 " FROM "+Database.RECURRENCE_TABLE_NAME+
 					 " WHERE "+Database.RECURRENCE_KEY+ " = ?";
 		Cursor cursor = mDb.rawQuery(sql, new String[] {String.valueOf(id)});
@@ -91,29 +82,21 @@ public class RecurrenceDAO extends DAOBase {
 			cursor.moveToNext();
 			long id_recurrence = cursor.getLong(0);
 			
-			int day = cursor.getInt(1);
-			int week = cursor.getInt(2);
-			int month = cursor.getInt(3);
-			int year = cursor.getInt(4);
-			recurrence = new Recurrence(id_recurrence, day, week, month, year);
-			//System.out.println("Results are : "+metier.getId()+" / "+metier.getIntitule()+" / "+metier.getSalaire()+".");
+			String description = cursor.getString(1);
+			recurrence = new Recurrence(id_recurrence, description);
 		}
 		super.close();
 		return recurrence;
 	}
 	
 	/**
-	 * @param id
-	 *            l'identifiant du métier à récupérer
+	 * Get all datas from Recurrence table
 	 */
 	public List<Recurrence> selectionnerAll() {
 		List<Recurrence> list = new ArrayList<Recurrence>();
 		super.open();
 		String sql = "SELECT "+Database.RECURRENCE_KEY+" as _id, "
-						+Database.RECURRENCE_DAY+ ", "
-						+Database.RECURRENCE_WEEK+", "
-						+Database.RECURRENCE_MONTH+ ", "
-						+Database.RECURRENCE_YEAR+
+						+Database.RECURRENCE_DESCRIPTION+
 					 " FROM "+Database.RECURRENCE_TABLE_NAME+"";
 		Cursor cursor = mDb.rawQuery(sql, new String[] {});
 		Recurrence recurrence = null;
@@ -122,11 +105,8 @@ public class RecurrenceDAO extends DAOBase {
 			while(cursor.moveToNext()) {
 				long id_recurrence = cursor.getLong(0);
 				
-				int day = cursor.getInt(1);
-				int week = cursor.getInt(2);
-				int month = cursor.getInt(3);
-				int year = cursor.getInt(4);
-				recurrence = new Recurrence(id_recurrence, day, week, month, year);
+				String description = cursor.getString(1);
+				recurrence = new Recurrence(id_recurrence, description);
 				
 				list.add(recurrence);
 			}
