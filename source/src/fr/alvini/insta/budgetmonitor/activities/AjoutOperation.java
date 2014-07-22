@@ -214,34 +214,30 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		int id = v.getId();
 		if(id == R.id.ajouterOperation){
 			Intent  unIntent = new Intent(this, HomeActivity.class);
-			unIntent.putExtra("choixUtilisateur",this.choixOperation);
-			unIntent.putExtra("montant",this.montant.getText().toString());
-			unIntent.putExtra("libelle",this.libelle.getText().toString());
-			unIntent.putExtra("choixCategorie",this.choixCategorieUt);
-			unIntent.putExtra("repeter", this.recurrence);
 			
-			
-			//Traitement de l'ajout avec la BDD etc
-			//Database data = new Database(this, name, factory, version);
 			Category choixCategorie = new Category(this.choixCategorieUt);
 			CategoryDAO test = new CategoryDAO(this);
 			test.ajouter(choixCategorie);
 			Budget testBudget = new Budget();
+			testBudget.setId_budget(1);
+			
+			Recurrence recurrenceChosen = new Recurrence();
+			recurrenceChosen = recDAO.selectionnerParDescription(recurrence.toString());
 			
 			//m'occuper de l'ajout de la date;
 			Date date = new Date();
+			
+			//pour éviter les erreurs
+			if(this.montant.getText().toString().matches("")){
+				this.montant.setText("0.0");
+			}
+			
+			double amount = Double.parseDouble(this.montant.getText().toString());
+			String description = this.libelle.getText().toString();
 		
-			
-//			Recurrence recurrenceChosen = new Recurrence();
-//			recurrenceChosen = recDAO.selectionnerParDescription(recurrence.toString());
-//			budgetToAdd.setRecurrence(recurrenceChosen);
-//			BudgetDAO budDAO = new BudgetDAO(AjoutBudget.this);
-//			budDAO.ajouter(budgetToAdd);
-			
-			
-			//List<Recurrence> selectionnerAll(); 
-			//Operation operation = new Operation(testBudget, choixCategorie, montant, libelle, choixOperation, date, recurrence, pRec_status)
-			
+			Operation operation = new Operation(testBudget, choixCategorie, amount, description, choixOperation, date, recurrenceChosen, 0);
+			OperationDAO operationDao = new OperationDAO(AjoutOperation.this);
+			operationDao.ajouter(operation);
 			
 			this.startActivity(unIntent);
 		}
@@ -284,21 +280,19 @@ public class AjoutOperation extends Activity implements OnClickListener{
 				public void onClick(View view) {
 					// TODO Auto-generated method stub
 					newCateg = ajoutCateg.getText().toString();
-					//Toast.makeText(AjoutOperation.this, newCateg , Toast.LENGTH_LONG).show();
 					
 					Category categ = new Category(newCateg);
 					catDAO.ajouter(categ);
+					
 					adapterCategorie.clear();
 			        categories = catDAO.selectionnerAll();
-			        //System.out.println("categorie après : "+categories);
+			       
 			        for(Category cat : categories) {
 			        	categoriesString.add(cat.getDescription());
 			        }
 					
 			        adapterCategorie.notifyDataSetChanged();
-			        System.out.println("test après : "+categoriesString);
-			        //choixCat.getAdapter();
-				
+			        
 					custom.dismiss();
 				}
 			});
