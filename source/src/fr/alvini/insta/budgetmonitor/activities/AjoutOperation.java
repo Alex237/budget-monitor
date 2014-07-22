@@ -1,7 +1,9 @@
 package fr.alvini.insta.budgetmonitor.activities;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import fr.alvini.insta.budgetmonitor.HomeActivity;
@@ -72,6 +74,9 @@ public class AjoutOperation extends Activity implements OnClickListener{
 	private ArrayAdapter<String> adapterCategorie;
 	private Spinner choixCat;
 	private List<String> categoriesString = null;
+	
+	private Calendar cal;
+	private GregorianCalendar date_added;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,17 +100,22 @@ public class AjoutOperation extends Activity implements OnClickListener{
 	
 		recDAO = new RecurrenceDAO(AjoutOperation.this);
         recurrents = recDAO.selectionnerAll();
+        final List<Long> recurrentsIds = new ArrayList<Long>();
         List<String> recurrentsString = new ArrayList<String>();
-        for(Recurrence rec : recurrents) {
-        	recurrentsString.add(rec.getDescription());
-        }
+        for (Recurrence rec : recurrents) {
+			recurrentsString.add(rec.getDescription());
+			recurrentsIds.add(rec.getId_recurrence());
+		}
         
         catDAO = new CategoryDAO(AjoutOperation.this);
         categories = catDAO.selectionnerAll();
         categoriesString = new ArrayList<String>();
+        final List<Long> categoriesIds = new ArrayList<Long>();
         for(Category cat : categories) {
         	categoriesString.add(cat.getDescription());
+        	categoriesIds.add(cat.getId_category());
         }
+		
 		
 
 		final Spinner choix = (Spinner) findViewById(R.id.choixUtilisateur);
@@ -225,7 +235,10 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			recurrenceChosen = recDAO.selectionnerParDescription(recurrence.toString());
 			
 			//m'occuper de l'ajout de la date;
-			Date date = new Date();
+			//Date date = new Date();
+			cal = Calendar.getInstance();
+			this.date_added =  new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+			
 			
 			//pour éviter les erreurs
 			if(this.montant.getText().toString().matches("")){
@@ -235,7 +248,7 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			double amount = Double.parseDouble(this.montant.getText().toString());
 			String description = this.libelle.getText().toString();
 		
-			Operation operation = new Operation(testBudget, choixCategorie, amount, description, choixOperation, date, recurrenceChosen, 0);
+			Operation operation = new Operation(testBudget, choixCategorie, amount, description, choixOperation, date_added, recurrenceChosen, 0);
 			OperationDAO operationDao = new OperationDAO(AjoutOperation.this);
 			operationDao.ajouter(operation);
 			
