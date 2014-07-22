@@ -1,4 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:orientation="vertical" >
+
+            <ListView
+                android:id="@+id/listViewOperation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:gravity="center_vertical"
+                android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:textColor="#000" >
+            </ListView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="#5A90BE"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/montantRestantText"
+                    style="@style/ButtonText"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="1"
+                    android:background="#5A90BE"
+                    android:gravity="center"
+                    android:paddingBottom="30dp"
+                    android:paddingTop="30dp"
+                    android:textColor="#fff"
+                    android:textSize="42dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/gradient_operation"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/addOperation"
+                            style="@style/ButtonText"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_blue"
+                            android:drawableLeft="@drawable/pluscircle"
+                            android:text="@string/add_btn_txt" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/changeOperation"
+                            style="@style/ButtonText"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_green"
+                            android:drawableLeft="@drawable/pencil"
+                            android:text="@string/change_btn_txt" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout><!--
+?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -32,9 +137,11 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+-->
 
-                <!--
+
+<!--
                             TextView
 	                        android:id="@+id/lol"
 	                        android:layout_width="fill_parent"
@@ -46,9 +153,11 @@
 	                        android:text=" + Ajouter"
 	                        android:textColor="#fff"
 	                        android:textSize="24dp" /
-                -->
+-->
 
-                <Button
+
+<!--
+            Button
                     android:id="@+id/addOperation"
                     style="@style/ButtonText"
                     android:layout_width="fill_parent"
@@ -64,7 +173,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical" >
 
-                <!--
+                <
                             TextView
 	                        android:id="@+id/loools"
 	                        android:layout_width="fill_parent"
@@ -76,9 +185,11 @@
 	                        android:text="x Modifier"
 	                        android:textColor="#fff"
 	                        android:textSize="24dp" /
-                -->
+-->
 
-                <Button
+
+<!--
+Button
                     android:id="@+id/changeOperation"
                     style="@style/ButtonText"
                     android:layout_width="fill_parent"
@@ -103,4 +214,5 @@
         </ListView>
     </LinearLayout>
 
-</LinearLayout>
+</LinearLayout
+-->

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+<LinearLayout android:id="@+id/scrollViemmmw1"
+    android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="81dp"
+        android:columnCount="1" >
+
+        <Spinner
+            android:id="@+id/choixUtilisateur"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
+            android:layout_row="0" />
+
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="89dp"
+        android:columnCount="1" >
+
+        <TextView
+            android:id="@+id/montantText"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
+            android:layout_row="0"
+            android:text="   Montant : " />
+
+        <EditText
+            android:id="@+id/montant"
+            android:layout_column="0"
+            android:layout_gravity="right|center_vertical"
+            android:layout_row="0"
+            android:ems="10"
+            android:inputType="numberDecimal" >
+
+            <requestFocus />
+        </EditText>
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="101dp"
+        android:columnCount="1" >
+
+        <TextView
+            android:id="@+id/libelleText"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
+            android:layout_row="0"
+            android:text="   Description : " />
+
+        <EditText
+            android:id="@+id/libelle"
+            android:layout_column="0"
+            android:layout_gravity="right|center_vertical"
+            android:layout_row="0"
+            android:ems="10" />
+
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="104dp"
+        android:columnCount="1" >
+
+        <Button
+            android:id="@+id/show_popup"
+            android:layout_column="0"
+            android:layout_gravity="right|center_vertical"
+            android:layout_row="0"
+            android:text="+" />
+
+        <Spinner
+            android:id="@+id/choixCategorie"
+            android:layout_width="231dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
+            android:layout_row="0" />
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="79dp"
+        android:columnCount="1" >
+
+        <Spinner
+            android:id="@+id/repeter"
+            android:layout_column="0"
+            android:layout_gravity="left|top"
+            android:layout_row="0" />
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1" >
+
+        <Button
+            android:id="@+id/supprimerOperation"
+            style="@style/ButtonText"
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="left|top"
+            android:layout_row="0"
+            android:background="@drawable/btn_blue"
+            android:text="Supprimer" />
+
+        <Button
+            android:id="@+id/modifierOperation"
+            style="@style/ButtonText"
+            android:layout_width="159dp"
+            android:layout_column="0"
+            android:layout_gravity="right|top"
+            android:layout_row="0"
+            android:background="@drawable/btn_green"
+            android:text="Modifier" />
+
+    </GridLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -5,20 +5,26 @@
     <string name="dummy_section_text">Section %1d is just a dummy section.</string>
     <string name="demo_external_activity">Demo External Activity</string>
     <string name="demo_collection">Demo Collection</string>
-    
+
     <!-- Les boutons -->
     <string name="add_btn_txt">Ajouter</string>
     <string name="save_btn_txt">Enregistrer</string>
     <string name="change_btn_txt">Modifier</string>
     <string name="delete_btn_txt">Supprimer</string>
     <string name="cancel_btn_txt">Annuler</string>
-    
+
     <!-- Les TextView (formulaire) -->
     <string name="description">Désignation</string>
 
     <!-- Opération -->
+    <string name="operation_reamining">Il vous reste :\n%1d €\nsur ce budget</string>
+    <string name="operation_notify_choose">Vous devez choisir un budget pour afficher des données</string>
+    <string name="notify_add">Vous devez créer un budget pour afficher des données</string>
+
 
     <!-- Budget -->
+    <string name="resume_reamining">Il vous reste :\n%1d €</string>
+    <string name="resume_total">Budget total :\n%1d €</string>
 
     <!-- Navdrawer -->
     <string-array name="tab_navigation">
@@ -38,6 +44,7 @@
         <item>VOTRE BUDGET</item>
         <item>BUDGET MONITOR</item>
     </string-array>
+
     <string name="drawer_open">Ouvrir le menu gauche</string>
     <string name="drawer_close">Fermer Le menu gauche</string>
 
@@ -47,7 +54,7 @@
         <item name="android:textColor">#ffffff</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_margin">3dp</item>
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">26dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:shadowColor">#000000</item>
         <item name="android:shadowDx">1</item>

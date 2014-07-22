@@ -14,8 +14,7 @@ public class CustomListBis extends ArrayAdapter<String>{
 	private final Activity context;
 	private final List<String> text;
 	private final Integer[] imageId;
-	public CustomListBis(Activity context,
-			List<String> text, Integer[] imageId) {
+	public CustomListBis(Activity context, List<String> text, Integer[] imageId) {
 		super(context, R.layout.drawer_list_icon, text);
 		this.context = context;
 		this.text = text;
@@ -28,7 +27,7 @@ public class CustomListBis extends ArrayAdapter<String>{
 		TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
 		txtTitle.setText(text.get(position));
-		imageView.setImageResource(imageId[position]);
+		imageView.setImageResource(imageId[0]);
 		return rowView;
 	}
 }
