@@ -46,8 +46,10 @@ import fr.alvini.insta.budgetmonitor.activities.MentionsLegales;
 import fr.alvini.insta.budgetmonitor.activities.Parametres;
 import fr.alvini.insta.budgetmonitor.adaptater.CustomList;
 import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
+import fr.alvini.insta.budgetmonitor.dao.OperationDAO;
 import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
 import fr.alvini.insta.budgetmonitor.model.Budget;
+import fr.alvini.insta.budgetmonitor.model.Operation;
 import fr.alvini.insta.budgetmonitor.model.Recurrence;
 import fr.alvini.insta.holographlib.PieGraph;
 import fr.alvini.insta.holographlib.PieSlice;
@@ -531,6 +533,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 
 		private Button 	addOperationBtn;
 		private Button changOperationBtn;
+		private List<Operation> operations = null;
+		private OperationDAO opDao = null ;
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -543,15 +547,29 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			final ListView listView = (ListView) rootView.findViewById(R.id.listViewOperation);
 
 			// Defined Array values to show in ListView
-			String[] values = new String[] { "Menace de Black Buddah", 
-					"Rancon de Rasta Buddah",
-					"Recidive de Buddah",
-					"Corruption des moines tibetins", 
-					"Fake Example", 
-					"Fake fake fake", 
-					"Rasta Buddah Destiny", 
-					"Black Buddah Power !" 
-			};
+//			String[] values = new String[] { "Menace de Black Buddah", 
+//					"Rancon de Rasta Buddah",
+//					"Recidive de Buddah",
+//					"Corruption des moines tibetins", 
+//					"Fake Example", 
+//					"Fake fake fake", 
+//					"Rasta Buddah Destiny", 
+//					"Black Buddah Power !" 
+//			};
+			opDao = new OperationDAO(getActivity().getApplicationContext());
+			try {
+				operations = opDao.selectionnerAll();
+				System.out.println(operations);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			ArrayList<String> operationsString = new ArrayList<String>();
+	        
+	        for(Operation op : operations) {
+	        	operationsString.add(op.getDescription());
+	        }
 
 			// Define a new Adapter
 			// First parameter - Context
@@ -560,7 +578,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			// Forth - the Array of data
 			//ArrayAdapter<String> adaptater = new ArrayAdapter<String>(getActivity(), android.R.id.text1, values);
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-					android.R.layout.simple_list_item_1, android.R.id.text1, values);
+					android.R.layout.simple_list_item_1, android.R.id.text1, operationsString);
 
 
 			// Assign adapter to ListView
