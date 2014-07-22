@@ -8,6 +8,11 @@ public class Recurrence extends ObjectModel {
 		super();
 	}
 	
+	public Recurrence(String pDescription) {
+		this();
+		this.setDescription(pDescription);
+	}
+	
 	/**
 	 * @param id_recurrence
 	 * @param description
@@ -17,6 +22,8 @@ public class Recurrence extends ObjectModel {
 		this.setId_recurrence(pId_recurrence);
 		this.setDescription(pDescription);
 	}
+	
+	
 
 	/**
 	 * @return the id_recurrence
