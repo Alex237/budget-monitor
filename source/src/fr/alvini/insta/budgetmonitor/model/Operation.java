@@ -1,13 +1,14 @@
 package fr.alvini.insta.budgetmonitor.model;
 
-import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.GregorianCalendar;
 
 public class Operation extends ObjectModel {
 	protected long id_operation;
 	protected String description = null;
 	protected String type = null;
 	protected double amount;
-	protected Date date_added = null;
+	protected GregorianCalendar date_added = null;
 	protected Budget budget = null;
 	protected Category category = null;
 	protected Recurrence recurrence = null;
@@ -17,20 +18,20 @@ public class Operation extends ObjectModel {
 		super();
 	}
 	
-	public Operation(Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, Date pDate_added, Recurrence pRecurrence, int pRec_status) {
+	public Operation(Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, GregorianCalendar pGregorianCalendar_added, Recurrence pRecurrence, int pRec_status) {
 		this();
 		this.setBudget(pBudget);
 		this.setCategory(pCategory);
 		this.setAmount(pAmount);
 		this.setDescription(pDescription);
 		this.setType(pType);
-		this.setDate_added(pDate_added);
+		this.setDate_added(pGregorianCalendar_added);
 		this.setRecurrence(pRecurrence);
 		this.setRecurrence_status(pRec_status);
 	}
 	
-	public Operation(long pId_operation, Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, Date pDate_added, Recurrence pRecurrence, int pRec_status) {
-		this(pBudget, pCategory, pAmount, pDescription, pType, pDate_added, pRecurrence, pRec_status);
+	public Operation(long pId_operation, Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, GregorianCalendar pGregorianCalendar_added, Recurrence pRecurrence, int pRec_status) {
+		this(pBudget, pCategory, pAmount, pDescription, pType, pGregorianCalendar_added, pRecurrence, pRec_status);
 		this.setId_operation(pId_operation);
 	}
 
@@ -93,14 +94,14 @@ public class Operation extends ObjectModel {
 	/**
 	 * @return the date_added
 	 */
-	public Date getDate_added() {
+	public GregorianCalendar getDate_added() {
 		return date_added;
 	}
 
 	/**
 	 * @param date_added the date_added to set
 	 */
-	public void setDate_added(Date date_added) {
+	public void setDate_added(GregorianCalendar date_added) {
 		this.date_added = date_added;
 	}
 
