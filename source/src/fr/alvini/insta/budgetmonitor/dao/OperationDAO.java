@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -43,10 +44,11 @@ public class OperationDAO extends DAOBase {
 	public void ajouter(Operation operation) {
 		super.open();
 		ContentValues values = new ContentValues();
+		String date_added = Operation.formatDate(operation.getDate_added(), true);
 		values.put(Database.OPERATION_DESCRIPTION, operation.getDescription());
 		values.put(Database.OPERATION_TYPE, operation.getType());
 		values.put(Database.OPERATION_AMOUNT, operation.getAmount());
-		values.put(Database.OPERATION_ADD_DATE, String.valueOf(operation.getDate_added()));
+		values.put(Database.OPERATION_ADD_DATE, date_added);
 		values.put(Database.OPERATION_BUDGET, operation.getBudget().getId_budget());
 		if (operation.getCategory() != null)
 			values.put(Database.OPERATION_CATEGORY, operation.getCategory().getId_category());
@@ -78,10 +80,11 @@ public class OperationDAO extends DAOBase {
 	public void modifier(Operation operation) {
 		super.open();
 		ContentValues values = new ContentValues();
+		String date_added = Operation.formatDate(operation.getDate_added(), true);
 		values.put(Database.OPERATION_DESCRIPTION, operation.getDescription());
 		values.put(Database.OPERATION_TYPE, operation.getType());
 		values.put(Database.OPERATION_AMOUNT, operation.getAmount());
-		values.put(Database.OPERATION_ADD_DATE, String.valueOf(operation.getDate_added()));
+		values.put(Database.OPERATION_ADD_DATE, date_added);
 		values.put(Database.OPERATION_BUDGET, operation.getBudget().getId_budget());
 		if (operation.getCategory() != null)
 			values.put(Database.OPERATION_CATEGORY, operation.getCategory().getId_category());
@@ -124,10 +127,8 @@ public class OperationDAO extends DAOBase {
 			String type = cursor.getString(2);
 			double amount = cursor.getDouble(3);
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 			String date_added_str = cursor.getString(4);
-			Date date_added = sdf.parse(date_added_str);
-			
+			GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_added_str)), Integer.valueOf(Budget.getDateElement("month", date_added_str)), Integer.valueOf(Budget.getDateElement("day", date_added_str)));
 			
 			
 			Budget budget = null;
@@ -184,28 +185,28 @@ public class OperationDAO extends DAOBase {
 				String type = cursor.getString(2);
 				double amount = cursor.getDouble(3);
 				
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 				String date_added_str = cursor.getString(4);
-				Date date_added = sdf.parse(date_added_str);
-				
-				
+				System.out.println(date_added_str);
+				GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_added_str)), Integer.valueOf(Budget.getDateElement("month", date_added_str)), Integer.valueOf(Budget.getDateElement("day", date_added_str)));
 				
 				Budget budget = null;
-				if (cursor.getLong(5) != 0) {
+				System.out.println(cursor.getInt(5));
+				if (cursor.getInt(5) != 0) {
 					BudgetDAO budDAO = new BudgetDAO(this.getContext());
-					budget = budDAO.selectionner(cursor.getLong(5));
+					System.out.println("Tests :"+budDAO.toString());
+					budget = budDAO.selectionner(cursor.getInt(5));
 				}
 				
 				Category category = null;
-				if (cursor.getLong(6) != 0) {
+				if (cursor.getInt(6) != 0) {
 					CategoryDAO catDAO = new CategoryDAO(this.getContext());
-					category = catDAO.selectionner(cursor.getLong(6));
+					category = catDAO.selectionner(cursor.getInt(6));
 				}
 				
 				Recurrence recurrence = null;
 				if (cursor.getInt(7) != 0) {
 					RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
-					recurrence = recDAO.selectionner(cursor.getLong(7));
+					recurrence = recDAO.selectionner(cursor.getInt(7));
 				}
 				Integer rec_status = cursor.getInt(8);
 				operation = new Operation(id_operation, budget, category, amount, description, type, date_added, recurrence, rec_status);
@@ -245,10 +246,8 @@ public class OperationDAO extends DAOBase {
 			String type = cursor.getString(2);
 			double amount = cursor.getDouble(3);
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 			String date_added_str = cursor.getString(4);
-			Date date_added = sdf.parse(date_added_str);
-			
+			GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_added_str)), Integer.valueOf(Budget.getDateElement("month", date_added_str)), Integer.valueOf(Budget.getDateElement("day", date_added_str)));
 			
 			
 			Budget budget = null;
