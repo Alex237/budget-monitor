@@ -8,6 +8,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,6 +24,7 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import fr.alvini.insta.budgetmonitor.HomeActivity;
 import fr.alvini.insta.budgetmonitor.R;
 import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
 import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
@@ -125,7 +128,9 @@ public class BudgetDetails extends Activity implements OnClickListener, OnDateCh
 		this.description.setText(getBudget.getDescription());
 //		this.date_begin.updateDate(2015, 0, 5);
 		this.date_begin.updateDate(getBudget.getDateBegin().get(Calendar.YEAR), getBudget.getDateBegin().get(Calendar.MONTH)-1, getBudget.getDateBegin().get(Calendar.DAY_OF_MONTH));
+		dateBegin = new GregorianCalendar(getBudget.getDateBegin().get(Calendar.YEAR), getBudget.getDateBegin().get(Calendar.MONTH)-1, getBudget.getDateBegin().get(Calendar.DAY_OF_MONTH));
 		this.date_end.updateDate(getBudget.getDateEnd().get(Calendar.YEAR), getBudget.getDateEnd().get(Calendar.MONTH)-1, getBudget.getDateEnd().get(Calendar.DAY_OF_MONTH));
+		dateEnd = new GregorianCalendar(getBudget.getDateEnd().get(Calendar.YEAR), getBudget.getDateEnd().get(Calendar.MONTH)-1, getBudget.getDateEnd().get(Calendar.DAY_OF_MONTH));
 		if (position != -1)
 			this.recurrences.setSelection(position);
 	}
@@ -144,6 +149,8 @@ public class BudgetDetails extends Activity implements OnClickListener, OnDateCh
 		if (id == R.id.btn_budget_update) {
 //			BudgetDAO budDAO = new BudgetDAO(BudgetDetails.this);
 			getBudget.setDescription(description.getText().toString());
+			if (this.amount.getText().toString().matches(""))
+				this.amount.setText("0.0");
 			getBudget.setAmount(Double.valueOf(this.amount.getText().toString()));
 			getBudget.setDateBegin(dateBegin);
 			getBudget.setDateEnd(dateEnd);
@@ -153,32 +160,49 @@ public class BudgetDetails extends Activity implements OnClickListener, OnDateCh
 					recurrenceChosen = recurr;
 			}
 			getBudget.setRecurrence(recurrenceChosen);
-			Toast.makeText(BudgetDetails.this, String.valueOf(getBudget.getRecurrence().getId_recurrence()), Toast.LENGTH_LONG).show();
-//			budDao.modifier(getBudget);
-//
+//			Toast.makeText(BudgetDetails.this, String.valueOf(getBudget.getDescription()), Toast.LENGTH_LONG).show();
+			budDao.modifier(getBudget);
+
 //			System.exit(0);
-//			Intent unIntent = new Intent(this, HomeActivity.class);
-//			this.startActivity(unIntent);
+			Intent unIntent = new Intent(this, HomeActivity.class);
+			this.startActivity(unIntent);
 
 		}
 
 		if (id == R.id.btn_budget_delete) {
-//			AlertDialog.Builder alertDelete = new AlertDialog.Builder(BudgetDetails.this);
-			
+			AlertDialog.Builder alertDelete = new AlertDialog.Builder(BudgetDetails.this);
+			alertDelete.setPositiveButton("Oui", dialogPositiveListener);
+			alertDelete.setNegativeButton("Non", dialogNegativeListener);
+			alertDelete.setMessage("Voulez vous vraiment supprimer le budget ?");
+			alertDelete.show();
 		}
 
 	}
 
 	@Override
 	public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-		if (view.getId() == R.id.budget_add_date_begin_datePicker) {
-			System.out.println("Date debut modifiée");
+		if (view.getId() == R.id.budget_details_date_begin_datePicker) {
+			System.out.println("Date debut modifiée :"+date_begin.getYear()+"-"+date_begin.getMonth()+"-"+date_begin.getDayOfMonth());
 			dateBegin = new GregorianCalendar(date_begin.getYear(), date_begin.getMonth(), date_begin.getDayOfMonth());
 		}
-		if (view.getId() == R.id.budget_add_date_end_datePicker) {
-			System.out.println("Date fin modifiée");
+		if (view.getId() == R.id.budget_details_date_end_datePicker) {
+			System.out.println("Date fin modifiée :"+date_end.getYear()+"-"+date_end.getMonth()+"-"+date_end.getDayOfMonth());
 			dateEnd = new GregorianCalendar(date_end.getYear(), date_end.getMonth(), date_end.getDayOfMonth());
 		}
 	}
 
+	public Dialog.OnClickListener dialogPositiveListener = new Dialog.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			budDao.supprimer(getBudget.getId_budget());
+			Intent unIntent = new Intent(BudgetDetails.this, HomeActivity.class);
+			startActivity(unIntent);
+		}
+	};
+
+	public Dialog.OnClickListener dialogNegativeListener = new Dialog.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {			
+		}
+	};
 }

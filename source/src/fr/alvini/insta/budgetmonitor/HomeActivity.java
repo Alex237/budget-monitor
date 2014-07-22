@@ -31,6 +31,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.alvini.insta.budgetmonitor.activities.A_propos;
@@ -45,12 +46,15 @@ import fr.alvini.insta.budgetmonitor.activities.MentionsLegales;
 import fr.alvini.insta.budgetmonitor.activities.Parametres;
 import fr.alvini.insta.budgetmonitor.adaptater.CustomList;
 import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
+import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
 import fr.alvini.insta.budgetmonitor.model.Budget;
+import fr.alvini.insta.budgetmonitor.model.Recurrence;
 import fr.alvini.insta.holographlib.PieGraph;
 import fr.alvini.insta.holographlib.PieSlice;
 
 public class HomeActivity extends FragmentActivity implements ActionBar.TabListener {
 
+	public Spinner testSpinner;
 	private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
 	private Resources stringRessource;
@@ -617,6 +621,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		private BudgetDAO budDAO = null;
 		private List<String> listBudgetsDesc = null;
 		private List<Budget> listBudgets = null;
+//		private Spinner spinnerBudget;
+		private TextView spinnerBudget;
 		
 		private Button 	addBudgetBtn;
 		private Button changeBudgetBtn;
@@ -628,8 +634,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				"I don't know why...",
 				"Budget de Mais",
 				"Budget de Juin",
-				"Budget de Juillet",
-		} ;
+				"Budget de Juillet"
+		};
 
 		Double[] prix = {
 				1200.00,
@@ -654,12 +660,37 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
+			
+			budDAO = new BudgetDAO(container.getContext());
+			listBudgetsDesc = new ArrayList<String>();
+			try {
+				listBudgets = budDAO.selectionnerAll();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (listBudgets.size() > 0) {
+				for(Budget budget : listBudgets) {
+					listBudgetsDesc.add(budget.getDescription());
+				}
+				for(String test : budgetText) {
+					listBudgetsDesc.add(test);
+				}
+			}
+			
 			View rootView = inflater.inflate(R.layout.fragment_section_budget, container, false);
 			Bundle args = getArguments();
 
+//			budgets = new Spinner(getActivity());
+//			spinnerBudget = (Spinner)rootView.findViewById(R.id.budgetsSpinnerHomeActivity);
+			
+			spinnerBudget = (TextView)rootView.findViewById(R.id.budgetsSpinnerHomeActivity);
+//			Toast.makeText(getActivity().getApplicationContext(), "Il y a quelque chose "+String.valueOf(spinnerBudget.getText()), Toast.LENGTH_LONG).show();				
+			
+//			budgets = (Spinner) rootView.findViewById(R.id.listBudgetsSpinner);
 			this.mListBudget = (ListView) rootView.findViewById(R.id.listViewBudget);
-			CustomList adapterBudget = new
-					CustomList(getActivity(), budgetText, iconBudget);
+//			CustomList adapterBudget = new CustomList(getActivity(), budgetText, iconBudget);
+			CustomListBis adapterBudget = new CustomListBis(getActivity(), listBudgetsDesc, iconBudget);
 			this.mListBudget.setAdapter(adapterBudget);
 
 			this.addBudgetBtn = (Button) rootView.findViewById(R.id.addBudgetBtn);
@@ -681,7 +712,38 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					startActivity(getBudgetDetails);
 				}
 			});
+			
+			budDAO = new BudgetDAO(getActivity().getApplicationContext());
+			try {
+				listBudgets = budDAO.selectionnerAll();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			final List<Long> budgetsIds = new ArrayList<Long>();
+			List<String> budgetsString = new ArrayList<String>();
+			if (listBudgets.size() > 0) {
+				for (Budget bud : listBudgets) {
+					budgetsString.add(bud.getDescription());
+					budgetsIds.add(bud.getId_budget());
+				}
+			} else {
+				budgetsString.add("Choisir");
+				budgetsString.add("Ajouter un budget");
+			}
+			
+			// Create an ArrayAdapter using the string array and a default spinner
+			// layout
+			ArrayAdapter<String> adapterBudgets = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, budgetsString);
+			// Specify the layout to use when the list of choices appears
+			adapterBudgets.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			
+//			Toast.makeText(getActivity().getApplicationContext(), String.valueOf(adapterBudgets.getCount()), Toast.LENGTH_LONG).show();
+			// Apply the adapter to the spinner
+//			spinnerBudget.setAdapter(adapterBudgets);
+			
 			return rootView;
+			
 		}
 	}
 

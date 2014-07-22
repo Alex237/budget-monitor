@@ -9,9 +9,12 @@ public class ObjectModel {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static String formatDate(GregorianCalendar date) {
+	public static String formatDate(GregorianCalendar date, boolean forDB) {
 		String dateFormatted = String.valueOf(date.get(Calendar.YEAR));
-		dateFormatted += "/"+String.valueOf(date.get(Calendar.MONTH));
+		if (forDB)
+			dateFormatted += "/"+String.valueOf(date.get(Calendar.MONTH)+1);
+		else	
+			dateFormatted += "/"+String.valueOf(date.get(Calendar.MONTH));
 		dateFormatted += "/"+String.valueOf(date.get(Calendar.DAY_OF_MONTH));
 		
 		return dateFormatted;

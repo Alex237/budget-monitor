@@ -2,6 +2,7 @@ package fr.alvini.insta.budgetmonitor.dao;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -40,8 +41,9 @@ public class BudgetDAO extends DAOBase {
 	 */
 	public void ajouter(Budget budget) {
 		super.open();
-		String dateBegin = Budget.formatDate(budget.getDateBegin());
-		String dateEnd = Budget.formatDate(budget.getDateEnd());
+		String dateBegin = Budget.formatDate(budget.getDateBegin(),true);
+		String dateEnd = Budget.formatDate(budget.getDateEnd(),true);
+		System.out.println("Dans ajouter dateBegin: "+dateBegin+" - dateEnd: "+dateEnd);
 
 		ContentValues values = new ContentValues();
 		values.put(Database.BUDGET_DESCRIPTION, budget.getDescription());
@@ -70,12 +72,14 @@ public class BudgetDAO extends DAOBase {
 
 	/**
 	 * @param m
-	 *            le m�tier modifi�
+	 * 
 	 */
 	public void modifier(Budget budget) {
 		super.open();
-		String dateBegin = Budget.formatDate(budget.getDateBegin());
-		String dateEnd = Budget.formatDate(budget.getDateEnd());
+		System.out.println("Avant String dans modifier dateBegin: "+budget.getDateBegin().get(Calendar.YEAR)+budget.getDateBegin().get(Calendar.MONTH)+budget.getDateBegin().get(Calendar.DAY_OF_MONTH)+" - dateEnd: "+budget.getDateEnd().get(Calendar.YEAR)+budget.getDateEnd().get(Calendar.MONTH)+budget.getDateEnd().get(Calendar.DAY_OF_MONTH));
+		String dateBegin = Budget.formatDate(budget.getDateBegin(),true);
+		String dateEnd = Budget.formatDate(budget.getDateEnd(),true);
+		System.out.println("Dans modifier dateBegin: "+dateBegin+" - dateEnd: "+dateEnd);
 
 		ContentValues values = new ContentValues();
 		values.put(Database.BUDGET_AMOUNT, budget.getAmount());

@@ -18,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 import fr.alvini.insta.budgetmonitor.R;
 import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
 import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
@@ -125,6 +126,8 @@ public class BudgetAdd extends Activity implements OnClickListener, OnDateChange
 		if (id == R.id.btn_budget_add) {
 			Budget budgetToAdd = new Budget();
 			budgetToAdd.setDescription(description.getText().toString());
+			if (this.amount.getText().toString().matches(""))
+				this.amount.setText("0.0");
 			budgetToAdd.setAmount(Double.valueOf(this.amount.getText().toString()));
 			budgetToAdd.setDateBegin(dateBegin);
 			budgetToAdd.setDateEnd(dateEnd);
@@ -135,6 +138,7 @@ public class BudgetAdd extends Activity implements OnClickListener, OnDateChange
 			}
 			budgetToAdd.setRecurrence(recurrenceChosen);
 				
+//			Toast.makeText(BudgetAdd.this, Double.valueOf(this.amount.getText().toString()).toString(), Toast.LENGTH_LONG).show();
 			BudgetDAO budDAO = new BudgetDAO(BudgetAdd.this);
 			budDAO.ajouter(budgetToAdd);
 
