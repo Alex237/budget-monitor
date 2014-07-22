@@ -1,9 +1,8 @@
 package fr.alvini.insta.budgetmonitor.dao;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -41,8 +40,8 @@ public class BudgetDAO extends DAOBase {
 	 */
 	public void ajouter(Budget budget) {
 		super.open();
-		String dateBegin = sdf.format(budget.getDateBegin());
-		String dateEnd = sdf.format(budget.getDateEnd());
+		String dateBegin = Budget.formatDate(budget.getDateBegin());
+		String dateEnd = Budget.formatDate(budget.getDateEnd());
 
 		ContentValues values = new ContentValues();
 		values.put(Database.BUDGET_DESCRIPTION, budget.getDescription());
@@ -75,8 +74,8 @@ public class BudgetDAO extends DAOBase {
 	 */
 	public void modifier(Budget budget) {
 		super.open();
-		String dateBegin = sdf.format(budget.getDateBegin());
-		String dateEnd = sdf.format(budget.getDateEnd());
+		String dateBegin = Budget.formatDate(budget.getDateBegin());
+		String dateEnd = Budget.formatDate(budget.getDateEnd());
 
 		ContentValues values = new ContentValues();
 		values.put(Database.BUDGET_AMOUNT, budget.getAmount());
@@ -113,13 +112,12 @@ public class BudgetDAO extends DAOBase {
 			
 			String description = cursor.getString(1);
 			double amount = cursor.getDouble(2);
-			
+
 			String date_begin_str = cursor.getString(3);
-			Date date_begin = sdf.parse(date_begin_str);
+			GregorianCalendar date_begin = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_begin_str)), Integer.valueOf(Budget.getDateElement("month", date_begin_str)), Integer.valueOf(Budget.getDateElement("day", date_begin_str)));
 			
 			String date_end_str = cursor.getString(4);
-			Date date_end = sdf.parse(date_begin_str);
-			
+			GregorianCalendar date_end = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_end_str)), Integer.valueOf(Budget.getDateElement("month", date_end_str)), Integer.valueOf(Budget.getDateElement("day", date_end_str)));
 
 			Recurrence recurrence = null;
 			if (cursor.getInt(5) != 0) {
@@ -160,12 +158,11 @@ public class BudgetDAO extends DAOBase {
 				double amount = cursor.getDouble(2);
 				
 				String date_begin_str = cursor.getString(3);
-				Date date_begin = sdf.parse(date_begin_str);
+				GregorianCalendar date_begin = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_begin_str)), Integer.valueOf(Budget.getDateElement("month", date_begin_str)), Integer.valueOf(Budget.getDateElement("day", date_begin_str)));
 				
 				String date_end_str = cursor.getString(4);
-				Date date_end = sdf.parse(date_begin_str);
+				GregorianCalendar date_end = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_end_str)), Integer.valueOf(Budget.getDateElement("month", date_end_str)), Integer.valueOf(Budget.getDateElement("day", date_end_str)));
 				
-
 				Recurrence recurrence = null;
 				if (cursor.getInt(5) != 0) {
 					RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());

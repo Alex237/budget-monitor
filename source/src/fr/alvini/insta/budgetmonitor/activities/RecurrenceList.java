@@ -48,7 +48,7 @@ public class RecurrenceList extends Activity {
 			for (Recurrence recurrenceSingle : listRecurrences) {
 				element = new HashMap<String, String>();
 				element.put("Description", String.valueOf(recurrenceSingle.getDescription()));
-//				element.put("Datas","Montant : "+ String.valueOf(recurrenceSingle.getDescription()));
+				element.put("Datas","Id : "+ String.valueOf(recurrenceSingle.getId_recurrence()));
 				listeRecurrences.add(element);
 				listeRecurrenceIds.add(recurrenceSingle.getId_recurrence());
 			}
@@ -57,11 +57,11 @@ public class RecurrenceList extends Activity {
 		if (listeRecurrences.size() > 0) {
 			ListAdapter adapter = new SimpleAdapter(this,
 					listeRecurrences,
-					android.R.layout.simple_list_item_1, 
-//					new String[] {"IdRecurrence", "Datas"},
-					new String[] {"Description"},
-//					new int[] {android.R.id.text1, android.R.id.text2 });
-					new int[] {android.R.id.text1});
+					android.R.layout.simple_list_item_2, 
+					new String[] {"Description", "Datas"},
+//					new String[] {"Description"},
+					new int[] {android.R.id.text1, android.R.id.text2 });
+//					new int[] {android.R.id.text1});
 			listeRecurrence.setAdapter(adapter);
 		} else {
 

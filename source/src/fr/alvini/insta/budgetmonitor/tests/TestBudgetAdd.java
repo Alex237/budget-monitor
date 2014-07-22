@@ -50,7 +50,7 @@ public class TestBudgetAdd extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			budget.setDateBegin(date_begin);
+//			budget.setDateBegin(date_begin);
 			Date date_end = null;
 			try {
 				date_end = DAOBase.sdf.parse(dateEnd.getText().toString());
@@ -58,7 +58,7 @@ public class TestBudgetAdd extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			budget.setDateEnd(date_end);
+//			budget.setDateEnd(date_end);
 			BudgetDAO budDAO = new BudgetDAO(TestBudgetAdd.this);
 			budDAO.ajouter(budget);
 			Intent budget_home = new Intent(TestBudgetAdd.this,TestBudget.class);

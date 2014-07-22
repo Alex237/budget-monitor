@@ -1,10 +1,8 @@
 package fr.alvini.insta.budgetmonitor.model;
 
-import java.util.Date;
-import java.util.List;
-
-import fr.alvini.insta.budgetmonitor.model.Category;
-import fr.alvini.insta.budgetmonitor.model.Recurrence;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.GregorianCalendar;
 
 public class Budget extends ObjectModel {
 	protected long id_budget;
@@ -12,43 +10,43 @@ public class Budget extends ObjectModel {
 	protected Category category = null;
 	protected Recurrence recurrence = null;
 	protected double amount;
-	protected Date dateBegin = null;
-	protected Date dateEnd = null;
+	protected GregorianCalendar dateBegin = null;
+	protected GregorianCalendar dateEnd = null;
 	
 	public Budget() {
 		super();
 	}
 	
-	public Budget(String pDescription, double pAmount, Date pDateBegin, Date pDateEnd) {
+	public Budget(String pDescription, double pAmount, GregorianCalendar pGregorianCalendarBegin, GregorianCalendar pGregorianCalendarEnd) {
 		this();
 		this.setDescription(pDescription);
 		this.setAmount(pAmount);
-		this.setDateBegin(pDateBegin);
-		this.setDateEnd(pDateEnd);
+		this.setDateBegin(pGregorianCalendarBegin);
+		this.setDateEnd(pGregorianCalendarEnd);
 	}
 	
-	public Budget(String pDescription, double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence) {
-		this(pDescription, pAmount,pDateBegin,pDateEnd);
+	public Budget(String pDescription, double pAmount, GregorianCalendar pGregorianCalendarBegin, GregorianCalendar pGregorianCalendarEnd, Recurrence pRecurrence) {
+		this(pDescription, pAmount,pGregorianCalendarBegin,pGregorianCalendarEnd);
 		this.setRecurrence(pRecurrence);
 	}
 	
-	public Budget(String pDescription, double pAmount, Date pDateBegin, Date pDateEnd, Category pCategory) {
-		this(pDescription, pAmount,pDateBegin,pDateEnd);
+	public Budget(String pDescription, double pAmount, GregorianCalendar pGregorianCalendarBegin, GregorianCalendar pGregorianCalendarEnd, Category pCategory) {
+		this(pDescription, pAmount,pGregorianCalendarBegin,pGregorianCalendarEnd);
 		this.setCategory(pCategory);
 	}
 
-	public Budget(String pDescription, double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence, Category pCategory) {
-		this(pDescription, pAmount,pDateBegin,pDateEnd,pRecurrence);
+	public Budget(String pDescription, double pAmount, GregorianCalendar pGregorianCalendarBegin, GregorianCalendar pGregorianCalendarEnd, Recurrence pRecurrence, Category pCategory) {
+		this(pDescription, pAmount,pGregorianCalendarBegin,pGregorianCalendarEnd,pRecurrence);
 		this.setCategory(pCategory);
 	}
 
-	public Budget(long pId_budget, String pDescription, double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence, Category pCategory) {
-		this(pDescription, pAmount,pDateBegin,pDateEnd,pRecurrence, pCategory);
+	public Budget(long pId_budget, String pDescription, double pAmount, GregorianCalendar pGregorianCalendarBegin, GregorianCalendar pGregorianCalendarEnd, Recurrence pRecurrence, Category pCategory) {
+		this(pDescription, pAmount,pGregorianCalendarBegin,pGregorianCalendarEnd,pRecurrence, pCategory);
 		this.setId_budget(pId_budget);
 	}
 	
-	public Budget(long pId_budget, String pDescription, double pAmount, Date pDateBegin, Date pDateEnd, Recurrence pRecurrence) {
-		this(pDescription, pAmount,pDateBegin,pDateEnd,pRecurrence);
+	public Budget(long pId_budget, String pDescription, double pAmount, GregorianCalendar pGregorianCalendarBegin, GregorianCalendar pGregorianCalendarEnd, Recurrence pRecurrence) {
+		this(pDescription, pAmount,pGregorianCalendarBegin,pGregorianCalendarEnd,pRecurrence);
 		this.setId_budget(pId_budget);
 	}
 	
@@ -98,19 +96,19 @@ public class Budget extends ObjectModel {
 		this.amount = Math.abs(amount);
 	}
 
-	public Date getDateBegin() {
+	public GregorianCalendar getDateBegin() {
 		return dateBegin;
 	}
 
-	public void setDateBegin(Date dateBegin) {
+	public void setDateBegin(GregorianCalendar dateBegin) {
 		this.dateBegin = dateBegin;
 	}
 
-	public Date getDateEnd() {
+	public GregorianCalendar getDateEnd() {
 		return dateEnd;
 	}
 
-	public void setDateEnd(Date dateEnd) {
+	public void setDateEnd(GregorianCalendar dateEnd) {
 		this.dateEnd = dateEnd;
 	}
 

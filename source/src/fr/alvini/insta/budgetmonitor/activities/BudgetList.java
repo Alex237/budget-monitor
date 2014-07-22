@@ -45,7 +45,11 @@ public class BudgetList extends Activity {
 			for (Budget budgetSingle : listBudgets) {
 				element = new HashMap<String, String>();
 				element.put("IdBudget", "Budget : "+String.valueOf(budgetSingle.getDescription()));
-				element.put("Datas","Montant : "+ String.valueOf(budgetSingle.getAmount()));
+				element.put("Datas",String.valueOf(budgetSingle.getAmount())+"-"+
+									String.valueOf(Budget.formatDate(budgetSingle.getDateBegin()))+"-"+
+									String.valueOf(Budget.formatDate(budgetSingle.getDateEnd()))+"-"+
+									String.valueOf(budgetSingle.getRecurrence().getDescription())+"-"+
+									String.valueOf(budgetSingle.getId_budget()));
 				Toast.makeText(BudgetList.this, String.valueOf(budgetSingle.getAmount()), Toast.LENGTH_LONG).show();
 				listeBudgets.add(element);
 			}

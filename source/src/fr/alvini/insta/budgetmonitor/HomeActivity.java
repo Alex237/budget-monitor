@@ -35,8 +35,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fr.alvini.insta.budgetmonitor.activities.A_propos;
 import fr.alvini.insta.budgetmonitor.activities.Aide;
-import fr.alvini.insta.budgetmonitor.activities.AjoutBudget;
+import fr.alvini.insta.budgetmonitor.activities.BudgetAdd;
 import fr.alvini.insta.budgetmonitor.activities.AjoutOperation;
+import fr.alvini.insta.budgetmonitor.activities.BudgetDetails;
 import fr.alvini.insta.budgetmonitor.activities.CategoryList;
 import fr.alvini.insta.budgetmonitor.activities.Exporter;
 import fr.alvini.insta.budgetmonitor.activities.Gerer;
@@ -612,11 +613,13 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 	 */
 	public static class BudgetSectionFragment extends Fragment {
 
+		private ListView mListBudget;
+		private BudgetDAO budDAO = null;
+		private List<String> listBudgetsDesc = null;
+		private List<Budget> listBudgets = null;
+		
 		private Button 	addBudgetBtn;
 		private Button changeBudgetBtn;
-
-
-		private ListView mListBudget;
 
 		String[] budgetText = {
 				"Budget de Janvier",
@@ -662,10 +665,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			this.addBudgetBtn = (Button) rootView.findViewById(R.id.addBudgetBtn);
 			this.addBudgetBtn.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View view) {
-					Toast.makeText(getActivity().getApplicationContext(),
-							"Hey !!  you touch me :D Add something" , Toast.LENGTH_LONG)
-							.show();
-					Intent unIntent = new Intent(getActivity(), AjoutBudget.class);
+//					Toast.makeText(getActivity().getApplicationContext(), "Hey !!  you touch me :D Add something" , Toast.LENGTH_LONG).show();
+					Intent unIntent = new Intent(getActivity(), BudgetAdd.class);
 					startActivity(unIntent);
 				}
 			});
@@ -673,9 +674,11 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			this.changeBudgetBtn = (Button) rootView.findViewById(R.id.changeBudgetBtn);
 			this.changeBudgetBtn.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View view) {
-					Toast.makeText(getActivity().getApplicationContext(),
-							"Buddah was a black dude" , Toast.LENGTH_LONG)
-							.show();
+//					Toast.makeText(getActivity().getApplicationContext(), "Buddah was a black dude" , Toast.LENGTH_LONG).show();
+					Intent getBudgetDetails = new Intent(getActivity(), BudgetDetails.class);
+					long id_budget = 1;
+					getBudgetDetails.putExtra("Id_budget", id_budget);
+					startActivity(getBudgetDetails);
 				}
 			});
 			return rootView;
