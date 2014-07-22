@@ -1,5 +1,9 @@
 package fr.alvini.insta.budgetmonitor.activities;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import fr.alvini.insta.budgetmonitor.HomeActivity;
 import fr.alvini.insta.budgetmonitor.R;
 import fr.alvini.insta.budgetmonitor.R.id;
@@ -15,11 +19,13 @@ import android.content.Intent;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -38,6 +44,8 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		"Dépense", "Revenu"};
 
 	private String choixCategorieUt;
+	private List<Category> categories = null;
+	private CategoryDAO catDAO = null;
 	//liste déroulante concernant l'opération 
 	static final String[] categorie = new String[]{
 		"Par défaut","Alimentation", "Bar", "Courses", "Divers", "Epargne",  "Impots", "Logement/Charges", "Salaire", "Transport"};
@@ -45,6 +53,8 @@ public class AjoutOperation extends Activity implements OnClickListener{
 	private EditText montant;
 	private EditText libelle;
 	private String recurrence;
+	private List<Recurrence> recurrents = null;
+	private RecurrenceDAO recDAO = null;
 	//liste déroulante concernant la récurrence 
 	static final String[] recurrent = new String[]{
 		"Aucune", "Quotidiennement", "Hebdomadairement", "Mensuel(le)", "Annuelle"};
@@ -58,7 +68,10 @@ public class AjoutOperation extends Activity implements OnClickListener{
 	private Button annuler;
 	private EditText ajoutCateg;
 	private String newCateg;
-
+	
+	private ArrayAdapter<String> adapterCategorie;
+	private Spinner choixCat;
+	private List<String> categoriesString = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +92,21 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		this.ajouterOperation.setOnClickListener(this);
 		this.show_popup.setOnClickListener(this);
 		this.annuler.setOnClickListener(this);
-
+	
+		recDAO = new RecurrenceDAO(AjoutOperation.this);
+        recurrents = recDAO.selectionnerAll();
+        List<String> recurrentsString = new ArrayList<String>();
+        for(Recurrence rec : recurrents) {
+        	recurrentsString.add(rec.getDescription());
+        }
+        
+        catDAO = new CategoryDAO(AjoutOperation.this);
+        categories = catDAO.selectionnerAll();
+        categoriesString = new ArrayList<String>();
+        for(Category cat : categories) {
+        	categoriesString.add(cat.getDescription());
+        }
+		
 
 		final Spinner choix = (Spinner) findViewById(R.id.choixUtilisateur);
 		// Create an ArrayAdapter using the string array and a default spinner layout
@@ -90,19 +117,18 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		choix.setAdapter(adapter);
 
 
-		final Spinner choixCat = (Spinner) findViewById(R.id.choixCategorie);
+		this.choixCat = (Spinner) findViewById(R.id.choixCategorie);
 		// Create an ArrayAdapter using the string array and a default spinner layout
-		ArrayAdapter<String> adapterCategorie = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categorie );
+		adapterCategorie = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoriesString );
 		// Specify the layout to use whintenten the list of choices appears
 		adapterCategorie.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
-		choixCat.setAdapter(adapterCategorie);
-
+		this.choixCat.setAdapter(adapterCategorie);
 
 
 		final Spinner repeter = (Spinner) findViewById(R.id.repeter);
 		// Create an ArrayAdapter using the string array and a default spinner layout
-		ArrayAdapter<String> adapterRecurrence = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, recurrent );
+		ArrayAdapter<String> adapterRecurrence = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, recurrentsString);
 		// Specify the layout to use whintenten the list of choices appears
 		adapterRecurrence.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
@@ -174,6 +200,9 @@ public class AjoutOperation extends Activity implements OnClickListener{
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		//getMenuInflater().inflate(R.menu.activity_main, menu);
+		MenuInflater inflater = getMenuInflater();
+		// Instanciation du menu XML sp�cifier en un objet Menu
+		inflater.inflate(R.menu.activity_menu, menu);
 		return true;
 	}
 
@@ -198,15 +227,26 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			CategoryDAO test = new CategoryDAO(this);
 			test.ajouter(choixCategorie);
 			Budget testBudget = new Budget();
-			//m'occuper de l'ajout de la date;
 			
-			//Operation operation = new Operation(testBudget, choixCategorie, montant, libelle, choixOperation, pDate_added, recurrence);
+			//m'occuper de l'ajout de la date;
+			Date date = new Date();
+		
+			
+//			Recurrence recurrenceChosen = new Recurrence();
+//			recurrenceChosen = recDAO.selectionnerParDescription(recurrence.toString());
+//			budgetToAdd.setRecurrence(recurrenceChosen);
+//			BudgetDAO budDAO = new BudgetDAO(AjoutBudget.this);
+//			budDAO.ajouter(budgetToAdd);
+			
+			
+			//List<Recurrence> selectionnerAll(); 
+			//Operation operation = new Operation(testBudget, choixCategorie, montant, libelle, choixOperation, date, recurrence, pRec_status)
 			
 			
 			this.startActivity(unIntent);
 		}
 
-		if(id == R.id.annuler){
+		if(id == R.id.annulerOperation){
 			System.exit(0);
 		}
 
@@ -245,6 +285,20 @@ public class AjoutOperation extends Activity implements OnClickListener{
 					// TODO Auto-generated method stub
 					newCateg = ajoutCateg.getText().toString();
 					//Toast.makeText(AjoutOperation.this, newCateg , Toast.LENGTH_LONG).show();
+					
+					Category categ = new Category(newCateg);
+					catDAO.ajouter(categ);
+					adapterCategorie.clear();
+			        categories = catDAO.selectionnerAll();
+			        //System.out.println("categorie après : "+categories);
+			        for(Category cat : categories) {
+			        	categoriesString.add(cat.getDescription());
+			        }
+					
+			        adapterCategorie.notifyDataSetChanged();
+			        System.out.println("test après : "+categoriesString);
+			        //choixCat.getAdapter();
+				
 					custom.dismiss();
 				}
 			});
