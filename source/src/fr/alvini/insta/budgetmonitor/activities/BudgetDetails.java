@@ -142,23 +142,21 @@ public class BudgetDetails extends Activity implements OnClickListener, OnDateCh
 		// TODO Auto-generated method stub
 		int id = v.getId();
 		if (id == R.id.btn_budget_update) {
-			Budget budgetToModify = new Budget();
-			budgetToModify.setDescription(description.getText().toString());
-			budgetToModify.setAmount(Double.valueOf(this.amount.getText()
-					.toString()));
-			budgetToModify.setDateBegin(dateBegin);
-			budgetToModify.setDateEnd(dateEnd);
+//			BudgetDAO budDAO = new BudgetDAO(BudgetDetails.this);
+			getBudget.setDescription(description.getText().toString());
+			getBudget.setAmount(Double.valueOf(this.amount.getText().toString()));
+			getBudget.setDateBegin(dateBegin);
+			getBudget.setDateEnd(dateEnd);
 			Recurrence recurrenceChosen = new Recurrence();
 			for(Recurrence recurr : recurrents) {
 				if (recurr.getId_recurrence() == id_recurrence)
 					recurrenceChosen = recurr;
 			}
-			budgetToModify.setRecurrence(recurrenceChosen);
-			Toast.makeText(BudgetDetails.this, String.valueOf(budgetToModify.getRecurrence().getId_recurrence()), Toast.LENGTH_LONG).show();
-			BudgetDAO budDAO = new BudgetDAO(BudgetDetails.this);
-			budDAO.modifier(budgetToModify);
-
-			System.exit(0);
+			getBudget.setRecurrence(recurrenceChosen);
+			Toast.makeText(BudgetDetails.this, String.valueOf(getBudget.getRecurrence().getId_recurrence()), Toast.LENGTH_LONG).show();
+//			budDao.modifier(getBudget);
+//
+//			System.exit(0);
 //			Intent unIntent = new Intent(this, HomeActivity.class);
 //			this.startActivity(unIntent);
 

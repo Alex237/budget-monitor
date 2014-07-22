@@ -109,11 +109,11 @@ public class BudgetAdd extends Activity implements OnClickListener, OnDateChange
 	@Override
 	public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 		if (view.getId() == R.id.budget_add_date_begin_datePicker) {
-			System.out.println("Date debut modifiée");
+//			System.out.println("Date debut modifiée");
 			dateBegin = new GregorianCalendar(date_begin.getYear(), date_begin.getMonth(), date_begin.getDayOfMonth());
 		}
 		if (view.getId() == R.id.budget_add_date_end_datePicker) {
-			System.out.println("Date fin modifiée");
+//			System.out.println("Date fin modifiée");
 			dateEnd = new GregorianCalendar(date_end.getYear(), date_end.getMonth(), date_end.getDayOfMonth());
 		}
 	}
