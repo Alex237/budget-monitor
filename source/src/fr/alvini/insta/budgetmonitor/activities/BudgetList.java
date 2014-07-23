@@ -13,11 +13,14 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import fr.alvini.insta.budgetmonitor.R;
 import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
+import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
 import fr.alvini.insta.budgetmonitor.model.Budget;
+import fr.alvini.insta.budgetmonitor.model.ObjectModel;
 
 public class BudgetList extends Activity {
 	ListView listeBudget = null;
 	BudgetDAO budDAO = null;
+	RecurrenceDAO recDAO = null;
 	List<Budget> listBudgets = null;
 
 	@Override
@@ -43,11 +46,13 @@ public class BudgetList extends Activity {
 			int i = 0;
 			HashMap<String, String> element;
 			for (Budget budgetSingle : listBudgets) {
+				recDAO = new RecurrenceDAO(BudgetList.this);
+				budgetSingle.setRecurrence(recDAO.selectionner(budgetSingle.getRecurrence().getId_recurrence()));
 				element = new HashMap<String, String>();
 				element.put("IdBudget", "Budget : "+String.valueOf(budgetSingle.getDescription()));
 				element.put("Datas",String.valueOf(budgetSingle.getAmount())+"-"+
-									String.valueOf(Budget.formatDate(budgetSingle.getDateBegin(),false))+"-"+
-									String.valueOf(Budget.formatDate(budgetSingle.getDateEnd(),false))+"-"+
+									String.valueOf(ObjectModel.formatDate(budgetSingle.getDateBegin(),false))+"-"+
+									String.valueOf(ObjectModel.formatDate(budgetSingle.getDateEnd(),false))+"-"+
 									String.valueOf(budgetSingle.getRecurrence().getDescription())+"-"+
 									String.valueOf(budgetSingle.getId_budget()));
 				Toast.makeText(BudgetList.this, String.valueOf(budgetSingle.getAmount()), Toast.LENGTH_LONG).show();

@@ -4,10 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database extends SQLiteOpenHelper{
+	// Si je décide de la mettre à jour, il faudra changer cet attribut
+	protected final static int VERSION = 1;
+	// Le nom du fichier qui représente la base de données
+	protected final static String NOM = "BudgetMonitorDBTemp.db";
+
+	
 	protected static Database instance;
 	protected static boolean boo;
 	
@@ -92,12 +97,14 @@ public class Database extends SQLiteOpenHelper{
 	}
 	*/
 
-	public Database(Context context, String name, CursorFactory factory, int version) {
-		super(context, name, factory, version);
+	public Database(Context context) {
+		super(context, NOM, null, VERSION);
+		System.out.println("Constructeur DB");
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		System.out.println("Create DB");
 		db.execSQL(RECURRENCE_CREATION);
 		db.execSQL(PARAMETER_CREATION);
 		db.execSQL(BUDGET_CREATION);
@@ -109,6 +116,7 @@ public class Database extends SQLiteOpenHelper{
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		System.out.println("Upgrade DB");
 		db.execSQL(RECURRENCE_DROP);
 		db.execSQL(PARAMETER_DROP);
 		db.execSQL(BUDGET_DROP);

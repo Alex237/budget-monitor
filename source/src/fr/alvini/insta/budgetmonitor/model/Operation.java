@@ -1,7 +1,6 @@
 package fr.alvini.insta.budgetmonitor.model;
 
 import java.util.GregorianCalendar;
-import java.util.GregorianCalendar;
 
 public class Operation extends ObjectModel {
 	protected long id_operation;
@@ -18,22 +17,32 @@ public class Operation extends ObjectModel {
 		super();
 	}
 	
-	public Operation(Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, GregorianCalendar pGregorianCalendar_added, Recurrence pRecurrence, int pRec_status) {
+	public Operation(double pAmount, String pDescription, String pType, GregorianCalendar pGregorianCalendar_added, int pRec_status) {
 		this();
-		this.setBudget(pBudget);
-		this.setCategory(pCategory);
 		this.setAmount(pAmount);
 		this.setDescription(pDescription);
 		this.setType(pType);
 		this.setDate_added(pGregorianCalendar_added);
-		this.setRecurrence(pRecurrence);
 		this.setRecurrence_status(pRec_status);
+	}
+	
+	public Operation(long pId_operation, double pAmount, String pDescription, String pType, GregorianCalendar pGregorianCalendar_added, int pRec_status) {
+		this(pAmount, pDescription, pType, pGregorianCalendar_added, pRec_status);
+		this.setId_operation(pId_operation);
+	}
+	
+	public Operation(Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, GregorianCalendar pGregorianCalendar_added, Recurrence pRecurrence, int pRec_status) {
+		this(pAmount, pDescription, pType, pGregorianCalendar_added, pRec_status);
+		this.setBudget(pBudget);
+		this.setCategory(pCategory);
+		this.setRecurrence(pRecurrence);
 	}
 	
 	public Operation(long pId_operation, Budget pBudget, Category pCategory, double pAmount, String pDescription, String pType, GregorianCalendar pGregorianCalendar_added, Recurrence pRecurrence, int pRec_status) {
 		this(pBudget, pCategory, pAmount, pDescription, pType, pGregorianCalendar_added, pRecurrence, pRec_status);
 		this.setId_operation(pId_operation);
 	}
+
 
 	/**
 	 * @return the id_operation

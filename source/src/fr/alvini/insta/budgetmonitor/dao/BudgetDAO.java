@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import fr.alvini.insta.budgetmonitor.bdd.Database;
 import fr.alvini.insta.budgetmonitor.model.Budget;
+import fr.alvini.insta.budgetmonitor.model.ObjectModel;
 import fr.alvini.insta.budgetmonitor.model.Recurrence;
 
 public class BudgetDAO extends DAOBase {
@@ -41,8 +42,8 @@ public class BudgetDAO extends DAOBase {
 	 */
 	public void ajouter(Budget budget) {
 		super.open();
-		String dateBegin = Budget.formatDate(budget.getDateBegin(),true);
-		String dateEnd = Budget.formatDate(budget.getDateEnd(),true);
+		String dateBegin = ObjectModel.formatDate(budget.getDateBegin(),true);
+		String dateEnd = ObjectModel.formatDate(budget.getDateEnd(),true);
 		System.out.println("Dans ajouter dateBegin: "+dateBegin+" - dateEnd: "+dateEnd);
 
 		ContentValues values = new ContentValues();
@@ -77,8 +78,8 @@ public class BudgetDAO extends DAOBase {
 	public void modifier(Budget budget) {
 		super.open();
 		System.out.println("Avant String dans modifier dateBegin: "+budget.getDateBegin().get(Calendar.YEAR)+budget.getDateBegin().get(Calendar.MONTH)+budget.getDateBegin().get(Calendar.DAY_OF_MONTH)+" - dateEnd: "+budget.getDateEnd().get(Calendar.YEAR)+budget.getDateEnd().get(Calendar.MONTH)+budget.getDateEnd().get(Calendar.DAY_OF_MONTH));
-		String dateBegin = Budget.formatDate(budget.getDateBegin(),true);
-		String dateEnd = Budget.formatDate(budget.getDateEnd(),true);
+		String dateBegin = ObjectModel.formatDate(budget.getDateBegin(),true);
+		String dateEnd = ObjectModel.formatDate(budget.getDateEnd(),true);
 		System.out.println("Dans modifier dateBegin: "+dateBegin+" - dateEnd: "+dateEnd);
 
 		ContentValues values = new ContentValues();
@@ -96,9 +97,9 @@ public class BudgetDAO extends DAOBase {
 	/**
 	 * @param id
 	 *            l'identifiant du m�tier � r�cup�rer
-	 * @throws ParseException 
+	 * 
 	 */
-	public Budget selectionner(long id) throws ParseException {
+	public Budget selectionner(long id) {
 		super.open();
 		String sql = "SELECT "+Database.BUDGET_KEY+" as _id, "
 						+Database.BUDGET_DESCRIPTION+ ", "
@@ -118,15 +119,15 @@ public class BudgetDAO extends DAOBase {
 			double amount = cursor.getDouble(2);
 
 			String date_begin_str = cursor.getString(3);
-			GregorianCalendar date_begin = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_begin_str)), Integer.valueOf(Budget.getDateElement("month", date_begin_str)), Integer.valueOf(Budget.getDateElement("day", date_begin_str)));
+			GregorianCalendar date_begin = new GregorianCalendar(Integer.valueOf(ObjectModel.getDateElement("year", date_begin_str)), Integer.valueOf(ObjectModel.getDateElement("month", date_begin_str)), Integer.valueOf(ObjectModel.getDateElement("day", date_begin_str)));
 			
 			String date_end_str = cursor.getString(4);
-			GregorianCalendar date_end = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_end_str)), Integer.valueOf(Budget.getDateElement("month", date_end_str)), Integer.valueOf(Budget.getDateElement("day", date_end_str)));
+			GregorianCalendar date_end = new GregorianCalendar(Integer.valueOf(ObjectModel.getDateElement("year", date_end_str)), Integer.valueOf(ObjectModel.getDateElement("month", date_end_str)), Integer.valueOf(ObjectModel.getDateElement("day", date_end_str)));
 
-			Recurrence recurrence = null;
+			Recurrence recurrence = new Recurrence();
 			if (cursor.getInt(5) != 0) {
-				RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
-				recurrence = recDAO.selectionner(cursor.getInt(5));
+//				RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
+				recurrence.setId_recurrence(cursor.getInt(5));
 			}
 			//System.out.println("Results are : "+cursor.getLong(0)+" / "+cursor.getString(1)+" / "+cursor.getFloat(2)+".");
 			budget = new Budget(id_budget, description, amount, date_begin, date_end, recurrence);
@@ -162,15 +163,15 @@ public class BudgetDAO extends DAOBase {
 				double amount = cursor.getDouble(2);
 				
 				String date_begin_str = cursor.getString(3);
-				GregorianCalendar date_begin = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_begin_str)), Integer.valueOf(Budget.getDateElement("month", date_begin_str)), Integer.valueOf(Budget.getDateElement("day", date_begin_str)));
+				GregorianCalendar date_begin = new GregorianCalendar(Integer.valueOf(ObjectModel.getDateElement("year", date_begin_str)), Integer.valueOf(ObjectModel.getDateElement("month", date_begin_str)), Integer.valueOf(ObjectModel.getDateElement("day", date_begin_str)));
 				
 				String date_end_str = cursor.getString(4);
-				GregorianCalendar date_end = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_end_str)), Integer.valueOf(Budget.getDateElement("month", date_end_str)), Integer.valueOf(Budget.getDateElement("day", date_end_str)));
+				GregorianCalendar date_end = new GregorianCalendar(Integer.valueOf(ObjectModel.getDateElement("year", date_end_str)), Integer.valueOf(ObjectModel.getDateElement("month", date_end_str)), Integer.valueOf(ObjectModel.getDateElement("day", date_end_str)));
 				
-				Recurrence recurrence = null;
+				Recurrence recurrence = new Recurrence();
 				if (cursor.getInt(5) != 0) {
-					RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
-					recurrence = recDAO.selectionner(cursor.getInt(5));
+//					RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
+					recurrence.setId_recurrence(cursor.getInt(5));
 				}
 				//System.out.println("Results are : "+cursor.getLong(0)+" / "+cursor.getString(1)+" / "+cursor.getFloat(2)+".");
 				budget = new Budget(id_budget, description, amount, date_begin, date_end, recurrence);

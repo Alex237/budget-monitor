@@ -1,6 +1,5 @@
 package fr.alvini.insta.budgetmonitor.activities;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -23,7 +22,6 @@ import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 import fr.alvini.insta.budgetmonitor.HomeActivity;
 import fr.alvini.insta.budgetmonitor.R;
 import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
@@ -60,12 +58,8 @@ public class BudgetDetails extends Activity implements OnClickListener, OnDateCh
 		long id_budget = intentPassed.getLongExtra("Id_budget", -1);
 		if (id_budget != -1) {
 			budDao = new BudgetDAO(BudgetDetails.this);
-			try {
-				getBudget = budDao.selectionner(id_budget);
-				System.out.println(getBudget.getId_budget());
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			getBudget = budDao.selectionner(id_budget);
+			System.out.println(getBudget.getId_budget());
 		} else {
 			getBudget = new Budget();
 		}

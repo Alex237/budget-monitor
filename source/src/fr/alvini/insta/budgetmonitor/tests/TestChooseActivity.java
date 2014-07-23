@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import fr.alvini.insta.budgetmonitor.R;
-import fr.alvini.insta.budgetmonitor.activities.CategoryList;
 
 public class TestChooseActivity extends Activity{
 	private ListView listChoose = null;

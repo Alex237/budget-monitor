@@ -49,8 +49,6 @@ import android.view.animation.LinearInterpolator;
 import java.util.ArrayList;
 
 import fr.alvini.insta.budgetmonitor.R;
-import fr.alvini.insta.budgetmonitor.R.drawable;
-import fr.alvini.insta.budgetmonitor.R.styleable;
 
 public class BarGraph extends View implements HoloGraphAnimate {
 

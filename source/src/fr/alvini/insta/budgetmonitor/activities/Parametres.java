@@ -9,11 +9,8 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 import fr.alvini.insta.budgetmonitor.HomeActivity;
 import fr.alvini.insta.budgetmonitor.R;
-import fr.alvini.insta.budgetmonitor.R.id;
-import fr.alvini.insta.budgetmonitor.R.layout;
 
 public class Parametres extends Activity implements OnClickListener{
 

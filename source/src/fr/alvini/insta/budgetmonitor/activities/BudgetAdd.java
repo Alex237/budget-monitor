@@ -18,7 +18,6 @@ import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 import fr.alvini.insta.budgetmonitor.R;
 import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
 import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
@@ -69,6 +68,7 @@ public class BudgetAdd extends Activity implements OnClickListener, OnDateChange
 		dateEnd = new GregorianCalendar(date_end.getYear(), date_end.getMonth(), date_end.getDayOfMonth());
 
 		recDAO = new RecurrenceDAO(BudgetAdd.this);
+		recDAO.open();
 		recurrents = recDAO.selectionnerAll();
 		final List<Long> recurrentsIds = new ArrayList<Long>();
 		List<String> recurrentsString = new ArrayList<String>();

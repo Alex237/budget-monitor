@@ -1,9 +1,7 @@
 package fr.alvini.insta.budgetmonitor.dao;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -13,6 +11,7 @@ import android.database.Cursor;
 import fr.alvini.insta.budgetmonitor.bdd.Database;
 import fr.alvini.insta.budgetmonitor.model.Budget;
 import fr.alvini.insta.budgetmonitor.model.Category;
+import fr.alvini.insta.budgetmonitor.model.ObjectModel;
 import fr.alvini.insta.budgetmonitor.model.Operation;
 import fr.alvini.insta.budgetmonitor.model.Recurrence;
 
@@ -44,7 +43,7 @@ public class OperationDAO extends DAOBase {
 	public void ajouter(Operation operation) {
 		super.open();
 		ContentValues values = new ContentValues();
-		String date_added = Operation.formatDate(operation.getDate_added(), true);
+		String date_added = ObjectModel.formatDate(operation.getDate_added(), true);
 		values.put(Database.OPERATION_DESCRIPTION, operation.getDescription());
 		values.put(Database.OPERATION_TYPE, operation.getType());
 		values.put(Database.OPERATION_AMOUNT, operation.getAmount());
@@ -80,7 +79,7 @@ public class OperationDAO extends DAOBase {
 	public void modifier(Operation operation) {
 		super.open();
 		ContentValues values = new ContentValues();
-		String date_added = Operation.formatDate(operation.getDate_added(), true);
+		String date_added = ObjectModel.formatDate(operation.getDate_added(), true);
 		values.put(Database.OPERATION_DESCRIPTION, operation.getDescription());
 		values.put(Database.OPERATION_TYPE, operation.getType());
 		values.put(Database.OPERATION_AMOUNT, operation.getAmount());
@@ -128,25 +127,25 @@ public class OperationDAO extends DAOBase {
 			double amount = cursor.getDouble(3);
 			
 			String date_added_str = cursor.getString(4);
-			GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_added_str)), Integer.valueOf(Budget.getDateElement("month", date_added_str)), Integer.valueOf(Budget.getDateElement("day", date_added_str)));
+			GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(ObjectModel.getDateElement("year", date_added_str)), Integer.valueOf(ObjectModel.getDateElement("month", date_added_str)), Integer.valueOf(ObjectModel.getDateElement("day", date_added_str)));
 			
 			
-			Budget budget = null;
+			Budget budget = new Budget();
 			if (cursor.getLong(5) != 0) {
-				BudgetDAO budDAO = new BudgetDAO(this.getContext());
-				budget = budDAO.selectionner(cursor.getLong(5));
+//				BudgetDAO budDAO = new BudgetDAO(this.getContext());
+				budget.setId_budget(cursor.getLong(5));
 			}
 			
-			Category category = null;
+			Category category = new Category();
 			if (cursor.getLong(6) != 0) {
-				CategoryDAO catDAO = new CategoryDAO(this.getContext());
-				category = catDAO.selectionner(cursor.getLong(6));
+//				CategoryDAO catDAO = new CategoryDAO(this.getContext());
+				category.setId_category(cursor.getLong(6));
 			}
 			
-			Recurrence recurrence = null;
+			Recurrence recurrence = new Recurrence();
 			if (cursor.getInt(7) != 0) {
-				RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
-				recurrence = recDAO.selectionner(cursor.getLong(7));
+//				RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
+				recurrence.setId_recurrence(cursor.getLong(7));
 			}
 			Integer rec_status = cursor.getInt(8);
 			operation = new Operation(id_operation, budget, category, amount, description, type, date_added, recurrence, rec_status);
@@ -163,6 +162,9 @@ public class OperationDAO extends DAOBase {
 	 */
 	public List<Operation> selectionnerAll() throws ParseException {
 		List<Operation> list = new ArrayList<Operation>();
+		int id_budget = -1;
+		long id_category = -1;
+		long id_recurrence = -1;
 		super.open();
 		String sql = "SELECT "+Database.OPERATION_KEY+" as _id, "
 						+Database.OPERATION_DESCRIPTION+ ", "
@@ -186,27 +188,25 @@ public class OperationDAO extends DAOBase {
 				double amount = cursor.getDouble(3);
 				
 				String date_added_str = cursor.getString(4);
-				System.out.println(date_added_str);
-				GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_added_str)), Integer.valueOf(Budget.getDateElement("month", date_added_str)), Integer.valueOf(Budget.getDateElement("day", date_added_str)));
+//				System.out.println(date_added_str);
+				GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(ObjectModel.getDateElement("year", date_added_str)), Integer.valueOf(ObjectModel.getDateElement("month", date_added_str)), Integer.valueOf(ObjectModel.getDateElement("day", date_added_str)));
 				
-				Budget budget = null;
-				System.out.println(cursor.getInt(5));
-				if (cursor.getInt(5) != 0) {
-					BudgetDAO budDAO = new BudgetDAO(this.getContext());
-					System.out.println("Tests :"+budDAO.toString());
-					budget = budDAO.selectionner(cursor.getInt(5));
+				Budget budget = new Budget();
+				if (cursor.getLong(5) != 0) {
+//					BudgetDAO budDAO = new BudgetDAO(this.getContext());
+					budget.setId_budget(cursor.getLong(5));
 				}
 				
-				Category category = null;
-				if (cursor.getInt(6) != 0) {
-					CategoryDAO catDAO = new CategoryDAO(this.getContext());
-					category = catDAO.selectionner(cursor.getInt(6));
+				Category category = new Category();
+				if (cursor.getLong(6) != 0) {
+//					CategoryDAO catDAO = new CategoryDAO(this.getContext());
+					category.setId_category(cursor.getLong(6));
 				}
 				
-				Recurrence recurrence = null;
+				Recurrence recurrence = new Recurrence();
 				if (cursor.getInt(7) != 0) {
-					RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
-					recurrence = recDAO.selectionner(cursor.getInt(7));
+//					RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
+					recurrence.setId_recurrence(cursor.getLong(7));
 				}
 				Integer rec_status = cursor.getInt(8);
 				operation = new Operation(id_operation, budget, category, amount, description, type, date_added, recurrence, rec_status);
@@ -247,25 +247,24 @@ public class OperationDAO extends DAOBase {
 			double amount = cursor.getDouble(3);
 			
 			String date_added_str = cursor.getString(4);
-			GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(Budget.getDateElement("year", date_added_str)), Integer.valueOf(Budget.getDateElement("month", date_added_str)), Integer.valueOf(Budget.getDateElement("day", date_added_str)));
+			GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(ObjectModel.getDateElement("year", date_added_str)), Integer.valueOf(ObjectModel.getDateElement("month", date_added_str)), Integer.valueOf(ObjectModel.getDateElement("day", date_added_str)));
 			
-			
-			Budget budget = null;
+			Budget budget = new Budget();
 			if (cursor.getLong(5) != 0) {
-				BudgetDAO budDAO = new BudgetDAO(this.getContext());
-				budget = budDAO.selectionner(cursor.getLong(5));
+//				BudgetDAO budDAO = new BudgetDAO(this.getContext());
+				budget.setId_budget(cursor.getLong(5));
 			}
 			
-			Category category = null;
+			Category category = new Category();
 			if (cursor.getLong(6) != 0) {
-				CategoryDAO catDAO = new CategoryDAO(this.getContext());
-				category = catDAO.selectionner(cursor.getLong(6));
+//				CategoryDAO catDAO = new CategoryDAO(this.getContext());
+				category.setId_category(cursor.getLong(6));
 			}
 			
-			Recurrence recurrence = null;
+			Recurrence recurrence = new Recurrence();
 			if (cursor.getInt(7) != 0) {
-				RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
-				recurrence = recDAO.selectionner(cursor.getLong(7));
+//				RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
+				recurrence.setId_recurrence(cursor.getLong(7));
 			}
 			Integer rec_status = cursor.getInt(8);
 			operation = new Operation(id_operation, budget, category, amount, description, type, date_added, recurrence, rec_status);

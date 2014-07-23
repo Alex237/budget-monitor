@@ -1,8 +1,5 @@
 package fr.alvini.insta.budgetmonitor.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.alvini.insta.budgetmonitor.bdd.Database;
 import fr.alvini.insta.budgetmonitor.model.Parameter;
 import android.content.ContentValues;

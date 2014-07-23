@@ -1,7 +1,5 @@
 package fr.alvini.insta.budgetmonitor.adaptater;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -36,8 +36,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fr.alvini.insta.budgetmonitor.activities.A_propos;
 import fr.alvini.insta.budgetmonitor.activities.Aide;
-import fr.alvini.insta.budgetmonitor.activities.BudgetAdd;
 import fr.alvini.insta.budgetmonitor.activities.AjoutOperation;
+import fr.alvini.insta.budgetmonitor.activities.BudgetAdd;
 import fr.alvini.insta.budgetmonitor.activities.BudgetDetails;
 import fr.alvini.insta.budgetmonitor.activities.CategoryList;
 import fr.alvini.insta.budgetmonitor.activities.Exporter;
@@ -46,17 +46,16 @@ import fr.alvini.insta.budgetmonitor.activities.MentionsLegales;
 import fr.alvini.insta.budgetmonitor.activities.Parametres;
 import fr.alvini.insta.budgetmonitor.adaptater.CustomList;
 import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
+import fr.alvini.insta.budgetmonitor.dao.CategoryDAO;
 import fr.alvini.insta.budgetmonitor.dao.OperationDAO;
 import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
 import fr.alvini.insta.budgetmonitor.model.Budget;
 import fr.alvini.insta.budgetmonitor.model.Operation;
-import fr.alvini.insta.budgetmonitor.model.Recurrence;
 import fr.alvini.insta.holographlib.PieGraph;
 import fr.alvini.insta.holographlib.PieSlice;
 
 public class HomeActivity extends FragmentActivity implements ActionBar.TabListener {
 
-	public Spinner testSpinner;
 	private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	private ViewPager mViewPager;
 	private Resources stringRessource;
@@ -122,12 +121,14 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				R.string.drawer_open, /* "open drawer" description for accessibility */
 				R.string.drawer_close /* "close drawer" description for accessibility */
 				) {
+			@Override
 			public void onDrawerClosed(View view) {
 				// getActionBar().setTitle(mTitle);
 				invalidateOptionsMenu(); // creates call to
 				// onPrepareOptionsMenu()
 			}
 
+			@Override
 			public void onDrawerOpened(View drawerView) {
 				// getActionBar().setTitle(mDrawerTitle);
 				invalidateOptionsMenu(); // creates call to
@@ -450,37 +451,37 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			PieSlice slice = new PieSlice();
 			slice.setColor(Color.parseColor("#5A90BE"));
 			slice.setValue(2);
-			slice.setGoalValue((float) 50);
+			slice.setGoalValue(50);
 			pg.addSlice(slice);
 
 			slice = new PieSlice();
 			slice.setColor(Color.parseColor("#B58EAD"));
 			slice.setValue(2);
-			slice.setGoalValue((float) 10);
+			slice.setGoalValue(10);
 			pg.addSlice(slice);
 
 			slice = new PieSlice();
 			slice.setColor(Color.parseColor("#D1866F"));
 			slice.setValue(2);
-			slice.setGoalValue((float) 10);
+			slice.setGoalValue(10);
 			pg.addSlice(slice);
 
 			slice = new PieSlice();
 			slice.setColor(Color.parseColor("#AA7968"));
 			slice.setValue(2);
-			slice.setGoalValue((float) 10);
+			slice.setGoalValue(10);
 			pg.addSlice(slice);
 
 			slice = new PieSlice();
 			slice.setColor(Color.parseColor("#A2BE8D"));
 			slice.setValue(2);
-			slice.setGoalValue((float) 10);
+			slice.setGoalValue(10);
 			pg.addSlice(slice);
 
 			slice = new PieSlice();
 			slice.setColor(Color.parseColor("#96B6B3"));
 			slice.setValue(2);
-			slice.setGoalValue((float) 10);
+			slice.setGoalValue(10);
 			pg.addSlice(slice);
 
 			pg.setInnerCircleRatio(150);
@@ -543,6 +544,10 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		private Button changOperationBtn;
 		private List<Operation> operations = null;
 		private OperationDAO opDao = null ;
+		private BudgetDAO budDAO = null;
+		private CategoryDAO catDAO = null;
+		private RecurrenceDAO recDAO = null;
+		private ListView listView = null;
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -552,22 +557,22 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			Bundle args = getArguments();
 
 			// Get ListView object from xml
-			final ListView listView = (ListView) rootView.findViewById(R.id.listViewOperation);
+			listView = (ListView) rootView.findViewById(R.id.listViewOperation);
 
 			// Defined Array values to show in ListView
-//			String[] values = new String[] { "Menace de Black Buddah", 
-//					"Rancon de Rasta Buddah",
-//					"Recidive de Buddah",
-//					"Corruption des moines tibetins", 
-//					"Fake Example", 
-//					"Fake fake fake", 
-//					"Rasta Buddah Destiny", 
-//					"Black Buddah Power !" 
-//			};
-			opDao = new OperationDAO(getActivity().getApplicationContext());
+			String[] values = new String[] { "Menace de Black Buddah", 
+					"Rancon de Rasta Buddah",
+					"Recidive de Buddah",
+					"Corruption des moines tibetins", 
+					"Fake Example", 
+					"Fake fake fake", 
+					"Rasta Buddah Destiny", 
+					"Black Buddah Power !" 
+			};
+			opDao = new OperationDAO(rootView.getContext());
 			try {
 				operations = opDao.selectionnerAll();
-				System.out.println(operations);
+//				System.out.println(operations);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -575,24 +580,29 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			
 			ArrayList<String> operationsString = new ArrayList<String>();
 	        
-	        
-	        if (operationsString.size() > 0) {
-	        	for(Operation op : operations) {
+			if (operations.size() > 0) {
+		        for(Operation op : operations) {
+		        	budDAO = new BudgetDAO(rootView.getContext());
+		        	op.setBudget(budDAO.selectionner(op.getBudget().getId_budget()));
+		        	catDAO = new CategoryDAO(rootView.getContext());
+		        	op.setCategory(catDAO.selectionner(op.getCategory().getId_category()));
+		        	recDAO = new RecurrenceDAO(rootView.getContext());
+		        	op.setRecurrence(recDAO.selectionner(op.getRecurrence().getId_recurrence()));
 		        	operationsString.add(op.getDescription());
 		        }
-			}else{
-				operationsString.add("Il n'y a rien à afficher");
-			}
-	        ((TextView) rootView.findViewById(R.id.montantRestantText))
-			.setText(getString(R.string.operation_reamining, 0));
+	        } else {
+	        	for(String val : values) {
+	        		operationsString.add(val);
+	        	}
+	        }
+
 			// Define a new Adapter
 			// First parameter - Context
 			// Second parameter - Layout for the row
 			// Third parameter - ID of the TextView to which the data is written
 			// Forth - the Array of data
-			//ArrayAdapter<String> adaptater = new ArrayAdapter<String>(getActivity(), android.R.id.text1, values);
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-					android.R.layout.simple_list_item_1, android.R.id.text1, operationsString);
+//			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.id.text1, values);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, operationsString);
 
 
 			// Assign adapter to ListView
@@ -622,6 +632,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 
 			this.addOperationBtn = (Button) rootView.findViewById(R.id.addOperation);
 			this.addOperationBtn.setOnClickListener(new View.OnClickListener() {
+				@Override
 				public void onClick(View view) {
 					Toast.makeText(getActivity().getApplicationContext(),
 							"Hey !!  you touch me :D Add something" , Toast.LENGTH_LONG)
@@ -633,6 +644,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 
 			this.changOperationBtn = (Button) rootView.findViewById(R.id.changeOperation);
 			this.changOperationBtn.setOnClickListener(new View.OnClickListener() {
+				@Override
 				public void onClick(View view) {
 					Toast.makeText(getActivity().getApplicationContext(),
 							"Buddah was a black dude" , Toast.LENGTH_LONG)
@@ -653,8 +665,9 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		private BudgetDAO budDAO = null;
 		private List<String> listBudgetsDesc = null;
 		private List<Budget> listBudgets = null;
-//		private Spinner spinnerBudget;
-		private TextView spinnerBudget;
+//		private TextView spinnerBudget;
+		private Spinner spinnerBudget;
+//		private TextView spinnerBudget;
 		
 		private Button 	addBudgetBtn;
 		private Button changeBudgetBtn;
@@ -666,8 +679,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				"I don't know why...",
 				"Budget de Mais",
 				"Budget de Juin",
-				"Budget de Juillet"
-		};
+				"Budget de Juillet",
+		} ;
 
 		Double[] prix = {
 				1200.00,
@@ -692,41 +705,23 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			
-			budDAO = new BudgetDAO(container.getContext());
-			listBudgetsDesc = new ArrayList<String>();
-			try {
-				listBudgets = budDAO.selectionnerAll();
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (listBudgets.size() > 0) {
-				for(Budget budget : listBudgets) {
-					listBudgetsDesc.add(budget.getDescription());
-				}
-				for(String test : budgetText) {
-					listBudgetsDesc.add(test);
-				}
-			}
-			
 			View rootView = inflater.inflate(R.layout.fragment_section_budget, container, false);
-			Bundle args = getArguments();
+			//Bundle args = getArguments();
 
-//			budgets = new Spinner(getActivity());
-//			spinnerBudget = (Spinner)rootView.findViewById(R.id.budgetsSpinnerHomeActivity);
 			
-			spinnerBudget = (TextView)rootView.findViewById(R.id.budgetsSpinnerHomeActivity);
+			
+//			spinnerBudget = (TextView)rootView.findViewById(R.id.budgetsSpinnerHomeActivity);
 //			Toast.makeText(getActivity().getApplicationContext(), "Il y a quelque chose "+String.valueOf(spinnerBudget.getText()), Toast.LENGTH_LONG).show();				
 			
 //			budgets = (Spinner) rootView.findViewById(R.id.listBudgetsSpinner);
 			this.mListBudget = (ListView) rootView.findViewById(R.id.listViewBudget);
-//			CustomList adapterBudget = new CustomList(getActivity(), budgetText, iconBudget);
-			CustomListBis adapterBudget = new CustomListBis(getActivity(), listBudgetsDesc, iconBudget);
+			CustomList adapterBudget = new
+					CustomList(getActivity(), budgetText, iconBudget);
 			this.mListBudget.setAdapter(adapterBudget);
 
 			this.addBudgetBtn = (Button) rootView.findViewById(R.id.addBudgetBtn);
 			this.addBudgetBtn.setOnClickListener(new View.OnClickListener() {
+				@Override
 				public void onClick(View view) {
 //					Toast.makeText(getActivity().getApplicationContext(), "Hey !!  you touch me :D Add something" , Toast.LENGTH_LONG).show();
 					Intent unIntent = new Intent(getActivity(), BudgetAdd.class);
@@ -736,6 +731,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 
 			this.changeBudgetBtn = (Button) rootView.findViewById(R.id.changeBudgetBtn);
 			this.changeBudgetBtn.setOnClickListener(new View.OnClickListener() {
+				@Override
 				public void onClick(View view) {
 //					Toast.makeText(getActivity().getApplicationContext(), "Buddah was a black dude" , Toast.LENGTH_LONG).show();
 					Intent getBudgetDetails = new Intent(getActivity(), BudgetDetails.class);
@@ -744,6 +740,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					startActivity(getBudgetDetails);
 				}
 			});
+			
 			
 			budDAO = new BudgetDAO(getActivity().getApplicationContext());
 			try {
@@ -763,7 +760,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				budgetsString.add("Choisir");
 				budgetsString.add("Ajouter un budget");
 			}
-			
+			spinnerBudget = (Spinner)rootView.findViewById(R.id.budgetsSpinnerHomeActivity);
 			// Create an ArrayAdapter using the string array and a default spinner
 			// layout
 			ArrayAdapter<String> adapterBudgets = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, budgetsString);
@@ -772,10 +769,9 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			
 //			Toast.makeText(getActivity().getApplicationContext(), String.valueOf(adapterBudgets.getCount()), Toast.LENGTH_LONG).show();
 			// Apply the adapter to the spinner
-//			spinnerBudget.setAdapter(adapterBudgets);
+			spinnerBudget.setAdapter(adapterBudgets);
 			
 			return rootView;
-			
 		}
 	}
 

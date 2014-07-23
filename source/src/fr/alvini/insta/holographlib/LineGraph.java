@@ -43,7 +43,6 @@ import android.view.View;
 import java.util.ArrayList;
 
 import fr.alvini.insta.budgetmonitor.R;
-import fr.alvini.insta.budgetmonitor.R.styleable;
 
 public class LineGraph extends View {
 

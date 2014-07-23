@@ -2,7 +2,6 @@ package fr.alvini.insta.budgetmonitor.activities;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -283,6 +282,7 @@ public class ModifierOperation extends Activity implements OnClickListener{
 					final InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 					ajoutCateg.setOnTouchListener(new OnTouchListener(){	
+						@Override
 						public boolean onTouch(View v, MotionEvent event)
 						{
 							if (v == ajoutCateg)

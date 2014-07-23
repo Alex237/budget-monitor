@@ -7,10 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import fr.alvini.insta.budgetmonitor.HomeActivity;
 import fr.alvini.insta.budgetmonitor.R;
-import fr.alvini.insta.budgetmonitor.R.id;
-import fr.alvini.insta.budgetmonitor.R.layout;
 
 public class Aide extends Activity implements OnClickListener{
 	

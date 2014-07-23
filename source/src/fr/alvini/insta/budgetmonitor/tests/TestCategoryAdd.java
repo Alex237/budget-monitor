@@ -1,8 +1,5 @@
 package fr.alvini.insta.budgetmonitor.tests;
 
-import java.text.ParseException;
-import java.util.Date;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import fr.alvini.insta.budgetmonitor.R;
 import fr.alvini.insta.budgetmonitor.dao.CategoryDAO;
-import fr.alvini.insta.budgetmonitor.dao.DAOBase;
 import fr.alvini.insta.budgetmonitor.model.Category;
 
 public class TestCategoryAdd extends Activity {

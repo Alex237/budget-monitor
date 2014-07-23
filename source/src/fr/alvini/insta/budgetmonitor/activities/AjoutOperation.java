@@ -2,23 +2,18 @@ package fr.alvini.insta.budgetmonitor.activities;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import fr.alvini.insta.budgetmonitor.HomeActivity;
 import fr.alvini.insta.budgetmonitor.R;
-import fr.alvini.insta.budgetmonitor.R.id;
-import fr.alvini.insta.budgetmonitor.R.layout;
 import fr.alvini.insta.budgetmonitor.model.*;
 import fr.alvini.insta.budgetmonitor.dao.*;
-import fr.alvini.insta.budgetmonitor.bdd.*;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.media.ExifInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +22,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -36,7 +30,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.SpinnerAdapter;
 
 public class AjoutOperation extends Activity implements OnClickListener{
 
@@ -154,7 +147,7 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
 
 				choixOperation =(String)parent.getSelectedItem(); 
-
+				Toast.makeText(AjoutOperation.this, (String)parent.getSelectedItem(), Toast.LENGTH_LONG).show();
 			}
 
 			@Override
@@ -273,6 +266,7 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			final InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 			ajoutCateg.setOnTouchListener(new OnTouchListener(){	
+				@Override
 				public boolean onTouch(View v, MotionEvent event)
 				{
 					if (v == ajoutCateg)

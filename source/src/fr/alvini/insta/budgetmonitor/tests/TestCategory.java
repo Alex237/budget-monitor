@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import fr.alvini.insta.budgetmonitor.R;
-import fr.alvini.insta.budgetmonitor.dao.CategoryDAO;
-import fr.alvini.insta.budgetmonitor.model.Category;
 
 public class TestCategory extends Activity {
 	private Button category_add = null;
