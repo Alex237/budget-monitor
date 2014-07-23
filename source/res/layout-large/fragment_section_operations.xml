@@ -18,15 +18,13 @@
             android:layout_row="1" />
         
         <TextView
-            android:id="@+id/montantRestantText"
+            android:id="@+id/montantRestantTextOperation"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="#5A90BE"
             android:gravity="center"
-            android:maxLines="2"
             android:paddingBottom="30dp"
             android:paddingTop="30dp"
-            android:text="Il vous reste :\n€ 12345.12"
             android:textColor="#fff"
             android:textSize="38dp"
             android:textStyle="bold" />
@@ -42,19 +40,6 @@
                 android:layout_weight="1"
                 android:orientation="vertical" >
 
-                <!--
-                            TextView
-	                        android:id="@+id/lol"
-	                        android:layout_width="fill_parent"
-	                        android:layout_height="fill_parent"
-	                        android:layout_gravity="center"
-	                        android:paddingBottom="25dp"
-	                        android:paddingLeft="15dp"
-	                        android:paddingTop="25dp"
-	                        android:text=" + Ajouter"
-	                        android:textColor="#fff"
-	                        android:textSize="24dp" /
-                -->
 
                 <Button
                     android:id="@+id/addOperation"
@@ -72,19 +57,6 @@
                 android:layout_weight="1"
                 android:orientation="vertical" >
 
-                <!--
-                            TextView
-	                        android:id="@+id/loools"
-	                        android:layout_width="fill_parent"
-	                        android:layout_height="fill_parent"
-	                        android:layout_gravity="center"
-	                        android:paddingBottom="25dp"
-	                        android:paddingLeft="15dp"
-	                        android:paddingTop="25dp"
-	                        android:text="x Modifier"
-	                        android:textColor="#fff"
-	                        android:textSize="24dp" /
-                -->
 
                 <Button
                     android:id="@+id/changeOperation"

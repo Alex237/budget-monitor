@@ -36,27 +36,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import fr.alvini.insta.budgetmonitor.activities.A_propos;
-import fr.alvini.insta.budgetmonitor.activities.Aide;
-import fr.alvini.insta.budgetmonitor.activities.AjoutOperation;
-import fr.alvini.insta.budgetmonitor.activities.BudgetAdd;
-import fr.alvini.insta.budgetmonitor.activities.BudgetDetails;
-import fr.alvini.insta.budgetmonitor.activities.CategoryList;
-import fr.alvini.insta.budgetmonitor.activities.Exporter;
-import fr.alvini.insta.budgetmonitor.activities.Gerer;
-import fr.alvini.insta.budgetmonitor.activities.MentionsLegales;
-import fr.alvini.insta.budgetmonitor.activities.ModifierOperation;
-import fr.alvini.insta.budgetmonitor.activities.Parametres;
-import fr.alvini.insta.budgetmonitor.adaptater.CustomList;
-import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
-import fr.alvini.insta.budgetmonitor.dao.CategoryDAO;
-import fr.alvini.insta.budgetmonitor.dao.OperationDAO;
-import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
-import fr.alvini.insta.budgetmonitor.model.Budget;
-import fr.alvini.insta.budgetmonitor.model.ObjectModel;
-import fr.alvini.insta.budgetmonitor.model.Operation;
-import fr.alvini.insta.holographlib.PieGraph;
-import fr.alvini.insta.holographlib.PieSlice;
+import fr.alvini.insta.budgetmonitor.activities.*;
+import fr.alvini.insta.budgetmonitor.adaptater.*;
+import fr.alvini.insta.budgetmonitor.dao.*;
+import fr.alvini.insta.budgetmonitor.model.*;
+import fr.alvini.insta.holographlib.*;
 
 public class HomeActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -141,10 +125,6 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		if (savedInstanceState == null) {
-			// selectItem(0);
-		}
-
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections
 		// of the app.
@@ -200,9 +180,9 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 
 		// Cr�ation d'un MenuInflater qui va permettre d'instancier un Menu XML
 		// en un objet Menu
-		MenuInflater inflater = getMenuInflater();
+		//MenuInflater inflater = getMenuInflater();
 		// Instanciation du menu XML sp�cifier en un objet Menu
-		inflater.inflate(R.menu.activity_menu, menu);
+		//inflater.inflate(R.menu.activity_menu, menu);
 
 		// Il n'est pas possible de modifier l'ic�ne d'ent�te du sous-menu via
 		// le fichier XML on le fait donc en JAVA
@@ -220,16 +200,17 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			return true;
 		}
 		// On regarde quel item a �t� cliqu� gr�ce � son id et on d�clenche une action
-		switch (item.getItemId()) {
-		case R.id.parametres:
+//		switch (item.getItemId()) {
+	//	case R.id.parametres:
 //			Toast.makeText(HomeActivity.this, "Paramatres ", Toast.LENGTH_SHORT)
 //			.show();
-			
+			/*
 		case R.id.mentionsLegales:
 			Toast.makeText(HomeActivity.this, "Mentions Légales",
 					Toast.LENGTH_SHORT).show();
 			return true;
 		case R.id.aPropos:
+			*/
 //			Toast.makeText(HomeActivity.this, "à Propos", Toast.LENGTH_SHORT)
 //			.show();
 			//Intent  unIntent = new Intent(this, A_propos.class);
@@ -240,15 +221,15 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			
 			//this.startActivity(unIntent);
 
-			
+			/*
 			return true;
 		case R.id.categoriesMgt:
 			Intent IntentCategMgt = new Intent(HomeActivity.this,CategoryList.class);
 			startActivity(IntentCategMgt);
 			return true;
-		default:
+		default:*/
 			return super.onOptionsItemSelected(item);
-		}
+		//}
 //		return true;
 	}
 
@@ -256,13 +237,12 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 	private class DrawerItemClickListener implements
 	ListView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			mDrawerLayout.closeDrawer(mDrawerList);
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			// selectItem(position);
 //			Toast.makeText(HomeActivity.this,
 //					"Drawer item : " + position + " | ID : " + id + "\n " + mMenuTitles1[position],
 //					Toast.LENGTH_SHORT).show();
+			mDrawerLayout.closeDrawer(mDrawerList);
 			int Id = (int) id;
 			switch(Id){
 				case 0:
@@ -289,6 +269,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					Intent intentAide = new Intent(HomeActivity.this, Aide.class);
 					startActivity(intentAide);
 					break;
+				default:
+					mDrawerLayout.closeDrawer(mDrawerList);
 					
 			}
 		}
@@ -382,7 +364,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 	 */
 	public static class ResumeSectionFragment extends Fragment {
 
-		private ListView mListBudget;
+		private ListView mListBudget, legendListView;
 		private BudgetDAO budDAO = null;
 		private OperationDAO opeDAO = null;
 		private CategoryDAO catDAO = null;
@@ -390,40 +372,14 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		private List<Long> listBudgetsId = null;
 		private List<Budget> listBudgets = null;
 		private double totalAmount;
+		private List<String> categorList;
+		private List<String> colorId;
 		
 		private PieGraph pg;
 
-		String[] budgetText = {
-				"Budget de Janvier",
-				"Some one is dead x_X",
-				"Buddah kill him",
-				"I don't know why...",
-				"Budget de Mais",
-				"Budget de Juin",
-				"Budget de Juillet",
-		} ;
+		String[] budgetText = {"ll n'y a aucun budget"} ;
 
-		Double[] prix = {
-				1200.00,
-				1100.50,
-				1500.08,
-				2000.44,
-				2000.44,
-				800.34,
-				2230.50,
-				1321.46
-		};
-
-		private Integer[] iconBudget = {
-				R.drawable.money,
-				R.drawable.ambulance,
-				R.drawable.money,
-				R.drawable.money,
-				R.drawable.money,
-				R.drawable.money,
-				R.drawable.money,
-				R.drawable.money,
-		};
+		private Integer[] iconBudget = {R.drawable.money};
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -434,7 +390,6 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			try {
 				listBudgets = budDAO.selectionnerAll();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			listBudgetsDesc = new ArrayList<String>();
@@ -472,6 +427,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				e.printStackTrace();
 			}
 //			HashMap<String, Double> catesAndAmounts = new HashMap<String, Double>();
+			this.categorList = new ArrayList<String>();
 			List<String> categories = new ArrayList<String>();
 			List<Double> amountByCategories = new ArrayList<Double>();
 			totalAmount = 0;
@@ -485,9 +441,12 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					System.out.println(ope.getCategory().getDescription());
 					categories.add(ope.getCategory().getDescription());
 					amountByCategories.add(ope.getAmount());
+					this.categorList.add(ope.getCategory().getDescription());
 				} else {
 					if (categories.contains(ope.getCategory().getDescription())) {
 						System.out.println("value index of  : "+categories.indexOf(String.valueOf(ope.getCategory().getDescription())));
+
+						categorList.add(ope.getCategory().getDescription());
 						System.out.println("value double : "+Double.valueOf(amountByCategories.get(categories.indexOf(String.valueOf(ope.getCategory().getDescription())))));
 						amountByCategories.set(
 								categories.indexOf(
@@ -507,14 +466,14 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 								);
 					} else {
 						categories.add(ope.getCategory().getDescription());
+						this.categorList.add(ope.getCategory().getDescription());
 						amountByCategories.add(ope.getAmount());
 					}
-
 				}
 			}
 			
 			pg = (PieGraph) rootView.findViewById(R.id.graph);
-
+			this.colorId = new ArrayList<String>();
 			if (categories.size() > 0) {
 				int j = 0;
 				
@@ -523,7 +482,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					PieSlice slice = new PieSlice();
 					String color = ObjectModel.generate(6);
 					slice.setColor(Color.parseColor("#"+color));
-					slice.setValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat))/2)));
+					colorId.add("#" + color.toString());
+					slice.setValue(2);
 					slice.setGoalValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat)))));
 					pg.addSlice(slice);
 				}
@@ -531,49 +491,19 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 
 			pg.setInnerCircleRatio(150);
 			pg.setPadding(2);
-			
-			pg.setDuration(2000);// default if unspecified is 300 ms
+			pg.setDuration(3000);// default if unspecified is 300 ms
 			pg.setInterpolator(new AccelerateDecelerateInterpolator());
 			pg.animateToGoalValues();
 			
 			((TextView) rootView.findViewById(R.id.montantRestantText))
-			.setText(getString(R.string.resume_reamining, 0.0));
+			.setText(getString(R.string.resume_reamining, (double) (budgetSelected.getAmount()-totalAmount)));
 
 			
 			((TextView) rootView.findViewById(R.id.montantText2))
-			.setText(getString(R.string.resume_total, 0.0));
-			/* Demonstration of a collection-browsing activity.
-			rootView.findViewById(R.id.resume).setOnClickListener(
-					new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							// Intent intent = new Intent(private,
-							// OperationActivity.class);
-							// startActivity(intent);
-						}
-					});
-
-			// Demonstration of navigating to external activities.
-			rootView.findViewById(R.id.operation).setOnClickListener(
-					new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							// Create an intent that asks the user to pick a
-							// photo, but using
-							// FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET, ensures that
-							// relaunching
-							// the application from the device home screen does
-							// not return
-							// to the external activity.
-							Intent externalActivityIntent = new Intent(
-									Intent.ACTION_PICK);
-							externalActivityIntent.setType("image/*");
-							externalActivityIntent
-							.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-							startActivity(externalActivityIntent);
-						}
-					});
-			 */
+			.setText(getString(R.string.resume_total, (double) budgetSelected.getAmount()));
+			this.legendListView = (ListView) rootView.findViewById(R.id.legende);
+			LegendeListAdaptater adapterLegende = new LegendeListAdaptater(getActivity(), categorList, colorId);
+			this.legendListView.setAdapter(adapterLegende);
 			return rootView;
 		}
 		
@@ -582,10 +512,13 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(getActivity(), String.valueOf(listBudgetsId.get(position)), Toast.LENGTH_SHORT).show();
+
+				List<String> myColorId = new ArrayList<String>();
+				List<String> mycategoryList = new ArrayList<String>();
+				//Toast.makeText(getActivity(), String.valueOf(listBudgetsId.get(position)), Toast.LENGTH_SHORT).show();
 				opeDAO = new OperationDAO(getActivity());
 				List<Operation> listOpes = new ArrayList<Operation>();
-//				Budget budgetSelected = budDAO.selectionner(listBudgetsId.get(position));
+				Budget budgetSelected = budDAO.selectionner(listBudgetsId.get(position));
 				try {
 					listOpes = opeDAO.selectionnerParBudget(listBudgetsId.get(position));
 				} catch (ParseException e) {
@@ -604,11 +537,13 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					if (categories.size() == 0) {
 						System.out.println("Debug : "+ope.getCategory().getDescription());
 						categories.add(ope.getCategory().getDescription());
+						mycategoryList.add(ope.getCategory().getDescription());
 						amountByCategories.add(ope.getAmount());
 					} else {
 						if (categories.contains(ope.getCategory().getDescription())) {
 							System.out.println("value index of  : "+categories.indexOf(String.valueOf(ope.getCategory().getDescription())));
 							System.out.println("value double : "+Double.valueOf(amountByCategories.get(categories.indexOf(String.valueOf(ope.getCategory().getDescription())))));
+							mycategoryList.add(ope.getCategory().getDescription());
 							amountByCategories.set(
 									categories.indexOf(
 										String.valueOf(
@@ -628,6 +563,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 						} else {
 							categories.add(ope.getCategory().getDescription());
 							amountByCategories.add(ope.getAmount());
+							mycategoryList.add(ope.getCategory().getDescription());
 						}
 
 					}
@@ -644,7 +580,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 						PieSlice slice = new PieSlice();
 						String color = ObjectModel.generate(6);
 						slice.setColor(Color.parseColor("#"+color));
-						slice.setValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat))/2)));
+						myColorId.add("#" + color.toString());
+						slice.setValue(2);
 						slice.setGoalValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat)))));
 						pg.addSlice(slice);
 					}
@@ -653,9 +590,19 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				pg.setInnerCircleRatio(150);
 				pg.setPadding(2);
 				
-				pg.setDuration(2000);// default if unspecified is 300 ms
+				pg.setDuration(3000);// default if unspecified is 300 ms
 				pg.setInterpolator(new AccelerateDecelerateInterpolator());
 				pg.animateToGoalValues();
+				((TextView) getActivity().findViewById(R.id.montantRestantText))
+				.setText(getString(R.string.resume_reamining, (double) (budgetSelected.getAmount()-totalAmount)));
+
+				
+				((TextView) getActivity().findViewById(R.id.montantText2))
+				.setText(getString(R.string.resume_total, (double) budgetSelected.getAmount()));
+
+				LegendeListAdaptater adapterLegende = new LegendeListAdaptater(getActivity(), mycategoryList, myColorId);
+				//((ListView) getActivity().findViewById(R.id.legende)).setAdapter(null);
+				((ListView) getActivity().findViewById(R.id.legende)).setAdapter(adapterLegende);
 			}
 			
 		};
@@ -684,7 +631,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		private double remainingAmount = 0;
 		private Spinner spinnerBudget;
 
-		private Integer[] iconBudget = {R.drawable.money, R.drawable.ambulance, R.drawable.money,R.drawable.money,R.drawable.money,R.drawable.money,R.drawable.money,};
+		private Integer[] iconBudget = {R.drawable.money};
 
 		
 		@Override
@@ -694,7 +641,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					container, false);
 			Bundle args = getArguments();
 
-			remainAmount = (TextView) rootView.findViewById(R.id.montantRestantText);
+			remainAmount = (TextView) rootView.findViewById(R.id.montantRestantTextOperation);
 			// Get DAO for budget and get all budgets
 			budDAO = new BudgetDAO(getActivity().getApplicationContext());
 			try {
@@ -754,7 +701,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					} else {
 						budgetDisplayed = new Budget();
 					}
-					Toast.makeText(getActivity(), String.valueOf(budgetDisplayed.getAmount()), Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), String.valueOf(budgetDisplayed.getDescription()), Toast.LENGTH_LONG).show();
 					remainingAmount = budgetDisplayed.getAmount();
 					if (listOperations.size() > 0) {
 				        for(Operation op : listOperations) {
@@ -769,7 +716,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				        		remainingAmount += op.getAmount();
 				        	else
 				        		remainingAmount -= op.getAmount();
-				        	operationsString.add(op.getDescription());
+				        	operationsString.add("€ - "+op.getDescription());
 				        	operationsIds.add(op.getId_operation());
 				        }
 			        } else {
@@ -777,7 +724,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			        }
 					ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, operationsString);
 					listView.setAdapter(adapter);
-					remainAmount.setText(getString(R.string.resume_reamining, remainingAmount));
+					remainAmount.setText(getString(R.string.operation_reamining, remainingAmount));
 				}
 
 				@Override
@@ -792,15 +739,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			listView = (ListView) rootView.findViewById(R.id.listViewOperation);
 
 			// Defined Array values to show in ListView
-			String[] values = new String[] { "Menace de Black Buddah", 
-					"Rancon de Rasta Buddah",
-					"Recidive de Buddah",
-					"Corruption des moines tibetins", 
-					"Fake Example", 
-					"Fake fake fake", 
-					"Rasta Buddah Destiny", 
-					"Black Buddah Power !" 
-			};
+			String[] values = new String[] { "Aucunr données"};
 			opDao = new OperationDAO(rootView.getContext());
 			try {
 				operations = opDao.selectionnerAll();
