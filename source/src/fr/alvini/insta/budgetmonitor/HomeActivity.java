@@ -43,6 +43,7 @@ import fr.alvini.insta.budgetmonitor.activities.CategoryList;
 import fr.alvini.insta.budgetmonitor.activities.Exporter;
 import fr.alvini.insta.budgetmonitor.activities.Gerer;
 import fr.alvini.insta.budgetmonitor.activities.MentionsLegales;
+import fr.alvini.insta.budgetmonitor.activities.ModifierOperation;
 import fr.alvini.insta.budgetmonitor.activities.Parametres;
 import fr.alvini.insta.budgetmonitor.adaptater.CustomList;
 import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
@@ -579,6 +580,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			}
 			
 			ArrayList<String> operationsString = new ArrayList<String>();
+			final List<Long> operationsIds = new ArrayList<Long>();
 	        
 			if (operations.size() > 0) {
 		        for(Operation op : operations) {
@@ -589,11 +591,14 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		        	recDAO = new RecurrenceDAO(rootView.getContext());
 		        	op.setRecurrence(recDAO.selectionner(op.getRecurrence().getId_recurrence()));
 		        	operationsString.add(op.getDescription());
+		        	operationsIds.add(op.getId_operation());
 		        }
 	        } else {
 	        	for(String val : values) {
 	        		operationsString.add(val);
+	        		//operationsIds.add(val);
 	        	}
+	        	
 	        }
 
 			// Define a new Adapter
@@ -620,12 +625,18 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 
 					// ListView Clicked item value
 					String  itemValue    = (String) listView.getItemAtPosition(position);
-
-					// Show Alert 
-					Toast.makeText(getActivity(),
-							"Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
-							.show();
-
+					
+					Intent unIntent = new Intent(getActivity().getApplicationContext(), ModifierOperation.class);
+					//Long id_operation = operationsIds.get(getId());
+					//unIntent.getLongExtra("id_operation",id_operation);
+					//System.out.println("id_operation "+ operationsIds.get(getId()));
+				//	System.out.println("getId "+ operationsIds.get(itemPosition));
+					System.out.println("itemvalue : "+itemValue);
+					System.out.println("itemPosition : "+itemPosition);
+					long id_operation = operationsIds.get(Integer.valueOf(itemPosition));
+					unIntent.putExtra("id_operation",id_operation);
+					startActivity(unIntent);
+					//Toast.makeText(getActivity(), String.valueOf(id_operation), Toast.LENGTH_LONG).show();
 				}
 
 			});
@@ -646,9 +657,10 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			this.changOperationBtn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					Toast.makeText(getActivity().getApplicationContext(),
-							"Buddah was a black dude" , Toast.LENGTH_LONG)
-							.show();
+//					Toast.makeText(getActivity().getApplicationContext(),
+//							"Buddah was a black dude" , Toast.LENGTH_LONG)
+//							.show();
+					
 				}
 			});
 			return rootView;

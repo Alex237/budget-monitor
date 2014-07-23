@@ -5,16 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import fr.alvini.insta.budgetmonitor.HomeActivity;
-import fr.alvini.insta.budgetmonitor.R;
-import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
-import fr.alvini.insta.budgetmonitor.dao.CategoryDAO;
-import fr.alvini.insta.budgetmonitor.dao.OperationDAO;
-import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
-import fr.alvini.insta.budgetmonitor.model.Budget;
-import fr.alvini.insta.budgetmonitor.model.Category;
-import fr.alvini.insta.budgetmonitor.model.Operation;
-import fr.alvini.insta.budgetmonitor.model.Recurrence;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -28,12 +18,23 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
+import fr.alvini.insta.budgetmonitor.HomeActivity;
+import fr.alvini.insta.budgetmonitor.R;
+import fr.alvini.insta.budgetmonitor.dao.BudgetDAO;
+import fr.alvini.insta.budgetmonitor.dao.CategoryDAO;
+import fr.alvini.insta.budgetmonitor.dao.OperationDAO;
+import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
+import fr.alvini.insta.budgetmonitor.model.Budget;
+import fr.alvini.insta.budgetmonitor.model.Category;
+import fr.alvini.insta.budgetmonitor.model.Operation;
+import fr.alvini.insta.budgetmonitor.model.Recurrence;
 
 public class ModifierOperation extends Activity implements OnClickListener{
 	
@@ -43,8 +44,11 @@ public class ModifierOperation extends Activity implements OnClickListener{
 		"Dépense", "Revenu"};
 
 	private String choixCategorieUt;
+	private long choixCategorieId = 0;
+	private Category category = null;
 	private List<Category> categories = null;
 	private CategoryDAO catDAO = null;
+	private int positionCat = -1;
 	//liste déroulante concernant l'opération 
 	static final String[] categorie = new String[]{
 		"Par défaut","Alimentation", "Bar", "Courses", "Divers", "Epargne",  "Impots", "Logement/Charges", "Salaire", "Transport"};
@@ -54,6 +58,7 @@ public class ModifierOperation extends Activity implements OnClickListener{
 	private String recurrence;
 	private List<Recurrence> recurrents = null;
 	private RecurrenceDAO recDAO = null;
+	private int positionRec = -1;
 	//liste déroulante concernant la récurrence 
 	static final String[] recurrent = new String[]{
 		"Aucune", "Quotidiennement", "Hebdomadairement", "Mensuel(le)", "Annuelle"};
@@ -71,6 +76,7 @@ public class ModifierOperation extends Activity implements OnClickListener{
 	
 	private ArrayAdapter<String> adapterCategorie;
 	private Spinner choixCat;
+	private Spinner choix;
 	private List<String> categoriesString = null;
 	private Budget getBudget = null;
 	private BudgetDAO budDao = null;
@@ -83,19 +89,21 @@ public class ModifierOperation extends Activity implements OnClickListener{
 		setContentView(R.layout.modifier_operation);
 		//this.container = (GridLayout)findViewById(R.id.gridLayout);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		Intent intentPassed = getIntent();
 		
-		long id_operation = intentPassed.getLongExtra("Id_operation", -1);
+		Intent intentPassed = getIntent();
+		long id_operation = intentPassed.getLongExtra("id_operation", -1);
+		Toast.makeText(ModifierOperation.this, String.valueOf(id_operation), Toast.LENGTH_LONG).show();
+		operationDao = new OperationDAO(ModifierOperation.this);
 		if (id_operation != -1) {
-			operationDao = new OperationDAO(ModifierOperation.this);
 			try {
 				getOperation = operationDao.selectionner(id_operation);
 				System.out.println(getOperation.getId_operation());
+				System.out.println("Id cat getOperation 1ere fois "+getOperation.getCategory().getId_category());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		} else {
-			getOperation = new Operation();
+			//getOperation = new Operation();
 		}
 		
 		//correspondance entre les objets et les widgets
@@ -115,13 +123,13 @@ public class ModifierOperation extends Activity implements OnClickListener{
 		        recurrents = recDAO.selectionnerAll();
 		        final List<Long> recurrentsIds = new ArrayList<Long>();
 		        List<String> recurrentsString = new ArrayList<String>();
-		        int position = -1;
+//		        int position = -1;
 				int i = 0;
 				for (Recurrence rec : recurrents) {
 					recurrentsString.add(rec.getDescription());
 					recurrentsIds.add(rec.getId_recurrence());
 					if (rec.getId_recurrence() == getOperation.getRecurrence().getId_recurrence())
-						position = i;
+						positionRec = i;
 					i++;
 				}
 				
@@ -129,22 +137,25 @@ public class ModifierOperation extends Activity implements OnClickListener{
 		        categories = catDAO.selectionnerAll();
 		        categoriesString = new ArrayList<String>();
 		        final List<Long> categoriesIds = new ArrayList<Long>();
+		        i = 0;
 		        for(Category cat : categories) {
 		        	categoriesString.add(cat.getDescription());
 		        	categoriesIds.add(cat.getId_category());
+		        	System.out.println("Id cat de la liste "+cat.getId_category());
+		        	System.out.println("Id cat getOperation "+getOperation.getCategory().getId_category());
 					if (cat.getId_category() == getOperation.getCategory().getId_category())
-						position = i;
+						positionCat = i;
 					i++;
 		        }
 				
 
-				final Spinner choix = (Spinner) findViewById(R.id.choixUtilisateur);
+				this.choix = (Spinner) findViewById(R.id.choixUtilisateur);
 				// Create an ArrayAdapter using the string array and a default spinner layout
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, operation );
 				// Specify the layout to use whintenten the list of choices appears
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				// Apply the adapter to the spinner
-				choix.setAdapter(adapter);
+				this.choix.setAdapter(adapter);
 
 
 				this.choixCat = (Spinner) findViewById(R.id.choixCategorie);
@@ -152,6 +163,7 @@ public class ModifierOperation extends Activity implements OnClickListener{
 				adapterCategorie = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoriesString );
 				// Specify the layout to use whintenten the list of choices appears
 				adapterCategorie.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				
 				// Apply the adapter to the spinner
 				this.choixCat.setAdapter(adapterCategorie);
 
@@ -181,14 +193,18 @@ public class ModifierOperation extends Activity implements OnClickListener{
 
 				});
 
-
+				
 				//on récupère le choix de l'utilisateur (liste déroulante) 
 				choixCat.setOnItemSelectedListener(new OnItemSelectedListener() {
 					@Override
 					public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
 
-						choixCategorieUt =(String)parent.getSelectedItem(); 
+						choixCategorieId = parent.getSelectedItemId();
+						//Toast.makeText(getApplicationContext(), String.valueOf(categoriesIds.get((int)choixCategorieId)), Toast.LENGTH_LONG).show();
 
+						catDAO = new CategoryDAO(ModifierOperation.this);
+						category = catDAO.selectionner(categoriesIds.get((int)parent.getSelectedItemId()));
+//						System.out.println("Apres category selectionne : "+category.getId_category());
 					}
 
 					@Override
@@ -199,7 +215,8 @@ public class ModifierOperation extends Activity implements OnClickListener{
 
 				});
 
-
+				category = getOperation.getCategory();
+					
 				//on récupère le choix de l'utilisateur (liste déroulante) 
 				repeter.setOnItemSelectedListener(new OnItemSelectedListener() {
 					@Override
@@ -219,13 +236,19 @@ public class ModifierOperation extends Activity implements OnClickListener{
 
 				// Fill the edittext and other stuff with datas
 				this.montant.setText(String.valueOf(getOperation.getAmount()));
-				this.libelle.setText(getBudget.getDescription());
+				this.libelle.setText(getOperation.getDescription());
 //				this.date_begin.updateDate(2015, 0, 5);
 				
-				if (position != -1)
-					repeter.setSelection(position);
-					choixCat.setSelection(position);
-					choix.setSelection(position);
+				if (positionRec != -1)
+					repeter.setSelection(positionRec);
+				
+//				Toast.makeText(ModifierOperation.this, String.valueOf(positionCat), Toast.LENGTH_LONG).show();
+				if (positionCat != -1)
+					choixCat.setSelection(positionCat);
+				if(getOperation.getType().matches(operation[0])) 
+					choix.setSelection(0);
+				else
+					choix.setSelection(1);
 	
 	}
 	
@@ -234,14 +257,16 @@ public class ModifierOperation extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 				int id = v.getId();
-				if(id == R.id.ajouterOperation){
+				if(id == R.id.modifierOperation){
 					Intent  unIntent = new Intent(this, HomeActivity.class);
 					
-					Category choixCategorie = new Category(this.choixCategorieUt);
-					CategoryDAO test = new CategoryDAO(this);
-					test.ajouter(choixCategorie);
-					Budget testBudget = new Budget();
-					testBudget.setId_budget(1);
+					//Category choixCategorie = new Category(this.choixCategorieUt);
+					//CategoryDAO catDao = new CategoryDAO(this);
+					//catDao.modifier(choixCategorie);
+					//Budget testBudget = new Budget();
+					//testBudget.setId_budget(1);
+					
+					//CategoryDAO 
 					
 					Recurrence recurrenceChosen = new Recurrence();
 					recurrenceChosen = recDAO.selectionnerParDescription(recurrence.toString());
@@ -256,15 +281,19 @@ public class ModifierOperation extends Activity implements OnClickListener{
 					
 					double amount = Double.parseDouble(this.montant.getText().toString());
 					String description = this.libelle.getText().toString();
+					getOperation.setType(choix.getSelectedItem().toString());
+					getOperation.setAmount(amount);
+					getOperation.setDescription(description);
+					getOperation.setRecurrence(recurrenceChosen);
+					getOperation.setCategory(category);
 				
-					//Operation operation = new Operation(testBudget, choixCategorie, amount, description, choixOperation, date, recurrenceChosen, 0);
-//					OperationDAO operationDao = new OperationDAO(ModifierOperation.this);
-//					operationDao.ajouter(operation);
-//					
+					operationDao.modifier(getOperation);
+					
 					this.startActivity(unIntent);
 				}
 
-				if(id == R.id.annulerOperation){
+				if(id == R.id.supprimerOperation){
+					operationDao.supprimer(getOperation.getId_operation());
 					System.exit(0);
 				}
 
