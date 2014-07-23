@@ -34,4 +34,19 @@ public class ObjectModel {
 		return elementToReturn;
 	}
 
+	public static String generate(int length) {
+	    String chars = "ABCDEF1234567890"; 
+	    String pass = "";
+	    for(int x=0;x<length;x++)   {
+	       int i = (int)Math.floor(Math.random() * chars.length() -1);
+//	       System.out.println("Test longueur chars : "+chars.length());
+//	       System.out.println("Test color : "+Math.floor(Math.random() * chars.length() -1));
+//	       System.out.println("Test i : "+i);
+	       if (i < 0 || i > chars.length())
+	    	   i = 0;
+	       pass += chars.charAt(i);
+	    }
+	    System.out.println(pass);
+	    return pass;
+	}
 }

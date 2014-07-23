@@ -53,6 +53,7 @@ import fr.alvini.insta.budgetmonitor.dao.CategoryDAO;
 import fr.alvini.insta.budgetmonitor.dao.OperationDAO;
 import fr.alvini.insta.budgetmonitor.dao.RecurrenceDAO;
 import fr.alvini.insta.budgetmonitor.model.Budget;
+import fr.alvini.insta.budgetmonitor.model.ObjectModel;
 import fr.alvini.insta.budgetmonitor.model.Operation;
 import fr.alvini.insta.holographlib.PieGraph;
 import fr.alvini.insta.holographlib.PieSlice;
@@ -520,7 +521,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				for(String cat : categories) {
 					System.out.println(cat+" : "+amountByCategories.get(categories.indexOf(cat)));
 					PieSlice slice = new PieSlice();
-					slice.setColor(Color.parseColor("#B58EAD"));
+					String color = ObjectModel.generate(6);
+					slice.setColor(Color.parseColor("#"+color));
 					slice.setValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat))/2)));
 					slice.setGoalValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat)))));
 					pg.addSlice(slice);
@@ -533,44 +535,6 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			pg.setDuration(2000);// default if unspecified is 300 ms
 			pg.setInterpolator(new AccelerateDecelerateInterpolator());
 			pg.animateToGoalValues();
-			
-/*			
-			PieSlice slice = new PieSlice();
-			slice.setColor(Color.parseColor("#B58EAD"));
-			slice.setValue(2);
-			slice.setGoalValue(10);
-			pg.addSlice(slice);
-
-			slice = new PieSlice();
-			slice.setColor(Color.parseColor("#D1866F"));
-			slice.setValue(2);
-			slice.setGoalValue(10);
-			pg.addSlice(slice);
-
-			slice = new PieSlice();
-			slice.setColor(Color.parseColor("#AA7968"));
-			slice.setValue(2);
-			slice.setGoalValue(10);
-			pg.addSlice(slice);
-
-			slice = new PieSlice();
-			slice.setColor(Color.parseColor("#A2BE8D"));
-			slice.setValue(2);
-			slice.setGoalValue(10);
-			pg.addSlice(slice);
-
-			slice = new PieSlice();
-			slice.setColor(Color.parseColor("#96B6B3"));
-			slice.setValue(2);
-			slice.setGoalValue(10);
-			pg.addSlice(slice);
-
-			slice = new PieSlice();
-			slice.setColor(Color.parseColor("#5A90BE"));
-			slice.setValue(2);
-			slice.setGoalValue(50);
-			pg.addSlice(slice);
-*/
 			
 			((TextView) rootView.findViewById(R.id.montantRestantText))
 			.setText(getString(R.string.resume_reamining, 0.0));
@@ -678,7 +642,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					for(String cat : categories) {
 						System.out.println(cat+" : "+amountByCategories.get(categories.indexOf(cat)));
 						PieSlice slice = new PieSlice();
-						slice.setColor(Color.parseColor("#B58EAD"));
+						String color = ObjectModel.generate(6);
+						slice.setColor(Color.parseColor("#"+color));
 						slice.setValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat))/2)));
 						slice.setGoalValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat)))));
 						pg.addSlice(slice);
