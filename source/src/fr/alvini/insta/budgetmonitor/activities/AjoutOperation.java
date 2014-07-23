@@ -40,6 +40,7 @@ public class AjoutOperation extends Activity implements OnClickListener{
 	static final String[] operation = new String[]{
 		"Dépense", "Revenu"};
 
+	private long id_category;
 	private String choixCategorieUt;
 	private List<Category> categories = null;
 	private CategoryDAO catDAO = null;
@@ -151,8 +152,8 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
 
-				choixOperation =(String)parent.getSelectedItem(); 
-				Toast.makeText(AjoutOperation.this, (String)parent.getSelectedItem(), Toast.LENGTH_LONG).show();
+				choixOperation =(String)parent.getSelectedItem();
+				
 			}
 
 			@Override
@@ -170,6 +171,8 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
 
 				choixCategorieUt =(String)parent.getSelectedItem(); 
+				id_category = categoriesIds.get((int)parent.getSelectedItemId());
+//				Toast.makeText(AjoutOperation.this, String.valueOf(categoriesIds.get((int)parent.getSelectedItemId())), Toast.LENGTH_LONG).show();
 
 			}
 
@@ -223,9 +226,11 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		if(id == R.id.ajouterOperation){
 			Intent  unIntent = new Intent(this, HomeActivity.class);
 			
-			Category choixCategorie = new Category(this.choixCategorieUt);
-			CategoryDAO test = new CategoryDAO(this);
-			test.ajouter(choixCategorie);
+			Category choixCategorie = catDAO.selectionner(id_category);
+//			System.out.println("Debug 5 : "+choixCategorie.getId_category());
+//			Toast.makeText(getApplicationContext(), choixCategorie.getDescription(), Toast.LENGTH_LONG).show();
+//			CategoryDAO test = new CategoryDAO(this);
+//			test.ajouter(choixCategorie);
 			budDAO = new BudgetDAO(AjoutOperation.this);
 			Budget testBudget = budDAO.selectionner(id_budget);
 //			testBudget.setId_budget(id_budget);

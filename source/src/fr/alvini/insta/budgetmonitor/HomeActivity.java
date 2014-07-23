@@ -2,6 +2,7 @@ package fr.alvini.insta.budgetmonitor;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -383,8 +384,13 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		private ListView mListBudget;
 		private BudgetDAO budDAO = null;
 		private OperationDAO opeDAO = null;
+		private CategoryDAO catDAO = null;
 		private List<String> listBudgetsDesc = null;
+		private List<Long> listBudgetsId = null;
 		private List<Budget> listBudgets = null;
+		private double totalAmount;
+		
+		private PieGraph pg;
 
 		String[] budgetText = {
 				"Budget de Janvier",
@@ -424,18 +430,20 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 
 			
 			budDAO = new BudgetDAO(container.getContext());
-			listBudgetsDesc = new ArrayList<String>();
 			try {
 				listBudgets = budDAO.selectionnerAll();
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			listBudgetsDesc = new ArrayList<String>();
+			listBudgetsId = new ArrayList<Long>();
 			Budget budgetSelected = new Budget();
 			if (listBudgets.size() > 0) {
 				int i = 0;
 				for(Budget budget : listBudgets) {
 					listBudgetsDesc.add("Budget : "+budget.getDescription());
+					listBudgetsId.add(budget.getId_budget());
 					if (i == 0)
 						budgetSelected = budget;
 					i++;
@@ -443,7 +451,6 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			}else{
 				listBudgetsDesc.add("Il n'y a rien à afficher");
 			}
-			System.out.println("Budget : "+budgetSelected.getId_budget());
 			Bundle args = getArguments();
 			View rootView = inflater.inflate(R.layout.fragment_section_resume,
 					container, false);
@@ -452,6 +459,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			//CustomList adapterBudget = new CustomList(getActivity(), budgetText, iconBudget);
 			CustomListBis adapterBudget = new CustomListBis(getActivity(), listBudgetsDesc, iconBudget);
 			this.mListBudget.setAdapter(adapterBudget);
+			
+			this.mListBudget.setOnItemClickListener(listBudgetListener);
 
 			opeDAO = new OperationDAO(getActivity());
 			List<Operation> listOpes = new ArrayList<Operation>();
@@ -461,28 +470,71 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Taille de la liste des operations : "+listOpes.size());
+//			HashMap<String, Double> catesAndAmounts = new HashMap<String, Double>();
 			List<String> categories = new ArrayList<String>();
-			List<String> AmountByCategories = new ArrayList<String>();
-//			for(Operation ope : listOpes) {
-//				if (categories.size() == 0) {
-//					categories.add(ope.getCategory().getDescription());
-//				} else {
-//					for(String categoryDesc : categories) {
-//						if (categoryDesc.matches(ope.getCategory().getDescription())) {
-//							
-//						}
-//					}
-//				}
-//			}
-			System.out.println("Avant la liste des catégories : "+categories.size());
-			if (categories.size() > 0) {
-				for(String cat : categories)
-					System.out.println(cat.toString());
+			List<Double> amountByCategories = new ArrayList<Double>();
+			totalAmount = 0;
+			for(Operation ope : listOpes) {
+				System.out.println("Debug 3 : "+ope.getCategory().getId_category());
+				catDAO = new CategoryDAO(getActivity());
+				ope.setCategory(catDAO.selectionner(ope.getCategory().getId_category()));
+				totalAmount += ope.getAmount();
+				
+				if (categories.size() == 0) {
+					System.out.println(ope.getCategory().getDescription());
+					categories.add(ope.getCategory().getDescription());
+					amountByCategories.add(ope.getAmount());
+				} else {
+					if (categories.contains(ope.getCategory().getDescription())) {
+						System.out.println("value index of  : "+categories.indexOf(String.valueOf(ope.getCategory().getDescription())));
+						System.out.println("value double : "+Double.valueOf(amountByCategories.get(categories.indexOf(String.valueOf(ope.getCategory().getDescription())))));
+						amountByCategories.set(
+								categories.indexOf(
+									String.valueOf(
+										ope.getCategory().getDescription()
+										)
+									),
+									Double.valueOf(
+										amountByCategories.get(
+											categories.indexOf(
+												String.valueOf(
+													ope.getCategory().getDescription()
+												)
+											)
+										)+ope.getAmount()
+									)
+								);
+					} else {
+						categories.add(ope.getCategory().getDescription());
+						amountByCategories.add(ope.getAmount());
+					}
+
+				}
 			}
 			
-			PieGraph pg = (PieGraph) rootView.findViewById(R.id.graph);
+			pg = (PieGraph) rootView.findViewById(R.id.graph);
 
+			if (categories.size() > 0) {
+				int j = 0;
+				
+				for(String cat : categories) {
+					System.out.println(cat+" : "+amountByCategories.get(categories.indexOf(cat)));
+					PieSlice slice = new PieSlice();
+					slice.setColor(Color.parseColor("#B58EAD"));
+					slice.setValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat))/2)));
+					slice.setGoalValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat)))));
+					pg.addSlice(slice);
+				}
+			}
+
+			pg.setInnerCircleRatio(150);
+			pg.setPadding(2);
+			
+			pg.setDuration(2000);// default if unspecified is 300 ms
+			pg.setInterpolator(new AccelerateDecelerateInterpolator());
+			pg.animateToGoalValues();
+			
+/*			
 			PieSlice slice = new PieSlice();
 			slice.setColor(Color.parseColor("#B58EAD"));
 			slice.setValue(2);
@@ -518,13 +570,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			slice.setValue(2);
 			slice.setGoalValue(50);
 			pg.addSlice(slice);
-			
-			pg.setInnerCircleRatio(150);
-			pg.setPadding(2);
-
-			pg.setDuration(2000);// default if unspecified is 300 ms
-			pg.setInterpolator(new AccelerateDecelerateInterpolator());
-			pg.animateToGoalValues();
+*/
 			
 			((TextView) rootView.findViewById(R.id.montantRestantText))
 			.setText(getString(R.string.resume_reamining, 0.0));
@@ -566,6 +612,88 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			 */
 			return rootView;
 		}
+		
+		private OnItemClickListener listBudgetListener = new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Toast.makeText(getActivity(), String.valueOf(listBudgetsId.get(position)), Toast.LENGTH_SHORT).show();
+				opeDAO = new OperationDAO(getActivity());
+				List<Operation> listOpes = new ArrayList<Operation>();
+//				Budget budgetSelected = budDAO.selectionner(listBudgetsId.get(position));
+				try {
+					listOpes = opeDAO.selectionnerParBudget(listBudgetsId.get(position));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+//				HashMap<String, Double> catesAndAmounts = new HashMap<String, Double>();
+				List<String> categories = new ArrayList<String>();
+				List<Double> amountByCategories = new ArrayList<Double>();
+				totalAmount = 0;
+				for(Operation ope : listOpes) {
+					catDAO = new CategoryDAO(getActivity());
+					ope.setCategory(catDAO.selectionner(ope.getCategory().getId_category()));
+					totalAmount += ope.getAmount();
+					
+					if (categories.size() == 0) {
+						System.out.println("Debug : "+ope.getCategory().getDescription());
+						categories.add(ope.getCategory().getDescription());
+						amountByCategories.add(ope.getAmount());
+					} else {
+						if (categories.contains(ope.getCategory().getDescription())) {
+							System.out.println("value index of  : "+categories.indexOf(String.valueOf(ope.getCategory().getDescription())));
+							System.out.println("value double : "+Double.valueOf(amountByCategories.get(categories.indexOf(String.valueOf(ope.getCategory().getDescription())))));
+							amountByCategories.set(
+									categories.indexOf(
+										String.valueOf(
+											ope.getCategory().getDescription()
+											)
+										),
+										Double.valueOf(
+											amountByCategories.get(
+												categories.indexOf(
+													String.valueOf(
+														ope.getCategory().getDescription()
+													)
+												)
+											)+ope.getAmount()
+										)
+									);
+						} else {
+							categories.add(ope.getCategory().getDescription());
+							amountByCategories.add(ope.getAmount());
+						}
+
+					}
+				}
+				
+//				PieGraph pg = (PieGraph) rootView.findViewById(R.id.graph);
+				pg.removeSlices();
+
+				if (categories.size() > 0) {
+					int j = 0;
+					
+					for(String cat : categories) {
+						System.out.println(cat+" : "+amountByCategories.get(categories.indexOf(cat)));
+						PieSlice slice = new PieSlice();
+						slice.setColor(Color.parseColor("#B58EAD"));
+						slice.setValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat))/2)));
+						slice.setGoalValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat)))));
+						pg.addSlice(slice);
+					}
+				}
+
+				pg.setInnerCircleRatio(150);
+				pg.setPadding(2);
+				
+				pg.setDuration(2000);// default if unspecified is 300 ms
+				pg.setInterpolator(new AccelerateDecelerateInterpolator());
+				pg.animateToGoalValues();
+			}
+			
+		};
 	}
 
 	/**
@@ -618,11 +746,20 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					budgetsIds.add(bud.getId_budget());
 				}
 			} else {
-				budgetsString.add("Choisir");
+				
 				budgetsString.add("Ajouter un budget");
+				budgetsIds.add((long)0);
 			}
 			budgetDisplayed = new Budget();
 			spinnerBudget = (Spinner)rootView.findViewById(R.id.operationsSpinnerHomeActivity);
+			
+			ArrayAdapter<String> adapterBudgets = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, budgetsString);
+			// Specify the layout to use when the list of choices appears
+			adapterBudgets.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);			
+//			Toast.makeText(getActivity().getApplicationContext(), String.valueOf(adapterBudgets.getCount()), Toast.LENGTH_LONG).show();
+			// Apply the adapter to the spinner
+			spinnerBudget.setAdapter(adapterBudgets);
+			
 			spinnerBudget.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 				@Override
@@ -630,19 +767,29 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 						int position, long id) {
 //					Toast.makeText(getActivity(), String.valueOf(budgetsIds.get((int)spinnerBudget.getSelectedItemId())), Toast.LENGTH_LONG).show();
 					opDao = new OperationDAO(getActivity().getApplicationContext());
-					try {
-						listOperations = opDao.selectionnerParBudget(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
-//						System.out.println(operations);
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					listOperations = new ArrayList<Operation>();
+					if (budgetsIds.get((int)spinnerBudget.getSelectedItemId()) != 0) {
+						try {
+							System.out.println("Debug 2 : "+spinnerBudget.getSelectedItemId());
+							listOperations = opDao.selectionnerParBudget(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
+	//						System.out.println(operations);
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} else {
+						
 					}
 					
 					ArrayList<String> operationsString = new ArrayList<String>();
 					operationsIds = new ArrayList<Long>();
 					budDAO = new BudgetDAO(getActivity());
-					budgetDisplayed = budDAO.selectionner(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
-//					Toast.makeText(getActivity(), String.valueOf(budgetDisplayed.getAmount()), Toast.LENGTH_LONG).show();
+					if (budgetsIds.get((int)spinnerBudget.getSelectedItemId()) != 0) {
+						budgetDisplayed = budDAO.selectionner(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
+					} else {
+						budgetDisplayed = new Budget();
+					}
+					Toast.makeText(getActivity(), String.valueOf(budgetDisplayed.getAmount()), Toast.LENGTH_LONG).show();
 					remainingAmount = budgetDisplayed.getAmount();
 					if (listOperations.size() > 0) {
 				        for(Operation op : listOperations) {
@@ -674,14 +821,6 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				}
 				
 			});
-			
-			// Create an ArrayAdapter using the string array and a default spinner layout
-			ArrayAdapter<String> adapterBudgets = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, budgetsString);
-			// Specify the layout to use when the list of choices appears
-			adapterBudgets.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);			
-//			Toast.makeText(getActivity().getApplicationContext(), String.valueOf(adapterBudgets.getCount()), Toast.LENGTH_LONG).show();
-			// Apply the adapter to the spinner
-			spinnerBudget.setAdapter(adapterBudgets);
 			
 			
 			// Get ListView object from xml
@@ -869,8 +1008,9 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					budgetsIds.add(bud.getId_budget());
 				}
 			} else {
-				budgetsString.add("Choisir");
+				
 				budgetsString.add("Ajouter un budget");
+				budgetsIds.add((long)0);
 			}
 			budgetDisplayed = new Budget();
 			spinnerBudget = (Spinner)rootView.findViewById(R.id.budgetsSpinnerHomeActivity);
@@ -881,32 +1021,39 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 						int position, long id) {
 //					Toast.makeText(getActivity(), String.valueOf(budgetsIds.get((int)spinnerBudget.getSelectedItemId())), Toast.LENGTH_LONG).show();
 					opeDAO = new OperationDAO(getActivity().getApplicationContext());
-					try {
-						listOperations = opeDAO.selectionnerParBudget(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
-//						System.out.println(operations);
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					listOperations = new ArrayList<Operation>();
+					if (budgetsIds.get((int)spinnerBudget.getSelectedItemId()) != 0) {
+						try {
+							listOperations = opeDAO.selectionnerParBudget(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
+	//						System.out.println(operations);
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-					
+						
 					ArrayList<String> operationsString = new ArrayList<String>();
 					budDAO = new BudgetDAO(getActivity());
-					budgetDisplayed = budDAO.selectionner(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
-					recDAO = new RecurrenceDAO(getActivity());
-					budgetDisplayed.setRecurrence(recDAO.selectionner(budgetDisplayed.getRecurrence().getId_recurrence()));
-					
-					operationsString.add("Désignation : "+budgetDisplayed.getDescription());
-					operationsString.add("Date de début : "+Budget.formatDate(budgetDisplayed.getDateBegin(),false));
-					operationsString.add("Date de fin : "+Budget.formatDate(budgetDisplayed.getDateEnd(),false));
-//					System.out.println("Recurrence dans budget : "+budgetDisplayed.getRecurrence().getId_recurrence());
-					if (budgetDisplayed.getRecurrence().getId_recurrence() != 0)
-						operationsString.add("Récurrence : "+budgetDisplayed.getRecurrence().getDescription());
-					else
-						operationsString.add("Récurrence : Aucune");
-					operationsString.add("Montant d'origine : "+budgetDisplayed.getAmount()+ " €");
-					
-//					Toast.makeText(getActivity(), String.valueOf(budgetDisplayed.getAmount()), Toast.LENGTH_LONG).show();
-					remainingAmount = budgetDisplayed.getAmount();
+					if (budgetsIds.get((int)spinnerBudget.getSelectedItemId()) != 0) {
+						budgetDisplayed = budDAO.selectionner(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
+						recDAO = new RecurrenceDAO(getActivity());
+						budgetDisplayed.setRecurrence(recDAO.selectionner(budgetDisplayed.getRecurrence().getId_recurrence()));
+						
+						operationsString.add("Désignation : "+budgetDisplayed.getDescription());
+						operationsString.add("Date de début : "+Budget.formatDate(budgetDisplayed.getDateBegin(),false));
+						operationsString.add("Date de fin : "+Budget.formatDate(budgetDisplayed.getDateEnd(),false));
+	//					System.out.println("Recurrence dans budget : "+budgetDisplayed.getRecurrence().getId_recurrence());
+						if (budgetDisplayed.getRecurrence().getId_recurrence() != 0)
+							operationsString.add("Récurrence : "+budgetDisplayed.getRecurrence().getDescription());
+						else
+							operationsString.add("Récurrence : Aucune");
+						operationsString.add("Montant d'origine : "+budgetDisplayed.getAmount()+ " €");
+						
+	//					Toast.makeText(getActivity(), String.valueOf(budgetDisplayed.getAmount()), Toast.LENGTH_LONG).show();
+						remainingAmount = budgetDisplayed.getAmount();
+					} else {
+						remainingAmount = 0;
+					}
 					if (listOperations.size() > 0) {
 				        for(Operation op : listOperations) {
 //				        	budDAO = new BudgetDAO(getActivity().getApplicationContext());
@@ -950,30 +1097,37 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 //			Toast.makeText(getActivity().getApplicationContext(), String.valueOf(budgetsIds.get((int)spinnerBudget.getSelectedItemId())), Toast.LENGTH_LONG).show();
 
 			opeDAO = new OperationDAO(rootView.getContext());
-			try {
-				listOperations = opeDAO.selectionnerParBudget(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
-//				System.out.println(operations);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			listOperations = new ArrayList<Operation>();
+			if (budgetsIds.get((int)spinnerBudget.getSelectedItemId()) != 0) {
+				try {
+					listOperations = opeDAO.selectionnerParBudget(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
+	//				System.out.println(operations);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 			ArrayList<String> operationsString = new ArrayList<String>();
 			budDAO = new BudgetDAO(getActivity());
-			budgetDisplayed = budDAO.selectionner(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
+			if (budgetsIds.get((int)spinnerBudget.getSelectedItemId()) != 0) {
+				budgetDisplayed = budDAO.selectionner(budgetsIds.get((int)spinnerBudget.getSelectedItemId()));
+				operationsString.add("Désignation : "+budgetDisplayed.getDescription());
+				operationsString.add("Date de début : "+Budget.formatDate(budgetDisplayed.getDateBegin(),false));
+				operationsString.add("Date de fin : "+Budget.formatDate(budgetDisplayed.getDateEnd(),false));
+	//			System.out.println("Recurrence dans budget : "+budgetDisplayed.getRecurrence().getId_recurrence());
+				if (budgetDisplayed.getRecurrence() != null)
+					operationsString.add("Récurrence : "+budgetDisplayed.getRecurrence().getDescription());
+				else
+					operationsString.add("Récurrence : Aucune");
+				operationsString.add("Montant d'origine : "+budgetDisplayed.getAmount()+ " €");
+				
+	//			Toast.makeText(getActivity(), String.valueOf(budgetDisplayed.getAmount()), Toast.LENGTH_LONG).show();
+				remainingAmount = budgetDisplayed.getAmount();
+			} else {
+				remainingAmount = 0;
+			}
 			
-			operationsString.add("Désignation : "+budgetDisplayed.getDescription());
-			operationsString.add("Date de début : "+Budget.formatDate(budgetDisplayed.getDateBegin(),false));
-			operationsString.add("Date de fin : "+Budget.formatDate(budgetDisplayed.getDateEnd(),false));
-//			System.out.println("Recurrence dans budget : "+budgetDisplayed.getRecurrence().getId_recurrence());
-			if (budgetDisplayed.getRecurrence() != null)
-				operationsString.add("Récurrence : "+budgetDisplayed.getRecurrence().getDescription());
-			else
-				operationsString.add("Récurrence : Aucune");
-			operationsString.add("Montant d'origine : "+budgetDisplayed.getAmount()+ " €");
-			
-//			Toast.makeText(getActivity(), String.valueOf(budgetDisplayed.getAmount()), Toast.LENGTH_LONG).show();
-			remainingAmount = budgetDisplayed.getAmount();
 			if (listOperations.size() > 0) {
 		        for(Operation op : listOperations) {
 //		        	budDAO = new BudgetDAO(getActivity().getApplicationContext());

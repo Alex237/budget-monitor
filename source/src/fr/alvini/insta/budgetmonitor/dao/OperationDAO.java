@@ -49,6 +49,7 @@ public class OperationDAO extends DAOBase {
 		values.put(Database.OPERATION_AMOUNT, operation.getAmount());
 		values.put(Database.OPERATION_ADD_DATE, date_added);
 		values.put(Database.OPERATION_BUDGET, operation.getBudget().getId_budget());
+//		System.out.println("Debug 4 : "+operation.getCategory().getId_category());
 		if (operation.getCategory() != null)
 			values.put(Database.OPERATION_CATEGORY, operation.getCategory().getId_category());
 		else
@@ -258,6 +259,7 @@ public class OperationDAO extends DAOBase {
 				}
 				
 				Category category = new Category();
+//				System.out.println("Id categorie dans classe OpeDAO : "+cursor.getLong(6));
 				if (cursor.getLong(6) != 0) {
 //					CategoryDAO catDAO = new CategoryDAO(this.getContext());
 					category.setId_category(cursor.getLong(6));
