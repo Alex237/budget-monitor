@@ -23,8 +23,8 @@
 
 
     <!-- Budget -->
-    <string name="resume_reamining">Il vous reste :\n%1d €</string>
-    <string name="resume_total">Budget total :\n%1d €</string>
+    <string name="resume_reamining">Il vous reste :\n%1.2f €</string>
+    <string name="resume_total">Budget total :\n%1.2f €</string>
 
     <!-- Navdrawer -->
     <string-array name="tab_navigation">

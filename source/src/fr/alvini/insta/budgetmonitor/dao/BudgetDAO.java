@@ -56,7 +56,7 @@ public class BudgetDAO extends DAOBase {
 		} else {
 			values.put(Database.BUDGET_RECURRENCE, 0);
 		}
-		System.out.println(values.toString());
+//		System.out.println(values.toString());
 		mDb.insert(Database.BUDGET_TABLE_NAME, null, values);
 		super.close();
 	}
@@ -77,10 +77,10 @@ public class BudgetDAO extends DAOBase {
 	 */
 	public void modifier(Budget budget) {
 		super.open();
-		System.out.println("Avant String dans modifier dateBegin: "+budget.getDateBegin().get(Calendar.YEAR)+budget.getDateBegin().get(Calendar.MONTH)+budget.getDateBegin().get(Calendar.DAY_OF_MONTH)+" - dateEnd: "+budget.getDateEnd().get(Calendar.YEAR)+budget.getDateEnd().get(Calendar.MONTH)+budget.getDateEnd().get(Calendar.DAY_OF_MONTH));
+//		System.out.println("Avant String dans modifier dateBegin: "+budget.getDateBegin().get(Calendar.YEAR)+budget.getDateBegin().get(Calendar.MONTH)+budget.getDateBegin().get(Calendar.DAY_OF_MONTH)+" - dateEnd: "+budget.getDateEnd().get(Calendar.YEAR)+budget.getDateEnd().get(Calendar.MONTH)+budget.getDateEnd().get(Calendar.DAY_OF_MONTH));
 		String dateBegin = ObjectModel.formatDate(budget.getDateBegin(),true);
 		String dateEnd = ObjectModel.formatDate(budget.getDateEnd(),true);
-		System.out.println("Dans modifier dateBegin: "+dateBegin+" - dateEnd: "+dateEnd);
+//		System.out.println("Dans modifier dateBegin: "+dateBegin+" - dateEnd: "+dateEnd);
 
 		ContentValues values = new ContentValues();
 		values.put(Database.BUDGET_AMOUNT, budget.getAmount());

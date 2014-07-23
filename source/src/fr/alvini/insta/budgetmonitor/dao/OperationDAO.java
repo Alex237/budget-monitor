@@ -223,7 +223,8 @@ public class OperationDAO extends DAOBase {
 	 * Get all operations for a budget
 	 * @throws ParseException 
 	 */
-	public Operation selectionnerParBudget(long id) throws ParseException {
+	public List<Operation> selectionnerParBudget(long id) throws ParseException {
+		List<Operation> list = new ArrayList<Operation>();
 		super.open();
 		String sql = "SELECT "+Database.OPERATION_KEY+" as _id, "
 						+Database.OPERATION_DESCRIPTION+ ", "
@@ -239,38 +240,41 @@ public class OperationDAO extends DAOBase {
 		Cursor cursor = mDb.rawQuery(sql, new String[] {String.valueOf(id)});
 		Operation operation = null;
 		if (cursor.getCount() > 0) {
-			cursor.moveToNext();
-			long id_operation = cursor.getLong(0);
+			while(cursor.moveToNext()) {
+				long id_operation = cursor.getLong(0);
 
-			String description = cursor.getString(1);
-			String type = cursor.getString(2);
-			double amount = cursor.getDouble(3);
-			
-			String date_added_str = cursor.getString(4);
-			GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(ObjectModel.getDateElement("year", date_added_str)), Integer.valueOf(ObjectModel.getDateElement("month", date_added_str)), Integer.valueOf(ObjectModel.getDateElement("day", date_added_str)));
-			
-			Budget budget = new Budget();
-			if (cursor.getLong(5) != 0) {
-//				BudgetDAO budDAO = new BudgetDAO(this.getContext());
-				budget.setId_budget(cursor.getLong(5));
+				String description = cursor.getString(1);
+				String type = cursor.getString(2);
+				double amount = cursor.getDouble(3);
+				
+				String date_added_str = cursor.getString(4);
+//				System.out.println(date_added_str);
+				GregorianCalendar date_added = new GregorianCalendar(Integer.valueOf(ObjectModel.getDateElement("year", date_added_str)), Integer.valueOf(ObjectModel.getDateElement("month", date_added_str)), Integer.valueOf(ObjectModel.getDateElement("day", date_added_str)));
+				
+				Budget budget = new Budget();
+				if (cursor.getLong(5) != 0) {
+//					BudgetDAO budDAO = new BudgetDAO(this.getContext());
+					budget.setId_budget(cursor.getLong(5));
+				}
+				
+				Category category = new Category();
+				if (cursor.getLong(6) != 0) {
+//					CategoryDAO catDAO = new CategoryDAO(this.getContext());
+					category.setId_category(cursor.getLong(6));
+				}
+				
+				Recurrence recurrence = new Recurrence();
+				if (cursor.getInt(7) != 0) {
+//					RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
+					recurrence.setId_recurrence(cursor.getLong(7));
+				}
+				Integer rec_status = cursor.getInt(8);
+				operation = new Operation(id_operation, budget, category, amount, description, type, date_added, recurrence, rec_status);
+				
+				list.add(operation);
 			}
-			
-			Category category = new Category();
-			if (cursor.getLong(6) != 0) {
-//				CategoryDAO catDAO = new CategoryDAO(this.getContext());
-				category.setId_category(cursor.getLong(6));
-			}
-			
-			Recurrence recurrence = new Recurrence();
-			if (cursor.getInt(7) != 0) {
-//				RecurrenceDAO recDAO = new RecurrenceDAO(this.getContext());
-				recurrence.setId_recurrence(cursor.getLong(7));
-			}
-			Integer rec_status = cursor.getInt(8);
-			operation = new Operation(id_operation, budget, category, amount, description, type, date_added, recurrence, rec_status);
-			//System.out.println("Results are : "+metier.getId()+" / "+metier.getIntitule()+" / "+metier.getSalaire()+".");
 		}
 		super.close();
-		return operation;
+		return list;
 	}
 }

@@ -33,6 +33,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class AjoutOperation extends Activity implements OnClickListener{
 
+	private long id_budget;
+	private BudgetDAO budDAO = null;
 	private String choixOperation;
 	//liste déroulante concernant l'opération 
 	static final String[] operation = new String[]{
@@ -77,6 +79,9 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		setContentView(R.layout.ajout_operation);
 		//this.container = (GridLayout)findViewById(R.id.gridLayout);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		Intent intentPassed = getIntent();
+		id_budget = intentPassed.getLongExtra("Id_budget", -1);
 
 		//correspondance entre les objets et les widgets
 		this.montant = (EditText)findViewById(R.id.montant);
@@ -221,8 +226,9 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			Category choixCategorie = new Category(this.choixCategorieUt);
 			CategoryDAO test = new CategoryDAO(this);
 			test.ajouter(choixCategorie);
-			Budget testBudget = new Budget();
-			testBudget.setId_budget(1);
+			budDAO = new BudgetDAO(AjoutOperation.this);
+			Budget testBudget = budDAO.selectionner(id_budget);
+//			testBudget.setId_budget(id_budget);
 			
 			Recurrence recurrenceChosen = new Recurrence();
 			recurrenceChosen = recDAO.selectionnerParDescription(recurrence.toString());

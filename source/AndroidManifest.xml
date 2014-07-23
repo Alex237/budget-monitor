@@ -35,6 +35,11 @@
             android:label="@string/app_name"
             android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
         </activity>
+        <activity 
+            android:name="fr.alvini.insta.budgetmonitor.activities.ModifierOperation"
+            android:label="@string/app_name"
+            android:parentActivityName="fr.alvini.insta.budgetmonitor.HomeActivity" >
+        </activity>
         <!-- Activités OPERATION END -->
         
         <!-- Activités BUDGET BEGIN -->

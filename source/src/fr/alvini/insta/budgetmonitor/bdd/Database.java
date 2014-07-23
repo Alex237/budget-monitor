@@ -7,9 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database extends SQLiteOpenHelper{
-	// Si je décide de la mettre à jour, il faudra changer cet attribut
+	// Si je dï¿½cide de la mettre ï¿½ jour, il faudra changer cet attribut
 	protected final static int VERSION = 1;
-	// Le nom du fichier qui représente la base de données
+	// Le nom du fichier qui reprï¿½sente la base de donnï¿½es
 	protected final static String NOM = "BudgetMonitorDBTemp.db";
 
 	
@@ -66,7 +66,7 @@ public class Database extends SQLiteOpenHelper{
 	public static final String CATEGORY_KEY = "id_category";
 	public static final String CATEGORY_DESCRIPTION = "description";
 	
-	public static final String[] CATEGORIES = new String[]{"Par défaut","Alimentation", "Bar", "Courses", "Divers", "Epargne",  "Impots", "Logement/Charges", "Salaire", "Transport"};
+	public static final String[] CATEGORIES = new String[]{"Par dï¿½faut","Alimentation", "Bar", "Courses", "Divers", "Epargne",  "Impots", "Logement/Charges", "Salaire", "Transport"};
 	
 	public static final String CATEGORY_CREATION = "CREATE TABLE "+CATEGORY_TABLE_NAME+" ("+CATEGORY_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CATEGORY_DESCRIPTION+" TEXT); ";
 	public static final String CATEGORY_DROP = "DROP TABLE IF EXISTS " + CATEGORY_TABLE_NAME + ";";
@@ -99,12 +99,12 @@ public class Database extends SQLiteOpenHelper{
 
 	public Database(Context context) {
 		super(context, NOM, null, VERSION);
-		System.out.println("Constructeur DB");
+//		System.out.println("Constructeur DB");
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		System.out.println("Create DB");
+//		System.out.println("Create DB");
 		db.execSQL(RECURRENCE_CREATION);
 		db.execSQL(PARAMETER_CREATION);
 		db.execSQL(BUDGET_CREATION);
@@ -116,7 +116,7 @@ public class Database extends SQLiteOpenHelper{
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		System.out.println("Upgrade DB");
+//		System.out.println("Upgrade DB");
 		db.execSQL(RECURRENCE_DROP);
 		db.execSQL(PARAMETER_DROP);
 		db.execSQL(BUDGET_DROP);
