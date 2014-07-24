@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -40,7 +41,7 @@ public class AjoutOperation extends Activity implements OnClickListener{
 	static final String[] operation = new String[]{
 		"Dépense", "Revenu"};
 
-	private long id_category;
+	private Long id_category;
 	private String choixCategorieUt;
 	private List<Category> categories = null;
 	private CategoryDAO catDAO = null;
@@ -63,16 +64,18 @@ public class AjoutOperation extends Activity implements OnClickListener{
 	//déclaration popup
 	private Dialog custom;
 	private Button addbtn;
-	private Button annuler;
+	private Button annuler, canbtn;
 	private EditText ajoutCateg;
 	private String newCateg;
 	
-	private ArrayAdapter<String> adapterCategorie;
+	private ArrayAdapter<String> adapterCategorie, adapterCategorie2;
 	private Spinner choixCat;
 	private List<String> categoriesString = null;
+	private List<Long> categoriesIds = null;
 	
 	private Calendar cal;
 	private GregorianCalendar date_added;
+	private OnItemSelectedListener spinnerListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +116,8 @@ public class AjoutOperation extends Activity implements OnClickListener{
         for(Category cat : categories) {
         	categoriesString.add(cat.getDescription());
         	categoriesIds.add(cat.getId_category());
+        	
         }
-		
 		
 
 		final Spinner choix = (Spinner) findViewById(R.id.choixUtilisateur);
@@ -163,17 +166,18 @@ public class AjoutOperation extends Activity implements OnClickListener{
 
 
 		});
-
-
+		
 		//on récupère le choix de l'utilisateur (liste déroulante) 
 		choixCat.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-
-				choixCategorieUt =(String)parent.getSelectedItem(); 
-				id_category = categoriesIds.get((int)parent.getSelectedItemId());
-//				Toast.makeText(AjoutOperation.this, String.valueOf(categoriesIds.get((int)parent.getSelectedItemId())), Toast.LENGTH_LONG).show();
-
+				
+				choixCategorieUt =(String)parent.getSelectedItem();
+				// +1  pour se mettre en accord avec les ID en BDD car le spinner commence
+				//à partir de 0 alors qu'en BDD c'est à partir de 1 !
+				id_category = parent.getSelectedItemId()+1;
+				//System.out.println(id_category);
+				
 			}
 
 			@Override
@@ -227,19 +231,12 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			Intent  unIntent = new Intent(this, HomeActivity.class);
 			
 			Category choixCategorie = catDAO.selectionner(id_category);
-//			System.out.println("Debug 5 : "+choixCategorie.getId_category());
-//			Toast.makeText(getApplicationContext(), choixCategorie.getDescription(), Toast.LENGTH_LONG).show();
-//			CategoryDAO test = new CategoryDAO(this);
-//			test.ajouter(choixCategorie);
 			budDAO = new BudgetDAO(AjoutOperation.this);
 			Budget testBudget = budDAO.selectionner(id_budget);
-//			testBudget.setId_budget(id_budget);
 			
 			Recurrence recurrenceChosen = new Recurrence();
 			recurrenceChosen = recDAO.selectionnerParDescription(recurrence.toString());
 			
-			//m'occuper de l'ajout de la date;
-			//Date date = new Date();
 			cal = Calendar.getInstance();
 			this.date_added =  new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 			
@@ -256,7 +253,8 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			OperationDAO operationDao = new OperationDAO(AjoutOperation.this);
 			operationDao.ajouter(operation);
 			
-			this.startActivity(unIntent);
+			//this.startActivity(unIntent);
+			System.exit(0);
 		}
 
 		if(id == R.id.annulerOperation){
@@ -270,7 +268,7 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			custom.setContentView(R.layout.popup_ajout_categorie);
 			ajoutCateg = (EditText)custom.findViewById(R.id.ajoutCateg);
 			addbtn = (Button)custom.findViewById(R.id.addbtn);
-			annuler = (Button)custom.findViewById(R.id.canbtn);
+			canbtn = (Button)custom.findViewById(R.id.canbtn);
 			custom.setTitle("Ajouter une catégorie : ");
 
 			//Cette ligne permet de faire apparaître le clavier en appuyant sur l'editText
@@ -300,22 +298,25 @@ public class AjoutOperation extends Activity implements OnClickListener{
 					newCateg = ajoutCateg.getText().toString();
 					
 					Category categ = new Category(newCateg);
+					
 					catDAO.ajouter(categ);
 					
 					adapterCategorie.clear();
 			        categories = catDAO.selectionnerAll();
+			        List<Long> newCategIds = new ArrayList<Long>();
+					categoriesString.clear();
 			       
 			        for(Category cat : categories) {
 			        	categoriesString.add(cat.getDescription());
+			        	newCategIds.add(cat.getId_category());
 			        }
-					
+			      
 			        adapterCategorie.notifyDataSetChanged();
-			        
 					custom.dismiss();
 				}
 			});
 
-			annuler.setOnClickListener(new View.OnClickListener() {
+			canbtn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
 					// TODO Auto-generated method stub
