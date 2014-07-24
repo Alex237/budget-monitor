@@ -190,9 +190,9 @@ public class AjoutOperation extends Activity implements OnClickListener{
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		//getMenuInflater().inflate(R.menu.activity_main, menu);
-		MenuInflater inflater = getMenuInflater();
+//		MenuInflater inflater = getMenuInflater();
 		// Instanciation du menu XML sp�cifier en un objet Menu
-		inflater.inflate(R.menu.activity_menu, menu);
+//		inflater.inflate(R.menu.activity_menu, menu);
 		return true;
 	}
 
