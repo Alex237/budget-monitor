@@ -386,7 +386,8 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		private List<String> listBudgetsDesc = null;
 		private List<Long> listBudgetsId = null;
 		private List<Budget> listBudgets = null;
-		private double totalAmount;
+		private double totalExpAmount;
+		private double totalRevAmount;
 		private List<String> categorList;
 		private List<String> colorId;
 		
@@ -445,26 +446,26 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			this.categorList = new ArrayList<String>();
 			List<String> categories = new ArrayList<String>();
 			List<Double> amountByCategories = new ArrayList<Double>();
-			totalAmount = 0;
+			totalExpAmount = 0;
+			totalRevAmount = 0;
 			// NicoComment
 			double remainingAmount = budgetSelected.getAmount();
 			for(Operation ope : listOpes) {
 				System.out.println("Debug 3 : "+ope.getCategory().getId_category());
 				catDAO = new CategoryDAO(getActivity());
 				ope.setCategory(catDAO.selectionner(ope.getCategory().getId_category()));
-				totalAmount += ope.getAmount();
+				if (ope.getType().toString().matches("Revenu")) {
+					totalRevAmount += ope.getAmount();
+				} else {
+					totalExpAmount += ope.getAmount();
+				}
 				
 				if (categories.size() == 0) {
 					System.out.println(ope.getCategory().getDescription());
 					categories.add(ope.getCategory().getDescription());
 					amountByCategories.add(ope.getAmount());
-//					this.categorList.add(ope.getCategory().getDescription());
 				} else {
 					if (categories.contains(ope.getCategory().getDescription())) {
-//						System.out.println("value index of  : "+categories.indexOf(String.valueOf(ope.getCategory().getDescription())));
-//						System.out.println("value double : "+Double.valueOf(amountByCategories.get(categories.indexOf(String.valueOf(ope.getCategory().getDescription())))));
-//						categorList.add(ope.getCategory().getDescription());
-//						System.out.println("value double : "+Double.valueOf(amountByCategories.get(categories.indexOf(String.valueOf(ope.getCategory().getDescription())))));
 						amountByCategories.set(
 								categories.indexOf(
 									String.valueOf(
@@ -514,9 +515,13 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			String color = ObjectModel.generate(6);
 			slice.setColor(Color.parseColor("#"+color));
 			colorId.add("#" + color.toString());
-			remainingAmount -= totalAmount;
-			this.categorList.add("Montant restant : "+remainingAmount+" €");
+//			System.out.println("Montant dépenses : "+totalExpAmount+" - Montant revenus : "+totalRevAmount);
+			remainingAmount -= totalExpAmount;
+//			remainingAmount += totalRevAmount;
+			this.categorList.add("Excédent : "+remainingAmount+" €");
 //			categories.add("Montant restant : "+remainingAmount+" €");
+//			remainingAmount -= totalRevAmount;
+			System.out.println("Remaining Amount : "+remainingAmount);
 			slice.setValue(Float.valueOf(String.valueOf(remainingAmount/2)));
 			slice.setGoalValue(Float.valueOf(String.valueOf(remainingAmount)));
 			pg.addSlice(slice);
@@ -528,7 +533,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			pg.animateToGoalValues();
 			
 			((TextView) rootView.findViewById(R.id.montantRestantText))
-			.setText(getString(R.string.resume_reamining, (double) (budgetSelected.getAmount()-totalAmount)));
+			.setText(getString(R.string.resume_reamining,(double)(budgetSelected.getAmount()-totalExpAmount+totalRevAmount)));
 
 			
 			((TextView) rootView.findViewById(R.id.montantText2))
@@ -560,13 +565,19 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 //				HashMap<String, Double> catesAndAmounts = new HashMap<String, Double>();
 				List<String> categories = new ArrayList<String>();
 				List<Double> amountByCategories = new ArrayList<Double>();
-				totalAmount = 0;
+				totalExpAmount = 0;
+				totalRevAmount = 0;
 				// NicoComment
 				double remainingAmount = budgetSelected.getAmount();
 				for(Operation ope : listOpes) {
 					catDAO = new CategoryDAO(getActivity());
 					ope.setCategory(catDAO.selectionner(ope.getCategory().getId_category()));
-					totalAmount += ope.getAmount();
+					System.out.println("Type d'opération : "+ope.getType().toString());
+					if (ope.getType().toString().matches("Revenu")) {
+						totalRevAmount += ope.getAmount();
+					} else {
+						totalExpAmount += ope.getAmount();
+					}
 					
 					if (categories.size() == 0) {
 						System.out.println("Debug : "+ope.getCategory().getDescription());
@@ -610,15 +621,18 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					int j = 0;
 					
 					for(String cat : categories) {
-						System.out.println(cat+" : "+amountByCategories.get(categories.indexOf(cat)));
+//						System.out.println(cat+" : "+amountByCategories.get(categories.indexOf(cat)));
+						
 						myCategorList.add(cat+" : "+amountByCategories.get(categories.indexOf(cat))+" €");
 						PieSlice slice = new PieSlice();
 						String color = ObjectModel.generate(6);
 						slice.setColor(Color.parseColor("#"+color));
 						myColorId.add("#" + color.toString());
 						slice.setValue(2);
+//						System.out.println("Dans listener, montant boucle"+j+" : "+amountByCategories.get(categories.indexOf(cat)));
 						slice.setGoalValue(Float.valueOf(String.valueOf(amountByCategories.get(categories.indexOf(cat)))));
 						pg.addSlice(slice);
+						j++;
 					}
 				}
 				
@@ -629,8 +643,12 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				String color = ObjectModel.generate(6);
 				slice.setColor(Color.parseColor("#"+color));
 				myColorId.add("#" + color.toString());
-				remainingAmount -= totalAmount;
-				myCategorList.add("Montant restant : "+remainingAmount+" €");
+//				System.out.println("Dans listener, Montant dépenses : "+totalExpAmount+" - Montant revenus : "+totalRevAmount);
+				remainingAmount -= totalExpAmount;
+//				remainingAmount += totalRevAmount;
+				myCategorList.add("Excédent : "+remainingAmount+" €");
+//				remainingAmount -= totalRevAmount;
+				System.out.println("Dans listener Remaining Amount : "+remainingAmount);
 				slice.setValue(Float.valueOf(String.valueOf(remainingAmount/2)));
 				slice.setGoalValue(Float.valueOf(String.valueOf(remainingAmount)));
 				pg.addSlice(slice);
@@ -642,7 +660,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				pg.setInterpolator(new AccelerateDecelerateInterpolator());
 				pg.animateToGoalValues();
 				((TextView) getActivity().findViewById(R.id.montantRestantText))
-				.setText(getString(R.string.resume_reamining, (double) (budgetSelected.getAmount()-totalAmount)));
+				.setText(getString(R.string.resume_reamining, (double) (budgetSelected.getAmount()-totalExpAmount+totalRevAmount)));
 
 				
 				((TextView) getActivity().findViewById(R.id.montantText2))
@@ -767,7 +785,10 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 				        	else
 				        		remainingAmount -= op.getAmount();
 				        	operationHM.put("Desc", op.getDescription());
-				        	operationHM.put("Montant", "Montant : "+String.valueOf(op.getAmount())+" € - Catégorie : "+String.valueOf(op.getCategory().getDescription()));
+				        	if (op.getType().toString().matches("Revenu"))
+				        		operationHM.put("Montant", "Montant : "+String.valueOf(op.getAmount())+" € - Catégorie : "+String.valueOf(op.getCategory().getDescription()));
+				        	else
+				        		operationHM.put("Montant", "Montant : -"+String.valueOf(op.getAmount())+" € - Catégorie : "+String.valueOf(op.getCategory().getDescription()));
 				        	operationsString.add(operationHM);
 				        	operationsIds.add(op.getId_operation());
 				        }
@@ -823,7 +844,11 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		        	recDAO = new RecurrenceDAO(rootView.getContext());
 		        	op.setRecurrence(recDAO.selectionner(op.getRecurrence().getId_recurrence()));
 		        	operationHM.put("Desc", op.getDescription());
-		        	operationHM.put("Montant", "Montant : "+String.valueOf(op.getAmount())+" € - Catégorie : "+String.valueOf(op.getCategory().getDescription()));
+		        	System.out.println("Type dans operations : "+op.getType().toString());
+		        	if (op.getType().toString().matches("Revenu"))
+		        		operationHM.put("Montant", "Montant : "+String.valueOf(op.getAmount())+" € - Catégorie : "+String.valueOf(op.getCategory().getDescription()));
+		        	else
+		        		operationHM.put("Montant", "Montant : - "+String.valueOf(op.getAmount())+" € - Catégorie : "+String.valueOf(op.getCategory().getDescription()));
 		        	operationsString.add(operationHM);
 		        	operationsIds.add(op.getId_operation());
 		        }
