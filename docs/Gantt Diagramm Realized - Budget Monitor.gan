@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Gantt Realized" company="" webLink="http://" view-date="2014-07-03" view-index="0" gantt-divider-location="398" resource-divider-location="300" version="2.0" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Gantt Realized" company="" webLink="http://" view-date="2014-07-03" view-index="0" gantt-divider-location="398" resource-divider-location="300" version="2.0" locale="fr">
     <description/>
     <view zooming-state="default:2" id="gantt-chart">
         <field id="tpd3" name="Nom" width="54" order="0"/>
@@ -6,8 +6,8 @@
         <field id="tpd5" name="Date de fin" width="22" order="2"/>
     </view>
     <view id="resource-table">
-        <field id="0" name="Nom" width="57" order="0"/>
-        <field id="1" name="Rôle par défaut" width="42" order="1"/>
+        <field id="0" name="Nom" width="52" order="0"/>
+        <field id="1" name="Rôle par défaut" width="47" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -43,7 +43,7 @@
             <task id="5" name="Use Case" color="#0000cc" meeting="false" start="2014-07-09" duration="1" complete="0" expand="true"/>
             <task id="6" name="Maquette" color="#0000cc" meeting="false" start="2014-07-10" duration="2" complete="0" expand="true"/>
         </task>
-        <task id="7" name="Développement" color="#009900" meeting="false" start="2014-07-14" duration="7" complete="0" expand="true"/>
+        <task id="7" name="Développement" color="#009900" meeting="false" start="2014-07-14" duration="8" complete="0" expand="true"/>
         <task id="8" name="Tests" color="#ff9900" meeting="false" start="2014-07-23" duration="2" complete="0" expand="true"/>
     </tasks>
     <resources/>
