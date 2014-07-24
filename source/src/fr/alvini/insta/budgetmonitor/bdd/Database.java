@@ -66,7 +66,7 @@ public class Database extends SQLiteOpenHelper{
 	public static final String CATEGORY_KEY = "id_category";
 	public static final String CATEGORY_DESCRIPTION = "description";
 	
-	public static final String[] CATEGORIES = new String[]{"Par d�faut","Alimentation", "Bar", "Courses", "Divers", "Epargne",  "Impots", "Logement/Charges", "Salaire", "Transport"};
+	public static final String[] CATEGORIES = new String[]{"Par défaut","Alimentation", "Bar", "Courses", "Divers", "Epargne",  "Impots", "Logement/Charges", "Salaire", "Transport"};
 	
 	public static final String CATEGORY_CREATION = "CREATE TABLE "+CATEGORY_TABLE_NAME+" ("+CATEGORY_KEY+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CATEGORY_DESCRIPTION+" TEXT); ";
 	public static final String CATEGORY_DROP = "DROP TABLE IF EXISTS " + CATEGORY_TABLE_NAME + ";";
