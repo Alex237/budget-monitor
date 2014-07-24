@@ -15,6 +15,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
@@ -93,7 +94,8 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		this.ajouterOperation = (Button)findViewById(R.id.ajouterOperation);
 		this.show_popup = (Button)findViewById(R.id.show_popup);
 		this.annuler = (Button)findViewById(R.id.annulerOperation);
-
+		
+		this.montant.setFilters(new InputFilter[] { new InputFilter.LengthFilter(10) });
 
 		//rendre le bouton écoutable
 		this.ajouterOperation.setOnClickListener(this);
@@ -112,7 +114,7 @@ public class AjoutOperation extends Activity implements OnClickListener{
         catDAO = new CategoryDAO(AjoutOperation.this);
         categories = catDAO.selectionnerAll();
         categoriesString = new ArrayList<String>();
-        final List<Long> categoriesIds = new ArrayList<Long>();
+        categoriesIds = new ArrayList<Long>();
         for(Category cat : categories) {
         	categoriesString.add(cat.getDescription());
         	categoriesIds.add(cat.getId_category());
@@ -128,7 +130,6 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		// Apply the adapter to the spinner
 		choix.setAdapter(adapter);
 
-
 		this.choixCat = (Spinner) findViewById(R.id.choixCategorie);
 		// Create an ArrayAdapter using the string array and a default spinner layout
 		adapterCategorie = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoriesString );
@@ -136,7 +137,6 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		adapterCategorie.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		this.choixCat.setAdapter(adapterCategorie);
-
 
 		final Spinner repeter = (Spinner) findViewById(R.id.repeter);
 		// Create an ArrayAdapter using the string array and a default spinner layout
@@ -146,69 +146,44 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		// Apply the adapter to the spinner
 		repeter.setAdapter(adapterRecurrence);
 
-
-
-
-
 		//on récupère le choix de l'utilisateur (liste déroulante) 
 		choix.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-
 				choixOperation =(String)parent.getSelectedItem();
-				
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-
 			}
-
-
 		});
-		
+
 		//on récupère le choix de l'utilisateur (liste déroulante) 
 		choixCat.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-				
-				choixCategorieUt =(String)parent.getSelectedItem();
-				// +1  pour se mettre en accord avec les ID en BDD car le spinner commence
-				//à partir de 0 alors qu'en BDD c'est à partir de 1 !
-				id_category = parent.getSelectedItemId()+1;
-				//System.out.println(id_category);
-				
+				choixCategorieUt =(String)parent.getSelectedItem(); 
+//				System.out.println("Taille des id category : "+categoriesIds.size());
+//				System.out.println("id du parent selectionne : "+parent.getSelectedItemId());
+				id_category = categoriesIds.get((int)parent.getSelectedItemId());
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-
 			}
-
-
 		});
-
 
 		//on récupère le choix de l'utilisateur (liste déroulante) 
 		repeter.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-
 				recurrence =(String)parent.getSelectedItem(); 
-
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-
 			}
-
-
 		});
-
-
-
-
 	}
 
 	@Override
@@ -253,8 +228,8 @@ public class AjoutOperation extends Activity implements OnClickListener{
 			OperationDAO operationDao = new OperationDAO(AjoutOperation.this);
 			operationDao.ajouter(operation);
 			
-			//this.startActivity(unIntent);
 			System.exit(0);
+//			this.startActivity(unIntent);
 		}
 
 		if(id == R.id.annulerOperation){
@@ -262,7 +237,7 @@ public class AjoutOperation extends Activity implements OnClickListener{
 		}
 
 		if(id == R.id.show_popup){
-
+			adapterCategorie.setNotifyOnChange(true);
 			//on créée la boîte de dialogue ainsi que les champs
 			custom = new Dialog(AjoutOperation.this);
 			custom.setContentView(R.layout.popup_ajout_categorie);
@@ -282,13 +257,9 @@ public class AjoutOperation extends Activity implements OnClickListener{
 					{
 						mgr.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
 					}
-
 					return false;
 				}
-
-
 			});
-
 
 			//on rend les boutons écoutables
 			addbtn.setOnClickListener(new View.OnClickListener() {
@@ -298,20 +269,28 @@ public class AjoutOperation extends Activity implements OnClickListener{
 					newCateg = ajoutCateg.getText().toString();
 					
 					Category categ = new Category(newCateg);
-					
+					System.out.println("Taille categories avant ajout : "+categoriesString.size());
 					catDAO.ajouter(categ);
 					
+					adapterCategorie.add(ajoutCateg.getText().toString());
 					adapterCategorie.clear();
 			        categories = catDAO.selectionnerAll();
+			        System.out.println("Taille categories apres ajout : "+categories.size());
 			        List<Long> newCategIds = new ArrayList<Long>();
 					categoriesString.clear();
+					categoriesIds.clear();
 			       
 			        for(Category cat : categories) {
 			        	categoriesString.add(cat.getDescription());
-			        	newCategIds.add(cat.getId_category());
+//			        	newCategIds.add(cat.getId_category());
+			        	categoriesIds.add(cat.getId_category());
 			        }
 			      
+			        System.out.println("Taille categories apres reajout : "+categoriesString.size());
+					
+			        choixCat.setSelection(categories.size()-1);
 			        adapterCategorie.notifyDataSetChanged();
+			        
 					custom.dismiss();
 				}
 			});

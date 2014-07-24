@@ -28,6 +28,7 @@ public class LegendeListAdaptater extends ArrayAdapter<String>{
 		TextView txtTitle = (TextView) rowView.findViewById(R.id.itxt);
 		LinearLayout imageView = (LinearLayout) rowView.findViewById(R.id.icolor);
 		txtTitle.setText(text.get(position));
+		System.out.println("Test color size and position : "+ColorId.size()+" - "+position);
 		imageView.setBackgroundColor(Color.parseColor(ColorId.get(position)));
 		return rowView;
 	}

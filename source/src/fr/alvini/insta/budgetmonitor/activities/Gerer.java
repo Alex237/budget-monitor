@@ -43,10 +43,10 @@ public class Gerer extends Activity /*implements OnClickListener*/{
         listManagement = new ArrayList<HashMap<String,String>>();
 		int i = 0;
 		HashMap<String, String> categMgt = new HashMap<String, String>();
-		categMgt.put("Item", "Gérer les catégories");
+		categMgt.put("Item", "GÃ©rer les catÃ©gories");
 		listManagement.add(categMgt);
 		HashMap<String, String> recDisplay = new HashMap<String, String>();
-		recDisplay.put("Item", "Afficher les récurrences");
+		recDisplay.put("Item", "Afficher les rÃ©currences");
 		listManagement.add(recDisplay);
 		HashMap<String, String> budgetMgt = new HashMap<String, String>();
 		budgetMgt.put("Item", "Gestion des budgets");
@@ -101,7 +101,7 @@ public class Gerer extends Activity /*implements OnClickListener*/{
 				startActivity(getBudgets);
 				break;
 			default:
-				Toast.makeText(Gerer.this, "Cette fonctionnalité est à venir", Toast.LENGTH_LONG).show();
+				Toast.makeText(Gerer.this, "Cette fonctionnalitï¿½ est ï¿½ venir", Toast.LENGTH_LONG).show();
 				break;
 			}
 		}

@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +31,7 @@ public class BudgetAdd extends Activity implements OnClickListener, OnDateChange
 	private EditText description;
 	private String recurrence;
 	private long id_recurrence;
-	// liste déroulante concernant la récurrence
+	// liste dï¿½roulante concernant la rï¿½currence
 	private List<Recurrence> recurrents = null;
 	private RecurrenceDAO recDAO = null;
 	private Button addBudget;
@@ -56,11 +57,13 @@ public class BudgetAdd extends Activity implements OnClickListener, OnDateChange
 		this.cancel = (Button) findViewById(R.id.btn_budget_cancel);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
+		this.amount.setFilters(new InputFilter[] { new InputFilter.LengthFilter(10) });
+		
 		cal = Calendar.getInstance();
 		this.date_begin.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), this);
 		this.date_end.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), this);
 		
-		// rendre le bouton écoutable
+		// rendre le bouton ï¿½coutable
 		this.addBudget.setOnClickListener(this);
 		this.cancel.setOnClickListener(this);
 
@@ -85,7 +88,7 @@ public class BudgetAdd extends Activity implements OnClickListener, OnDateChange
 		// Apply the adapter to the spinner
 		recurrences.setAdapter(adapterRecurrence);
 
-		// on récupère le choix de l'utilisateur (liste déroulante)
+		// on rï¿½cupï¿½re le choix de l'utilisateur (liste dï¿½roulante)
 		recurrences.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -110,11 +113,11 @@ public class BudgetAdd extends Activity implements OnClickListener, OnDateChange
 	@Override
 	public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 		if (view.getId() == R.id.budget_add_date_begin_datePicker) {
-//			System.out.println("Date debut modifiée");
+//			System.out.println("Date debut modifiï¿½e");
 			dateBegin = new GregorianCalendar(date_begin.getYear(), date_begin.getMonth(), date_begin.getDayOfMonth());
 		}
 		if (view.getId() == R.id.budget_add_date_end_datePicker) {
-//			System.out.println("Date fin modifiée");
+//			System.out.println("Date fin modifiï¿½e");
 			dateEnd = new GregorianCalendar(date_end.getYear(), date_end.getMonth(), date_end.getDayOfMonth());
 		}
 	}

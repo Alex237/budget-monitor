@@ -6,10 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
@@ -92,7 +95,7 @@ public class ModifierOperation extends Activity implements OnClickListener{
 		
 		Intent intentPassed = getIntent();
 		long id_operation = intentPassed.getLongExtra("id_operation", -1);
-		Toast.makeText(ModifierOperation.this, String.valueOf(id_operation), Toast.LENGTH_LONG).show();
+//		Toast.makeText(ModifierOperation.this, String.valueOf(id_operation), Toast.LENGTH_LONG).show();
 		operationDao = new OperationDAO(ModifierOperation.this);
 		if (id_operation != -1) {
 			try {
@@ -113,6 +116,7 @@ public class ModifierOperation extends Activity implements OnClickListener{
 				this.show_popup = (Button)findViewById(R.id.show_popup);
 				this.supprimerOperation = (Button)findViewById(R.id.supprimerOperation);
 
+				this.montant.setFilters(new InputFilter[] { new InputFilter.LengthFilter(10) });
 
 				//rendre le bouton écoutable
 				this.modifierOperation.setOnClickListener(this);
@@ -256,112 +260,112 @@ public class ModifierOperation extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
-				int id = v.getId();
-				if(id == R.id.modifierOperation){
-					Intent  unIntent = new Intent(this, HomeActivity.class);
-					
-					//Category choixCategorie = new Category(this.choixCategorieUt);
-					//CategoryDAO catDao = new CategoryDAO(this);
-					//catDao.modifier(choixCategorie);
-					//Budget testBudget = new Budget();
-					//testBudget.setId_budget(1);
-					
-					//CategoryDAO 
-					
-					Recurrence recurrenceChosen = new Recurrence();
-					recurrenceChosen = recDAO.selectionnerParDescription(recurrence.toString());
-					
-					//m'occuper de l'ajout de la date;
-					Date date = new Date();
-					
-					//pour éviter les erreurs
-					if(this.montant.getText().toString().matches("")){
-						this.montant.setText("0.0");
+		int id = v.getId();
+		if(id == R.id.modifierOperation){
+			Intent  unIntent = new Intent(this, HomeActivity.class);
+			
+			Recurrence recurrenceChosen = new Recurrence();
+			recurrenceChosen = recDAO.selectionnerParDescription(recurrence.toString());
+			
+			//m'occuper de l'ajout de la date;
+			Date date = new Date();
+			
+			//pour éviter les erreurs
+			if(this.montant.getText().toString().matches("")){
+				this.montant.setText("0.0");
+			}
+			
+			double amount = Double.parseDouble(this.montant.getText().toString());
+			String description = this.libelle.getText().toString();
+			getOperation.setType(choix.getSelectedItem().toString());
+			getOperation.setAmount(amount);
+			getOperation.setDescription(description);
+			getOperation.setRecurrence(recurrenceChosen);
+			getOperation.setCategory(category);
+		
+			operationDao.modifier(getOperation);
+			
+			this.startActivity(unIntent);
+		}
+
+		if(id == R.id.supprimerOperation){
+			AlertDialog.Builder alertDelete = new AlertDialog.Builder(ModifierOperation.this);
+			alertDelete.setPositiveButton("Oui", dialogPositiveListener);
+			alertDelete.setNegativeButton("Non", dialogNegativeListener);
+			alertDelete.setMessage("Voulez vous vraiment supprimer l'opération ?");
+			alertDelete.show();
+			
+		}
+
+		if(id == R.id.show_popup){
+			//on créée la boîte de dialogue ainsi que les champs
+			custom = new Dialog(ModifierOperation.this);
+			custom.setContentView(R.layout.popup_ajout_categorie);
+			ajoutCateg = (EditText)custom.findViewById(R.id.ajoutCateg);
+			addbtn = (Button)custom.findViewById(R.id.addbtn);
+			cancel = (Button)custom.findViewById(R.id.canbtn);
+			custom.setTitle("Ajouter une catégorie : ");
+
+			//Cette ligne permet de faire apparaître le clavier en appuyant sur l'editText
+			final InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+			ajoutCateg.setOnTouchListener(new OnTouchListener(){	
+				@Override
+				public boolean onTouch(View v, MotionEvent event)
+				{
+					if (v == ajoutCateg)
+					{
+						mgr.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
 					}
-					
-					double amount = Double.parseDouble(this.montant.getText().toString());
-					String description = this.libelle.getText().toString();
-					getOperation.setType(choix.getSelectedItem().toString());
-					getOperation.setAmount(amount);
-					getOperation.setDescription(description);
-					getOperation.setRecurrence(recurrenceChosen);
-					getOperation.setCategory(category);
-				
-					operationDao.modifier(getOperation);
-					
-					this.startActivity(unIntent);
+					return false;
 				}
+			});
 
-				if(id == R.id.supprimerOperation){
-					operationDao.supprimer(getOperation.getId_operation());
-					System.exit(0);
+			//on rend les boutons écoutables
+			addbtn.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					// TODO Auto-generated method stub
+					newCateg = ajoutCateg.getText().toString();
+					Category categ = new Category(newCateg);
+					catDAO.ajouter(categ);
+					adapterCategorie.clear();
+			        categories = catDAO.selectionnerAll();
+			        for(Category cat : categories) {
+			        	categoriesString.add(cat.getDescription());
+			        }
+			        adapterCategorie.notifyDataSetChanged();
+					custom.dismiss();
 				}
-
-				if(id == R.id.show_popup){
-
-					//on créée la boîte de dialogue ainsi que les champs
-					custom = new Dialog(ModifierOperation.this);
-					custom.setContentView(R.layout.popup_ajout_categorie);
-					ajoutCateg = (EditText)custom.findViewById(R.id.ajoutCateg);
-					addbtn = (Button)custom.findViewById(R.id.addbtn);
-					cancel = (Button)custom.findViewById(R.id.canbtn);
-					custom.setTitle("Ajouter une catégorie : ");
-
-					//Cette ligne permet de faire apparaître le clavier en appuyant sur l'editText
-					final InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-					ajoutCateg.setOnTouchListener(new OnTouchListener(){	
-						@Override
-						public boolean onTouch(View v, MotionEvent event)
-						{
-							if (v == ajoutCateg)
-							{
-								mgr.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
-							}
-
-							return false;
-						}
-
-
-					});
-
-
-					//on rend les boutons écoutables
-					addbtn.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							// TODO Auto-generated method stub
-							newCateg = ajoutCateg.getText().toString();
-							
-							Category categ = new Category(newCateg);
-							catDAO.ajouter(categ);
-							
-							adapterCategorie.clear();
-					        categories = catDAO.selectionnerAll();
-					       
-					        for(Category cat : categories) {
-					        	categoriesString.add(cat.getDescription());
-					        }
-							
-					        adapterCategorie.notifyDataSetChanged();
-					        
-							custom.dismiss();
-						}
-					});
-
-					supprimerOperation.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							// TODO Auto-generated method stub
-							custom.dismiss();
-						}
-					});
-					custom.show();
-
+			});
+			
+			supprimerOperation.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					// TODO Auto-generated method stub
+					custom.dismiss();
 				}
-
+			});
+			custom.show();
+		}
 	}
-	
+
+	public Dialog.OnClickListener dialogPositiveListener = new Dialog.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+//			budDao.supprimer(getBudget.getId_budget());
+//			Intent unIntent = new Intent(BudgetDetails.this, HomeActivity.class);
+//			startActivity(unIntent);
+			operationDao.supprimer(getOperation.getId_operation());
+			System.exit(0);
+		}
+	};
+
+	public Dialog.OnClickListener dialogNegativeListener = new Dialog.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {			
+		}
+	};
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,7 +36,7 @@ public class BudgetDetails extends Activity implements OnClickListener, OnDateCh
 	private EditText description;
 	private String recurrence;
 	private long id_recurrence;
-	// liste déroulante concernant la récurrence
+	// liste dï¿½roulante concernant la rï¿½currence
 	private List<Recurrence> recurrents = null;
 	private RecurrenceDAO recDAO = null;
 	private Button detailsBudget;
@@ -73,8 +74,10 @@ public class BudgetDetails extends Activity implements OnClickListener, OnDateCh
 		this.detailsBudget = (Button) findViewById(R.id.btn_budget_update);
 		this.delete = (Button) findViewById(R.id.btn_budget_delete);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		this.amount.setFilters(new InputFilter[] { new InputFilter.LengthFilter(10) });
 
-		// rendre le bouton écoutable
+		// rendre le bouton ï¿½coutable
 		this.detailsBudget.setOnClickListener(this);
 		this.delete.setOnClickListener(this);
 
@@ -104,7 +107,7 @@ public class BudgetDetails extends Activity implements OnClickListener, OnDateCh
 		// Apply the adapter to the spinner
 		recurrences.setAdapter(adapterRecurrence);
 
-		// on récupère le choix de l'utilisateur (liste déroulante)
+		// on rï¿½cupï¿½re le choix de l'utilisateur (liste dï¿½roulante)
 		recurrences.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -176,11 +179,11 @@ public class BudgetDetails extends Activity implements OnClickListener, OnDateCh
 	@Override
 	public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 		if (view.getId() == R.id.budget_details_date_begin_datePicker) {
-			System.out.println("Date debut modifiée :"+date_begin.getYear()+"-"+date_begin.getMonth()+"-"+date_begin.getDayOfMonth());
+			System.out.println("Date debut modifiï¿½e :"+date_begin.getYear()+"-"+date_begin.getMonth()+"-"+date_begin.getDayOfMonth());
 			dateBegin = new GregorianCalendar(date_begin.getYear(), date_begin.getMonth(), date_begin.getDayOfMonth());
 		}
 		if (view.getId() == R.id.budget_details_date_end_datePicker) {
-			System.out.println("Date fin modifiée :"+date_end.getYear()+"-"+date_end.getMonth()+"-"+date_end.getDayOfMonth());
+			System.out.println("Date fin modifiï¿½e :"+date_end.getYear()+"-"+date_end.getMonth()+"-"+date_end.getDayOfMonth());
 			dateEnd = new GregorianCalendar(date_end.getYear(), date_end.getMonth(), date_end.getDayOfMonth());
 		}
 	}
@@ -189,8 +192,7 @@ public class BudgetDetails extends Activity implements OnClickListener, OnDateCh
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			budDao.supprimer(getBudget.getId_budget());
-			Intent unIntent = new Intent(BudgetDetails.this, HomeActivity.class);
-			startActivity(unIntent);
+			System.exit(0);
 		}
 	};
 

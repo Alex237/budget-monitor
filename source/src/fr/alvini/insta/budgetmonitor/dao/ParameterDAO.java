@@ -30,7 +30,7 @@ public class ParameterDAO extends DAOBase {
 	
 	/**
 	 * @param m
-	 *            le métier à ajouter à la base
+	 *            le mï¿½tier ï¿½ ajouter ï¿½ la base
 	 */
 	public void ajouter(Parameter parameter) {
 		Parameter parameter_exist = this.selectionner();
@@ -47,7 +47,7 @@ public class ParameterDAO extends DAOBase {
 
 	/**
 	 * @param id
-	 *            l'identifiant du métier à supprimer
+	 *            l'identifiant du mï¿½tier ï¿½ supprimer
 	 */
 	public void supprimer(long id) {
 		super.open();
@@ -57,7 +57,7 @@ public class ParameterDAO extends DAOBase {
 
 	/**
 	 * @param m
-	 *            le métier modifié
+	 *            le mï¿½tier modifiï¿½
 	 */
 	public void modifier(Parameter parameter) {
 		super.open();
@@ -71,7 +71,7 @@ public class ParameterDAO extends DAOBase {
 
 	/**
 	 * @param id
-	 *            l'identifiant du métier à récupérer
+	 *            l'identifiant du mï¿½tier ï¿½ rï¿½cupï¿½rer
 	 */
 	public Parameter selectionner() {
 		super.open();
