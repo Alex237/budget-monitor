@@ -859,34 +859,15 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 		private Button 	addBudgetBtn;
 		private Button changeBudgetBtn;
 
-		String[] budgetText = {
-				"Budget de Janvier",
-				"Some one is dead x_X",
-				"Buddah kill him",
-				"I don't know why...",
-				"Budget de Mais",
-				"Budget de Juin",
-				"Budget de Juillet",
-		} ;
-
-		Double[] prix = {
-				1200.00,
-				1100.50,
-				1500.08,
-				2000.44,
-				800.34,
-				2230.50,
-				1321.46
-		};
+		String[] budgetText = {"Aucune"} ;
 
 		private Integer[] iconBudget = {
-				R.drawable.money,
-				R.drawable.ambulance,
-				R.drawable.money,
-				R.drawable.money,
-				R.drawable.money,
-				R.drawable.money,
-				R.drawable.money,
+				R.drawable.info,
+				R.drawable.calendar,
+				R.drawable.calendar,
+				R.drawable.undo,
+				R.drawable.eur,
+				R.drawable.eur,
 		};
 
 		@Override
@@ -977,7 +958,9 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 //		        		operationsString.add("Il n'existe aucune opération pour ce budget.");
 			        }
 					operationsString.add("Montant restant : "+remainingAmount+ " €");
-					CustomListBis adapterBudget = new CustomListBis(getActivity(), operationsString, iconBudget);
+					String[] stringArray = operationsString.toArray(new String[operationsString.size()]);
+					CustomList adapterBudget = new CustomList(getActivity(), stringArray, iconBudget);
+					//CustomListBis adapterBudget = new CustomListBis(getActivity(), operationsString, iconBudget);
 					mListBudget.setAdapter(adapterBudget);
 					remainAmount.setText(getString(R.string.resume_reamining, remainingAmount));
 				}
@@ -1053,8 +1036,10 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 			operationsString.add("Montant restant : "+remainingAmount+ " €");
 			
 			this.mListBudget = (ListView) rootView.findViewById(R.id.listViewBudget);
-
-			CustomListBis adapterBudget = new CustomListBis(getActivity(), operationsString, iconBudget);
+			
+			String[] stringArray = operationsString.toArray(new String[operationsString.size()]);
+			CustomList adapterBudget = new CustomList(getActivity(), stringArray, iconBudget);
+			//CustomListBis adapterBudget = new CustomListBis(getActivity(), operationsString, iconBudget);
 			mListBudget.setAdapter(adapterBudget);
 			remainAmount.setText(getString(R.string.resume_reamining, remainingAmount));
 			

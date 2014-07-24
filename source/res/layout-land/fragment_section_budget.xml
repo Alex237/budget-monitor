@@ -7,6 +7,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="#777"
         android:orientation="vertical" >
 
         <Spinner
@@ -15,7 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_gravity="left|center_vertical"
-            android:layout_row="1" />
+            android:layout_row="1"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" />
 
         <TextView
             android:id="@+id/budgetRestantText"
@@ -23,17 +26,16 @@
             android:layout_height="fill_parent"
             android:background="#D6BA00"
             android:gravity="center"
-            android:maxLines="2"
             android:paddingBottom="30dp"
             android:paddingTop="30dp"
-            android:text="Budget de ce mois : \n  € 12345.67"
             android:textColor="#fff"
-            android:textSize="38dp"
+            android:textSize="32dp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#fff"
             android:orientation="horizontal" >
 
             <LinearLayout
@@ -83,7 +85,6 @@
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:textColor="#000" >
         </ListView>
-        
     </LinearLayout>
 
 </LinearLayout>
