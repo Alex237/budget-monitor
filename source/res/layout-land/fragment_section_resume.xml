@@ -1,16 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mainView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/listViewBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:gravity="center_vertical"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="#000" >
+        </ListView>
+    </LinearLayout>
+
+    <!--LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" -->
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+        android:layout_width="0dp"
+        android:layout_weight="1.5"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <fr.alvini.insta.holographlib.PieGraph
+                        android:id="@+id/graph"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="20dp"
+                        android:paddingTop="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            style="@style/ButtonText"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp"
+                            android:text="@string/legendrTxt"
+                            android:textColor="#fff"
+                            android:textSize="12dp" />
+
+                        <ListView
+                            android:id="@+id/legende"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="4dp"
+                            android:background="#fff"
+                            android:gravity="center_vertical"
+                            android:textColor="#000" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"
+                        android:background="#E7604A"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/montantRestantText"
+                            style="@style/ButtonText"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="10dp"
+                            android:textColor="#fff"
+                            android:textSize="18dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"
+                        android:background="#0FAA9A"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/montantText2"
+                            style="@style/ButtonText"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="10dp"
+                            android:textColor="#fff"
+                            android:textSize="18dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    <!--/LinearLayout-->
+
+</LinearLayout><!--
+LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <!--
-        ScrollView
+    <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    -->
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,8 +170,7 @@
 	        <LinearLayout
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
-	            android:orientation="vertical"
-	            android:background="#fff" >
+	            android:orientation="vertical" >
                 <TextView
                     style="@style/ButtonText"
                     android:layout_width="fill_parent"
@@ -106,25 +241,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!--
-            Button
-                android:id="@+id/resume"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Résumé" />
-
-            <Button
-                android:id="@+id/operation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Opération" />
-
-            <Button
-                android:id="@+id/budgets"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Budgets" /
-        -->
 
         <ListView
             android:id="@+id/listViewBudget"
@@ -139,29 +255,6 @@
             android:textColor="#000" >
         </ListView>
     </LinearLayout>
-    <!-- /ScrollView -->
-
-</LinearLayout><!--
-RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="${relativePackage}.${activityClass}" >
-
-    < WebView
-        android:id="@+id/chartWebView"
-        android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerHorizontal="false"
-        android:layout_centerInParent="false"
-        android:layout_marginTop="50dp" />
-
-    <com.echo.holographlibrary.PieGraph
-        android:id="@+id/graph"
-        android:layout_width="match_parent"
-        android:layout_height="270dp" />
-
-</RelativeLayout
+    </ScrollView>
+</LinearLayout>
 -->

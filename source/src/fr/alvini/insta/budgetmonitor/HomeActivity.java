@@ -488,7 +488,6 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 					pg.addSlice(slice);
 				}
 			}
-
 			pg.setInnerCircleRatio(150);
 			pg.setPadding(2);
 			pg.setDuration(3000);// default if unspecified is 300 ms
