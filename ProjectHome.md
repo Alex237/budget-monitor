@@ -1,0 +1,1 @@
+Budget Monitor help you to manage your budget. Your budget management will be more friend use with this "Fancy" app Dude. You wana know if you are rich or poor bro' :D
